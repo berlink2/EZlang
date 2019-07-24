@@ -4,22 +4,17 @@ import ast.Expr.*;
 
 public class TreeEvaluator implements Expr.Visitor<Object> {
 	
-	public void evaluate(Expr expr) {
+	public Object evaluate(Expr expr) {
 		Object value = call(expr);
-		System.out.println(makeString(value));
+		if (value == null) {
+			return "null";
+		}
+		return value;
 		
 	}
 	
 	private Object call(Expr expr) {
 		return expr.accept(this);
-	}
-	
-	private String makeString(Object obj) {
-		if (obj==null) {
-			return "null";
-		}
-		
-		return obj.toString();
 	}
 	
 	@Override
@@ -29,18 +24,19 @@ public class TreeEvaluator implements Expr.Visitor<Object> {
 		Object op =  expr.getOp();
 		String leftString = left.toString();
 		String rightString = right.toString();
+		
 		switch (expr.getOp().getType()) {
 		case PLUS:
-			if (left instanceof Double && right instanceof Double) {
+			if (left instanceof Integer && right instanceof Integer) {
 				
-		          return Double.parseDouble(leftString) + Double.parseDouble(rightString);                  
+		          return Integer.parseInt(leftString) + Integer.parseInt(rightString);                  
 		        } 
-			if (left instanceof Integer || right instanceof Integer) {
+			if (left instanceof Double || right instanceof Double) {
 				
 				double temp =  Double.parseDouble(leftString) + Double.parseDouble(rightString);
-				int returnInt = (int)temp;
+				double returnDouble = (double)temp;
 				
-		          return returnInt;                     
+		          return returnDouble;                     
 		        } 
 
 		    if (left instanceof String && right instanceof String) {
@@ -48,41 +44,45 @@ public class TreeEvaluator implements Expr.Visitor<Object> {
 		        } 
 		case MINUS:
 			
-			if (left instanceof Double && right instanceof Double) {
+			if (left instanceof Integer && right instanceof Integer) {
 				
-		          return Double.parseDouble(leftString) - Double.parseDouble(rightString);                  
+		          return Integer.parseInt(leftString) - Integer.parseInt(rightString);                  
 		        } 
-			if (left instanceof Integer || right instanceof Integer) {
+			if (left instanceof Double || right instanceof Double) {
 				
 				double temp =  Double.parseDouble(leftString) - Double.parseDouble(rightString);
-				int returnInt = (int)temp;
+				double returnDouble = (double)temp;
 				
-		          return returnInt;                     
+		          return returnDouble;                     
 		        } 
+
 		case SLASH:    
 			
-			if (left instanceof Double && right instanceof Double) {
+			if (left instanceof Integer && right instanceof Integer) {
 				
-		          return Double.parseDouble(leftString) / Double.parseDouble(rightString);                  
+		          return Integer.parseInt(leftString) / Integer.parseInt(rightString);                  
 		        } 
-			if (left instanceof Integer || right instanceof Integer) {
+			if (left instanceof Double || right instanceof Double) {
 				
 				double temp =  Double.parseDouble(leftString) / Double.parseDouble(rightString);
-				int returnInt = (int)temp;
+				double returnDouble = (double)temp;
 				
-		          return returnInt;                    
+		          return returnDouble;                     
 		        } 
+
 		case STAR:
-			if (left instanceof Double && right instanceof Double) {
+			if (left instanceof Integer && right instanceof Integer) {
 				
-		          return Double.parseDouble(leftString) * Double.parseDouble(rightString);                  
+		          return Integer.parseInt(leftString) * Integer.parseInt(rightString);                  
 		        } 
-			if (left instanceof Integer || right instanceof Integer) {
+			if (left instanceof Double || right instanceof Double) {
+				
 				double temp =  Double.parseDouble(leftString) * Double.parseDouble(rightString);
-				int returnInt = (int)temp;
+				double returnDouble = (double)temp;
 				
-		          return returnInt;                 
+		          return returnDouble;                     
 		        } 
+ 
 			
 		case GREATER:                          
 			
@@ -134,6 +134,7 @@ public class TreeEvaluator implements Expr.Visitor<Object> {
 		
 		return call(expr.getNode());
 	}
+	
 	private boolean isEqual(Object left, Object right) {
 		boolean isEqual = left.equals(right);
 		if (left == null && right ==null) {
