@@ -13,9 +13,9 @@ public class Main {
 		TreeEvaluator te = new TreeEvaluator();
 		
 		String exampleTree = tm.make(tree);
-		te.evaluate(tree);
+		Object result = te.evaluate(tree);
 		
-		System.out.println(exampleTree);
+		System.out.println(result);
 		
 
 		    
