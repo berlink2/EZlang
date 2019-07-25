@@ -5,6 +5,16 @@ import lexer.Token;
 
 public class Environment {
 	private final Map<String, Object> table = new HashMap<>();
+	final Environment enclosingScope;
+	
+	//this constructor creates a new environment and is passed the environment which encloses the new one
+	public Environment(Environment enclosingScope) {
+		this.enclosingScope = enclosingScope;
+	}
+	//constructor for the global scope environment 
+	public Environment() {
+		enclosingScope = null;
+	}
 	
 	public void define(String key, Object value) {
 		table.put(key, value);
@@ -15,11 +25,18 @@ public class Environment {
 			table.put(name.getLexeme(), value);
 			return;
 		}
+		if(enclosingScope!=null) {
+			enclosingScope.assign(name, value);
+			return;
+		}
+		
 		
 	}
 	
 	public Object get(Token name) {
-		
+		if(enclosingScope!=null) {
+			return enclosingScope.get(name);
+		}
 			return table.get(name.getLexeme());
 		
 		
