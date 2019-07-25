@@ -13,7 +13,7 @@ public enum TokenType {
 		  LESS, LESS_EQUAL,  
 		  
 	// Literals.                                     
-		   STRING, NUMBER,                      	  
+		   ID, STRING, NUMBER,                      	  
 		  
 	//End of file token
 		  EOF

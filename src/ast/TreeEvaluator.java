@@ -1,8 +1,16 @@
 package ast;
 
 import ast.Expr.*;
+import ast.Stmt.*;
+import java.util.List;
 
-public class TreeEvaluator implements Expr.Visitor<Object> {
+public class TreeEvaluator implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
+	private Environment table = new Environment();
+	
+	public void evaluate(Stmt stmt) {
+		execute(stmt);
+		
+	}
 	
 	public Object evaluate(Expr expr) {
 		Object value = call(expr);
@@ -15,6 +23,10 @@ public class TreeEvaluator implements Expr.Visitor<Object> {
 	
 	private Object call(Expr expr) {
 		return expr.accept(this);
+	}
+	
+	private Object execute(Stmt stmt) {
+		return stmt.accept(this);
 	}
 	
 	@Override
@@ -158,4 +170,40 @@ public class TreeEvaluator implements Expr.Visitor<Object> {
 		
 	}
 
+	@Override
+	public Void visitExpr(Expression stmt) {
+		call(stmt.getExpr());
+		return null;
+	}
+
+	@Override
+	public Void visitBlock(Block stmt) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Void visitVar(Var stmt) {
+		Object value = null;
+		if (stmt.getInitial()!= null) {
+			value = call(stmt.getInitial());
+		}
+		table.define(stmt.getName().getLexeme(), value);
+		return null;
+	}
+
+	@Override
+	public Object visitAssign(Assign expr) {
+		Object value = call(expr.getValue());
+		table.assign(expr.getName(), value);
+		return null;
+	}
+
+	@Override
+	public Object visitVariable(Variable expr) {
+		
+		return table.get(expr.getName());
+	}
+
+	
 }

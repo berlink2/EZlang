@@ -1,6 +1,9 @@
 package ast;
 import lexer.*;
 
+
+//Class for Expression AST
+
 public abstract class Expr  {
 	
 	interface Visitor<T> {
@@ -8,6 +11,8 @@ public abstract class Expr  {
 		T visitLiteral(Literal expr);
 		T visitUnaryOp(unaryOp expr);
 		T visitGroup(Group expr);
+		T visitAssign(Assign expr);
+		T visitVariable(Variable expr);
 	}
 	
 	abstract <T> T accept(Visitor<T> v);
@@ -103,4 +108,44 @@ public abstract class Expr  {
 		 
 		 
 	 }
+	 
+	 public static class Assign extends Expr {
+		final Token name;
+		final Expr value;
+		
+		 public Assign(Token name, Expr value) {
+			 this.name = name;
+			 this.value = value;
+		 }
+
+		@Override
+		<T> T accept(Visitor<T> v) {
+			
+			return v.visitAssign(this);
+		}
+		 public Token getName() {
+				return name;
+			}
+
+			public Expr getValue() {
+				return value;
+			}
+	 }
+	 
+	 public static class Variable extends Expr { 
+		final Token name; 
+		
+		   public Variable(Token name) {                   
+		      this.name = name;                      
+		    }
+
+		    <T> T accept(Visitor<T> v) {       
+		      return v.visitVariable(this);
+		    }   
+		    
+		    public Token getName() {
+				return name;
+			}
+		                           
+		  }
 }
