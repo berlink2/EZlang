@@ -188,6 +188,13 @@ class ASTTests {
 		String test5 = "test";
 		assertEquals(test5, expr5Eval, "should be the same");
 
+		// tests if "te" + "st" = "test"
+		Expr expr6 = new Expr.binOp(new Token(TokenType.MODULO, "%", null, 1), new Expr.Literal(10),
+				new Expr.Literal(5));
+		Object expr6Eval = eval.evaluate(expr6);
+		int test6 = 0;
+		assertEquals(test6, expr6Eval, "should be the same");
+
 	}
 
 	// This unit test tests if binary expressions for boolean operations are
@@ -296,18 +303,18 @@ class ASTTests {
 		Object value = eval.evaluate(assign);
 
 		assertEquals("test", value, "Should be the same");
-		
-		//tests if a + "Again" = "testAgain"
+
+		// tests if a + "Again" = "testAgain"
 		Literal literal2 = new Expr.Literal("Again");
 		Token op = new Token(TokenType.PLUS, "+", null, 1);
 		binOp bin2 = new binOp(op, assign, literal2);
 		Object value2 = eval.evaluate(bin2);
-		
+
 		assertEquals("testAgain", value2, "Should be the same");
 
 	}
-	
-	//tests whether variable expressions are made correctly
+
+	// tests whether variable expressions are made correctly
 	@Test
 	void testVarExp() {
 		TreeEvaluator eval = new TreeEvaluator();
@@ -315,31 +322,61 @@ class ASTTests {
 		// tests if a variable with name var is made
 		Token name = new Token(TokenType.ID, "var", null, 1);
 		Variable var = new Variable(name);
-		
+
 		assertEquals("var", var.getName().getLexeme(), "Should be the same");
-	
-		// value of variable should be null since it has not been initialized to anything
+
+		// value of variable should be null since it has not been initialized to
+		// anything
 		Object varValue = eval.evaluate(var);
 		assertEquals(null, varValue, "Should be the same");
-		
 
 	}
-	
-	//tests whether variable statements are made correctly
+
+	// tests whether variable statements are made correctly
 	@Test
 	void testVarStmt() {
 		TreeEvaluator eval = new TreeEvaluator();
-		
+
 		Token name = new Token(TokenType.ID, "var", null, 1);
 		Expr initial = new Expr.Literal(7);
 		Var var = new Var(name, initial);
 		TreeMaker tm = new TreeMaker();
 		String print = tm.make(var);
-		
+
 		assertEquals("(= var 7)", print, "Should be the same");
-		
 
 	}
+	
+	// tests whether and & or expressions are evaluated correctly
+		@Test
+		void testCondStmt() {
+			TreeEvaluator eval = new TreeEvaluator();
+			
+			Token And = new Token(TokenType.AND, "and", null, 1);
+			Token Or = new Token(TokenType.OR, "or", null, 1);
+			Token leftComp = new Token(TokenType.EQUAL_EQUAL, "==", null, 1);
+			Token rightComp = new Token(TokenType.EQUAL_EQUAL, "==", null, 1);
+			Expr a = new Expr.Literal(1);
+			Expr b = new Expr.Literal(5);
+			Expr c = new Expr.Literal("test");
+			Expr d = new Expr.Literal("test");
+			Expr left = new Expr.binOp(leftComp, a, b);
+			Expr right = new Expr.binOp(rightComp, c, d);
+			
+			Expr orTest = new Expr.binOp(Or, left, right);
+			Object test1 = eval.evaluate(orTest);
+			
+			Expr andTest = new Expr.binOp(And, left, right);
+			Object test2 = eval.evaluate(andTest);
+			
+			//tests if (1==5 or "test" == "test) evaluates to true
+			assertEquals(true, test1, "Should be the same");
+			
+			//tests if (1==5 and "test" == "test) evaluates to false
+			assertEquals(false, test2, "Should be the same");
+			
+
+		}
 	
 	
 
