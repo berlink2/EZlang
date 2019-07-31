@@ -119,7 +119,7 @@ public abstract class Expr  {
 		 }
 
 		@Override
-		<T> T accept(Visitor<T> v) {
+		public <T> T accept(Visitor<T> v) {
 			
 			return v.visitAssign(this);
 		}

@@ -3,7 +3,10 @@ package ast;
 import ast.Expr.*;
 import ast.Stmt.Block;
 import ast.Stmt.Expression;
+import ast.Stmt.If;
+import ast.Stmt.Print;
 import ast.Stmt.Var;
+import ast.Stmt.While;
 import lexer.*;
 
 
@@ -106,6 +109,28 @@ public class TreeMaker implements Expr.Visitor<String>, Stmt.Visitor<String> {
 		sb.append("(" + "=" + " " + stmt.getName().toString()+" "+stmt.getInitial().accept(this)+")");
 		    return sb.toString();
 		
+	}
+
+
+	@Override
+	public String visitIf(If stmt) {
+		
+		
+		return null;
+	}
+
+
+	@Override
+	public String visitPrint(Print stmt) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public String visitWhile(While stmt) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -1,7 +1,6 @@
 
 import ast.*;
-import lexer.Token;
-import lexer.TokenType;
+import lexer.*;
 
 public class Main {
 
@@ -26,6 +25,7 @@ public class Main {
 		Expr expr = new Expr.Assign(name, new Expr.Literal(5));
 		Expr expr2 = new Expr.Assign(name2, new Expr.Literal(6));
 		Expr expr3 = new Expr.binOp(op, expr, expr2);
+		
 		Stmt stmt = new Stmt.Expression(expr3);
 		Object result = te.evaluate(expr3);
 		String tree = tm.make(stmt);

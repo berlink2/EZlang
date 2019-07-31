@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 
 //test class for expression ASTs
 
-class ExprTreeTests {
+class ASTTests {
 
 	// The following tests check that expression ASTs are instantiated
 	// correctly
@@ -340,5 +340,7 @@ class ExprTreeTests {
 		
 
 	}
+	
+	
 
 }

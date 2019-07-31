@@ -8,6 +8,9 @@ public abstract class Stmt {
 		T visitExpr(Expression stmt);
 		T visitBlock(Block stmt);
 		T visitVar(Var stmt);
+		T visitIf(If stmt);
+		T visitPrint(Print stmt);
+		T visitWhile(While stmt);
 	}
 	
 	abstract <T> T accept(Visitor<T> v);
@@ -34,11 +37,19 @@ public abstract class Stmt {
 	}
 	
 	public static class Block extends Stmt {
+		final List<Stmt> statements;
+		
+		public Block(List<Stmt> statements) {
+			this.statements = statements;
+		}
 
 		@Override
 		<T> T accept(Visitor<T> v) {
-			// TODO Auto-generated method stub
-			return null;
+			return v.visitBlock(this);
+		}
+		
+		public List<Stmt> getStatements() {
+			return statements;
 		}
 		
 	}
@@ -66,4 +77,84 @@ public abstract class Stmt {
 		}
 		
 	}
+	
+	public static class Print extends Stmt {
+		final Expr printedString;
+		
+		public Print(Expr printedString) {
+			this.printedString = printedString;
+		}
+
+		@Override
+		<T> T accept(Visitor<T> v) {
+			
+			return v.visitPrint(this);
+		}
+		
+		public Expr getPrintedString() {
+			return printedString;
+		}
+
+		
+	}
+	
+		public static class If extends Stmt {
+			final Expr Cond;
+			final Stmt Then;
+			final Stmt Else;
+			
+			public If(Expr Cond, Stmt Then, Stmt Else) {
+				this.Cond = Cond;
+				this.Then = Then;
+				this.Else = Else;
+				
+			}
+
+			@Override
+			<T> T accept(Visitor<T> v) {
+				
+				return v.visitIf(this);
+			}
+			
+			public Expr getCond() {
+				return Cond;
+			}
+
+			public Stmt getThen() {
+				return Then;
+			}
+
+			public Stmt getElse() {
+				return Else;
+			}
+			
+		}
+		
+		public static class While extends Stmt {
+			final Expr Cond;
+			final Stmt body;
+			
+			public While(Expr Cond, Stmt body) {
+				this.Cond = Cond;
+				this.body = body;
+				
+				
+			}
+
+			@Override
+			<T> T accept(Visitor<T> v) {
+				
+				return v.visitWhile(this);
+			}
+			
+			public Expr getCond() {
+				return Cond;
+			}
+
+			public Stmt getBody() {
+				return body;
+			}
+
+			
+		}
 }
