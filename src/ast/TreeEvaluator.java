@@ -109,6 +109,17 @@ public class TreeEvaluator implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 				return Double.parseDouble(leftString) * Double.parseDouble(rightString);
 				
 			}
+		case MODULO:
+			if (left instanceof Integer && right instanceof Integer) {
+
+				return Integer.parseInt(leftString) % Integer.parseInt(rightString);
+			}
+			if (left instanceof Double || right instanceof Double) {
+
+				return Double.parseDouble(leftString) % Double.parseDouble(rightString);
+				
+			}
+			
 
 		case GREATER:
 
