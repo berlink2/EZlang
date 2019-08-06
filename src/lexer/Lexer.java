@@ -128,11 +128,12 @@ public class Lexer {
 		while (isAlpha(getCurrChar())) {
 			next();
 		}
-		String ID = source.substring(start, curr);
-		if (resKeywords.get(ID) == null) {
+		String kw = source.substring(start, curr);
+		if (resKeywords.get(kw) == null) {
 			tokenize(TokenType.ID);
 		} else {
-			tokenize(resKeywords.get(ID));
+			tokenize(resKeywords.get(kw));
+			
 		}
 	}
 	
