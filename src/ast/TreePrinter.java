@@ -13,9 +13,9 @@ import lexer.*;
 /*
  * This class is used to create trees manually.
  */
-public class TreeMaker implements Expr.Visitor<String>, Stmt.Visitor<String> {
+public class TreePrinter implements Expr.Visitor<String>, Stmt.Visitor<String> {
 
-	public TreeMaker() {
+	public TreePrinter() {
 
 	}
 	

@@ -21,7 +21,7 @@ class ASTTests {
 	@Test
 	void testLiteral() {
 		Expr literal = new Expr.Literal(10);
-		TreeMaker tm = new TreeMaker();
+		TreePrinter tm = new TreePrinter();
 		String tree = tm.make(literal);
 		String test = "10";
 		assertEquals(test, tree, "tested strings should be the same");
@@ -37,7 +37,7 @@ class ASTTests {
 		Token op = new Token(TokenType.MINUS, "-", null, 1);
 		Expr right = new Expr.Literal(10);
 		Expr unary = new Expr.unaryOp(op, right);
-		TreeMaker tm = new TreeMaker();
+		TreePrinter tm = new TreePrinter();
 		String tree = tm.make(unary);
 		String test = "(-10)";
 		assertEquals(test, tree, "tested strings should be the same");
@@ -53,7 +53,7 @@ class ASTTests {
 		Expr right = new Expr.Literal(10);
 
 		Expr binOp = new Expr.binOp(op, left, right);
-		TreeMaker tm = new TreeMaker();
+		TreePrinter tm = new TreePrinter();
 		String tree = tm.make(binOp);
 		String test = "(+ 10 10)";
 		assertEquals(test, tree, "tested strings should be the same");
@@ -70,7 +70,7 @@ class ASTTests {
 		Expr right = new Expr.unaryOp(new Token(TokenType.MINUS, "-", null, 1), new Expr.Literal(15.67));
 
 		Expr binOp = new Expr.binOp(op, left, right);
-		TreeMaker tm = new TreeMaker();
+		TreePrinter tm = new TreePrinter();
 		String tree = tm.make(binOp);
 		String test = "(/ 10 (-15.67))";
 		assertEquals(test, tree, "tested strings should be the same");
@@ -83,7 +83,7 @@ class ASTTests {
 	void testGroup() {
 		Expr node = new Expr.Literal(10);
 		Expr group = new Expr.Group(node);
-		TreeMaker tm = new TreeMaker();
+		TreePrinter tm = new TreePrinter();
 		String tree = tm.make(group);
 		String test = "(group 10)";
 		assertEquals(test, tree, "tested strings should be the same");
@@ -98,7 +98,7 @@ class ASTTests {
 	 */
 	@Test
 	void testLiteralEval() {
-		TreeEvaluator eval = new TreeEvaluator();
+		TreeInterpreter eval = new TreeInterpreter();
 
 		// tests if 55 = 55
 		Expr intLit = new Expr.Literal(55);
@@ -124,7 +124,7 @@ class ASTTests {
 	// This unit test tests if unary expressions are evaluated correctly
 	@Test
 	void testUnaryEval() {
-		TreeEvaluator eval = new TreeEvaluator();
+		TreeInterpreter eval = new TreeInterpreter();
 
 		// tests if -34.6 = -34.6
 		Expr neg = new Expr.unaryOp(new Token(TokenType.MINUS, "-", null, 1), new Expr.Literal(34.6));
@@ -150,7 +150,7 @@ class ASTTests {
 	// binary expressions are evaluated correctly
 	@Test
 	void testBinaryEval1() {
-		TreeEvaluator eval = new TreeEvaluator();
+		TreeInterpreter eval = new TreeInterpreter();
 
 		// tests if 8+4 = 12
 		Expr expr1 = new Expr.binOp(new Token(TokenType.PLUS, "+", null, 1), new Expr.Literal(8), new Expr.Literal(4));
@@ -201,7 +201,7 @@ class ASTTests {
 	// evaluated correctly
 	@Test
 	void testBinaryEval2() {
-		TreeEvaluator eval = new TreeEvaluator();
+		TreeInterpreter eval = new TreeInterpreter();
 
 		// tests if 100 >100 is false
 		Expr expr1 = new Expr.binOp(new Token(TokenType.GREATER, ">", null, 1), new Expr.Literal(100),
@@ -237,7 +237,7 @@ class ASTTests {
 	// This test checks if grouping expressions are evaluated correctly
 	@Test
 	void testGroupEval() {
-		TreeEvaluator eval = new TreeEvaluator();
+		TreeInterpreter eval = new TreeInterpreter();
 
 		// tests if 2*(3+4) = 14
 		Expr literal1 = new Expr.Literal(2);
@@ -253,7 +253,7 @@ class ASTTests {
 	// this test checks that assignment works properly with numbers
 	@Test
 	void testAssignInt() {
-		TreeEvaluator eval = new TreeEvaluator();
+		TreeInterpreter eval = new TreeInterpreter();
 
 		// tests if a = 5 i.e. 5 is assigned to a.
 		Token name = new Token(TokenType.ID, "a", null, 1);
@@ -294,7 +294,7 @@ class ASTTests {
 	// this test checks that assignment works properly with Strings
 	@Test
 	void testAssignString() {
-		TreeEvaluator eval = new TreeEvaluator();
+		TreeInterpreter eval = new TreeInterpreter();
 
 		// tests if a = "test" i.e. "test" is assigned to a.
 		Token name = new Token(TokenType.ID, "a", null, 1);
@@ -317,7 +317,7 @@ class ASTTests {
 	// tests whether variable expressions are made correctly
 	@Test
 	void testVarExp() {
-		TreeEvaluator eval = new TreeEvaluator();
+		TreeInterpreter eval = new TreeInterpreter();
 
 		// tests if a variable with name var is made
 		Token name = new Token(TokenType.ID, "var", null, 1);
@@ -335,12 +335,12 @@ class ASTTests {
 	// tests whether variable statements are made correctly
 	@Test
 	void testVarStmt() {
-		TreeEvaluator eval = new TreeEvaluator();
+		TreeInterpreter eval = new TreeInterpreter();
 
 		Token name = new Token(TokenType.ID, "var", null, 1);
 		Expr initial = new Expr.Literal(7);
 		Var var = new Var(name, initial);
-		TreeMaker tm = new TreeMaker();
+		TreePrinter tm = new TreePrinter();
 		String print = tm.make(var);
 
 		assertEquals("(= var 7)", print, "Should be the same");
@@ -349,8 +349,8 @@ class ASTTests {
 	
 	// tests whether and & or expressions are evaluated correctly
 		@Test
-		void testCondStmt() {
-			TreeEvaluator eval = new TreeEvaluator();
+		void testAndOrStmt() {
+			TreeInterpreter eval = new TreeInterpreter();
 			
 			Token And = new Token(TokenType.AND, "and", null, 1);
 			Token Or = new Token(TokenType.OR, "or", null, 1);
@@ -377,6 +377,8 @@ class ASTTests {
 			
 
 		}
+		
+		
 	
 	
 

@@ -8,10 +8,21 @@ import java.util.Map;
 public class Lexer {
 	private final String source;
 	private final List<Token> tokens = new ArrayList<>();
-	private boolean isEnd;
+	private static final Map<String, TokenType> resKeywords = new HashMap<>();
 	private int start = 0;
-	private int current = 0;
+	private int curr = 0;
 	private int line = 1;
+	static {
+		resKeywords.put("and",    TokenType.AND);                                            
+		resKeywords.put("else",   TokenType.ELSE);                      
+		resKeywords.put("false",  TokenType.FALSE);                                                                 
+		resKeywords.put("if",     TokenType.IF);                        
+		resKeywords.put("null",    TokenType.NULL);                       
+		resKeywords.put("or",     TokenType.OR);                        
+		resKeywords.put("print",  TokenType.PRINT);                                                                
+		resKeywords.put("true",   TokenType.TRUE);                                             
+		resKeywords.put("while",  TokenType.WHILE); 
+	}
 
 	Lexer(String source) {
 		this.source = source;
@@ -26,7 +37,7 @@ public class Lexer {
 	 */
 	List<Token> tokenStream() {
 		while (!end()) {
-			start = current;
+			start = curr;
 			scanToken();
 		}
 
@@ -84,8 +95,8 @@ public class Lexer {
 			break;
 		case '/':
 			if (match('/')) {
-				while (peek()!='\n' && !end()) {
-					continue;
+				while (getCurrChar()!='\n' && !end()) {
+					next();
 				}
 				
 			} else {
@@ -106,19 +117,33 @@ public class Lexer {
 		default:
 			if (isDigit(c)) {
 				tokenizeNumber();
-			} 
+			} else if (isAlpha(c)) {
+				ID();
+			}
 			break;
+		}
+	}
+	
+	private void ID() {
+		while (isAlpha(getCurrChar())) {
+			next();
+		}
+		String ID = source.substring(start, curr);
+		if (resKeywords.get(ID) == null) {
+			tokenize(TokenType.ID);
+		} else {
+			tokenize(resKeywords.get(ID));
 		}
 	}
 	
 	/**
 	 * method that iterates to the next char in the source code
-	 * 
-	 * @return
+	 * and returns the previous char
+	 * @return char
 	 */
 	private char next() {
-		current++;
-		return source.charAt(current -1);
+		curr++;
+		return source.charAt(curr -1);
 	}
 	
 	/*
@@ -131,7 +156,7 @@ public class Lexer {
 	 * method that makes tokens for literals with values
 	 */
 	private void tokenize(TokenType tokenType, Object literal) {
-		String text = source.substring(start, current);
+		String text = source.substring(start, curr);
 		tokens.add(new Token(tokenType, text, literal, line));
 	}
 	
@@ -144,21 +169,21 @@ public class Lexer {
 		if (end()) {
 			return false;
 		}
-		else if (source.charAt(current)!= input) {
+		else if (source.charAt(curr)!= input) {
 			return false;
 		}
-		current++;
+		curr++;
 		return true;
 	}
 	
 	/*
 	 * method that returns current char
 	 */
-	private char peek() {              
-	    return source.charAt(current);
+	private char getCurrChar() {              
+	    return source.charAt(curr);
 	  }     
-	private char peekNext() {
-		return source.charAt(current+1);
+	private char getNextChar() {
+		return source.charAt(curr+1);
 	}
 	
 	
@@ -180,20 +205,20 @@ public class Lexer {
 	 * method for tokenizing numbers
 	 */
 	private void tokenizeNumber() {
-		while (isDigit(peek())) {
+		while (isDigit(getCurrChar())) {
 			next();
 		}
 		
 		//if . is encountered check to see if next char is a number
-		if (peek() =='.' && isDigit(peekNext())) {
+		if (getCurrChar() =='.' && isDigit(getNextChar())) {
 			next();
 		}
 		
-		while (isDigit(peek())) {
+		while (isDigit(getCurrChar())) {
 			next();
 		}
 		
-		tokenize(TokenType.NUMBER, Double.parseDouble(source.substring(start,current)));
+		tokenize(TokenType.NUMBER, Double.parseDouble(source.substring(start,curr)));
 		
 		
 	}
@@ -202,8 +227,8 @@ public class Lexer {
 	 * method for tokenizing strings
 	 */
 	private void tokenizeString() {
-		while (peek() != '\n' && !end()) {
-			if(peek() == '\n') {
+		while (getCurrChar() != '\n' && !end()) {
+			if(getCurrChar() == '\n') {
 				line++;
 			}
 			next();
@@ -211,7 +236,7 @@ public class Lexer {
 		
 		next();
 		
-		String value = source.substring(start +1, current-1 );
+		String value = source.substring(start +1, curr-1 );
 		tokenize(TokenType.STRING, value);
 		
 	}
@@ -220,7 +245,7 @@ public class Lexer {
 	 * method that checks if all chars have been iterated through.
 	 */
 	private boolean end() {
-		boolean isEnd = current > source.length();
+		boolean isEnd = curr > source.length();
 		return isEnd;
 	}
 	

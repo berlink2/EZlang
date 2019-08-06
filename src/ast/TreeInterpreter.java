@@ -4,7 +4,7 @@ import ast.Expr.*;
 import ast.Stmt.*;
 import java.util.List;
 
-public class TreeEvaluator implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
+public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 	private Environment table = new Environment();
 
 	public void evaluate(Stmt stmt) {
@@ -138,20 +138,27 @@ public class TreeEvaluator implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 		case EQUAL_EQUAL:
 			return isEqual(left, right);
 		case OR:
-			if (isTruthy(left)==true) {
-				return left;
-			} else if (isTruthy(right)==true) {
-				return right;
-			}
-		case AND:
-			if (isTruthy(left)==true) {
-				return left;
-			} else {
+			if (isTruthy(left)==true || isTruthy(right)==true) {
 				if (isTruthy(left)==true) {
 					return left;
+				} else if (isTruthy(right)==true) {
+					return right;
+				}
+				
+			} else {
+				return false;
+			}			
+		case AND:
+			if (isTruthy(left)==true && isTruthy(right)==true) {
+				return left;
+			} else {
+				if (isTruthy(left)!=true) {
+					return left;
+				} else if (isTruthy(right)!=true) {
+					return right;
 				}
 			}
-			return right;
+			
 
 		}
 
@@ -183,6 +190,8 @@ public class TreeEvaluator implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
 		return null;
 	}
+	
+	
 
 	/**
 	 * evaluates expression in a grouping

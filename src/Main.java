@@ -1,5 +1,7 @@
 
 import ast.*;
+import ast.Stmt.Expression;
+import ast.Stmt.If;
 import ast.Stmt.Print;
 import ast.Stmt.Var;
 import lexer.*;
@@ -63,10 +65,13 @@ public class Main {
 		//z=x*(y*10)
 		Var z = new Stmt.Var(token3, binop1);
 		Print print = new Print(z.getInitial());
-		TreeEvaluator eval = new TreeEvaluator();
+		TreeInterpreter eval = new TreeInterpreter();
 		
 		//print z
 		eval.evaluate(print);
+		
+		
+		
 		
 	 
 		
