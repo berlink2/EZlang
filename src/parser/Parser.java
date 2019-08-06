@@ -17,7 +17,7 @@ public class Parser {
 
 	public void parse() {
 		while (!checkEnd()) {
-			statementList.add(parseStmt());
+			statementList.add(parseDeclare());
 		}
 	}
 	
