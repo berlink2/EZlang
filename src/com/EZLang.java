@@ -20,7 +20,7 @@ public class EZLang {
 		System.out.println("----------------------------");
 		System.out.println("---- Welcome to EZlang! ----");
 		System.out.println("----------------------------");
-		
+					
 		String filePath = null;
 		boolean hasFile = false;
 		while(!hasFile) {

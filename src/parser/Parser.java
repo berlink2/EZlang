@@ -289,21 +289,9 @@ public class Parser {
 	 * method that checks if current token matches a particular token type. If it
 	 * does, that token will be parsed, and curr will move to the next token.
 	 * 
-	 * @param token
+	 * @param TokenType
 	 * @return boolean
-	 */
-//	private boolean match(TokenType token) {
-//		boolean match = false;
-//		if (getCurrToken().getType() == token) {
-//			match = true;
-//			move();
-//		}
-//		if (checkEnd()) {
-//			return false;
-//		}
-//		return match;
-//	}
-	
+	 */	
 	 private boolean match(TokenType... types) {
 		    for (TokenType type : types) {
 		      if (getCurrToken().getType() == type) {
