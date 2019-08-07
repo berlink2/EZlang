@@ -13,9 +13,6 @@ public class Lexer {
 	private int curr = 0;
 	private int line = 1;
 	private boolean isEnd;
-	
-		
-	
 
 	public Lexer(String source) {
 		this.source = source;
@@ -94,16 +91,16 @@ public class Lexer {
 		case '>':
 			tokenize(match('=') ? TokenType.GREATER_EQUAL : TokenType.GREATER);
 			break;
-		case '/':
-			if (match('/')) {
-				while (getCurrChar() != '\n' && !checkEnd()) {
-					next();
-				}
-
-			} else {
-				tokenize(TokenType.SLASH);
+		case '#':
+			
+			while (getCurrChar() != '\n' && !checkEnd()) {
+				next();
 			}
 
+			break;
+		case '/':
+			tokenize(TokenType.SLASH);
+			break;
 		case ' ':
 		case '\r':
 		case '\t':
@@ -152,27 +149,18 @@ public class Lexer {
 
 	}
 
-	
-
 	/*
 	 * method that checks for second char in 2 character tokens. Specifically, is
 	 * looking for = in !=, <=, etc.
 	 * 
 	 */
 	private boolean match(char input) {
-//		if (checkEnd()) {
-//			return false;
-//		}
-//		else if (source.charAt(curr)!= input) {
-//			return false;
-//		}
-//		curr++;
-//		return true;
-		if (checkEnd())
+		if (checkEnd()) {
 			return false;
-		if (source.charAt(curr) != input)
+		}
+		else if (source.charAt(curr)!= input) {
 			return false;
-
+		}
 		curr++;
 		return true;
 	}
@@ -193,7 +181,7 @@ public class Lexer {
 		}
 		return source.charAt(curr + 1);
 	}
-	
+
 	private boolean isAlpha(char c) {
 		return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_';
 	}
@@ -219,11 +207,11 @@ public class Lexer {
 			while (isDigit(getCurrChar())) {
 				next();
 			}
-			tokenize(TokenType.NUMBER, Double.parseDouble(source.substring(start, curr)));
-		}
+			tokenize(TokenType.FLOAT, Double.parseDouble(source.substring(start, curr)));
+		} else {
 
-		tokenize(TokenType.NUMBER, Integer.parseInt(source.substring(start, curr)));
-				
+		tokenize(TokenType.INTEGER, Integer.parseInt(source.substring(start, curr)));
+		}
 
 	}
 
@@ -234,18 +222,18 @@ public class Lexer {
 		while (getCurrChar() != '"' && !checkEnd()) {
 			if (getCurrChar() == '\n') {
 				line++;
-				
+
 			}
 			next();
 		}
-	
+
 		next();
 
 		String string = source.substring(start + 1, curr - 1);
 		tokenize(TokenType.STRING, string);
 
 	}
-	
+
 	/*
 	 * method that makes tokens
 	 */
@@ -260,6 +248,7 @@ public class Lexer {
 		String text = source.substring(start, curr);
 		tokens.add(new Token(tokenType, text, literal, line));
 	}
+
 	/*
 	 * method that checks if all chars have been iterated through.
 	 */

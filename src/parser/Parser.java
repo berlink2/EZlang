@@ -6,13 +6,19 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class Parser {
+	
+
 	private final List<Token> tokenList; // list of tokens to be parsed
 	private int curr = 0; // points to current token in list of tokens, tokenList
 	private final List<Stmt> statementList;
 
-	Parser(List<Token> tokenList) {
+	public Parser(List<Token> tokenList) {
 		this.tokenList = tokenList;
 		this.statementList = new ArrayList<>();
+	}
+	
+	public List<Stmt> getStatementList() {
+		return statementList;
 	}
 
 	public void parse() {
@@ -22,7 +28,7 @@ public class Parser {
 	}
 	
 	private Stmt parseDeclare() {
-		if (check(TokenType.ID)) {
+		if (match(TokenType.ID)) {
 			return parseVarDeclare();
 		}
 		return parseStmt();
@@ -31,7 +37,7 @@ public class Parser {
 	private Stmt parseVarDeclare() {
 		Token variable = consume(TokenType.ID);
 		Expr initial = null;
-		if(check(TokenType.EQUAL)) {
+		if(match(TokenType.EQUAL)) {
 			initial = parseExpr();
 		}
 		
@@ -41,19 +47,19 @@ public class Parser {
 
 	private Stmt parseStmt() {
 
-		if (check(TokenType.IF)) {
+		if (match(TokenType.IF)) {
 			return parseIfStmt();
 		}
 
-		if (check(TokenType.WHILE)) {
+		if (match(TokenType.WHILE)) {
 			return parseWhileStmt();
 		}
 
-		if (check(TokenType.LEFT_BRACKET)) {
+		if (match(TokenType.LEFT_BRACKET)) {
 			return new Stmt.Block(parseBlockStmt());
 		}
 
-		if (check(TokenType.PRINT)) {
+		if (match(TokenType.PRINT)) {
 			return parsePrintStmt();
 		}
 
@@ -73,7 +79,7 @@ public class Parser {
 			
 			Stmt then = parseStmt();
 			Stmt Else = null;
-			if(check(TokenType.ELSE)) {
+			if(match(TokenType.ELSE)) {
 			Else = parseStmt();
 			}
 			return new Stmt.If(cond, then, Else);
@@ -92,7 +98,7 @@ public class Parser {
 
 	private List<Stmt> parseBlockStmt() {
 		List<Stmt> newStmt = new ArrayList<>();
-		while(!check(TokenType.RIGHT_BRACKET) && !checkEnd()) {
+		while(!match(TokenType.RIGHT_BRACKET) && !checkEnd()) {
 			newStmt.add(parseDeclare());
 		}
 		consume(TokenType.RIGHT_BRACKET);
@@ -112,7 +118,7 @@ public class Parser {
 	private Expr parseAssignment() {
 		Expr expression = parseLogicOr();
 		
-		if(check(TokenType.EQUAL)) {
+		if(match(TokenType.EQUAL)) {
 			Token left = getPreviousToken();
 			Expr value = parseAssignment();
 			
@@ -127,7 +133,7 @@ public class Parser {
 	
 	private Expr parseLogicOr() {
 		Expr expression = parseLogicAnd();
-		while(check(TokenType.OR)) {
+		while(match(TokenType.OR)) {
 			Token op = getPreviousToken();
 			Expr right = parseLogicAnd();
 			expression = new Expr.binOp(op, expression, right);
@@ -137,7 +143,7 @@ public class Parser {
 	
 	private Expr parseLogicAnd() {
 		Expr expression = parseEquality();
-		while(check(TokenType.AND)) {
+		while(match(TokenType.AND)) {
 			Token op = getPreviousToken();
 			Expr right = parseEquality();
 			expression = new Expr.binOp(op, expression, right);
@@ -147,7 +153,7 @@ public class Parser {
 	
 	private Expr parseEquality() {
 		Expr expression = parseRelational();
-		while (check(TokenType.EQUAL_EQUAL) || check(TokenType.EXCLAMATION_EQUAL)) {
+		while (match(TokenType.EQUAL_EQUAL) || match(TokenType.EXCLAMATION_EQUAL)) {
 			Token op = getPreviousToken();
 			Expr right = parseRelational();
 			expression = new Expr.binOp(op, expression, right);
@@ -157,7 +163,7 @@ public class Parser {
 	
 	private Expr parseRelational() {
 		Expr expression = parseAdditive();
-		while (check(TokenType.GREATER_EQUAL) || check(TokenType.GREATER) || check(TokenType.LESS) || check(TokenType.LESS_EQUAL)) {
+		while (match(TokenType.GREATER_EQUAL) || match(TokenType.GREATER) || match(TokenType.LESS) || match(TokenType.LESS_EQUAL)) {
 			Token op = getPreviousToken();
 			Expr right = parseAdditive();
 			expression = new Expr.binOp(op, expression, right);
@@ -167,7 +173,7 @@ public class Parser {
 	
 	private Expr parseAdditive() {
 		Expr expression = parseMultiplicative();
-		while (check(TokenType.PLUS) || check(TokenType.MINUS)) {
+		while (match(TokenType.PLUS) || match(TokenType.MINUS)) {
 			Token op = getPreviousToken();
 			Expr right = parseMultiplicative();
 			expression = new Expr.binOp(op, expression, right);
@@ -177,7 +183,7 @@ public class Parser {
 	
 	private Expr parseMultiplicative() {
 		Expr expression = parseUnary();
-		while (check(TokenType.STAR) || check(TokenType.SLASH) || check(TokenType.MODULO)) {
+		while (match(TokenType.STAR) || match(TokenType.SLASH) || match(TokenType.MODULO)) {
 			Token op = getPreviousToken();
 			Expr right = parseUnary();
 			expression = new Expr.binOp(op, expression, right);
@@ -186,7 +192,7 @@ public class Parser {
 	}
 
 	private Expr parseUnary() {
-		if (check(TokenType.EXCLAMATION) || check(TokenType.MINUS)) {
+		if (match(TokenType.EXCLAMATION) || match(TokenType.MINUS)) {
 			Token op = getPreviousToken();
 			Expr right = parseUnary();
 			return new Expr.unaryOp(op, right);
@@ -196,19 +202,22 @@ public class Parser {
 	}
 	
 	private Expr parsePrimitive() {
-		if (check(TokenType.NULL)) return new Expr.Literal(null);
-		if (check(TokenType.TRUE)) return new Expr.Literal(true);
-		if (check(TokenType.FALSE)) return new Expr.Literal(false);
-		if (check(TokenType.STRING)) {
+		if (match(TokenType.NULL)) return new Expr.Literal(null);
+		if (match(TokenType.TRUE)) return new Expr.Literal(true);
+		if (match(TokenType.FALSE)) return new Expr.Literal(false);
+		if (match(TokenType.STRING)) {
 		      return new Expr.Literal(getPreviousToken().getLiteral());
 		    }
-		if (check(TokenType.NUMBER)) {
+		if (match(TokenType.INTEGER)) {
 		      return new Expr.Literal(getPreviousToken().getLiteral());
 		    }
-		if(check(TokenType.ID)) {
+		if (match(TokenType.FLOAT)) {
+		      return new Expr.Literal(getPreviousToken().getLiteral());
+		    }
+		if(match(TokenType.ID)) {
 			return new Expr.Variable(getPreviousToken());
 		}
-		if(check(TokenType.LEFT_PARENTHESIS)) {
+		if(match(TokenType.LEFT_PARENTHESIS)) {
 			Expr expression = parseExpr();
 			consume(TokenType.RIGHT_PARENTHESIS);
 			return new Expr.Group(expression);
@@ -240,14 +249,7 @@ public class Parser {
 		return tokenList.get(curr);
 	}
 
-	/**
-	 * returns next token
-	 * 
-	 * @return Token
-	 */
-	private Token getNextToken() {
-		return tokenList.get(curr + 1);
-	}
+	
 
 	/**
 	 * returns previous token
@@ -286,7 +288,7 @@ public class Parser {
 	 * @param token
 	 * @return boolean
 	 */
-	private boolean check(TokenType token) {
+	private boolean match(TokenType token) {
 		boolean match = false;
 		if (getCurrToken().getType() == token) {
 			match = true;
