@@ -14,7 +14,7 @@ public class EZLang {
 	private static final TreeInterpreter interpreter = new TreeInterpreter();
 	private static Scanner s = new Scanner(System.in);
 	
-	///Users/mac/Documents/eclipse-workspace/MScProject/src/tests/ConditionalTests/or.ez
+	
 	public static void main(String[] args) throws IOException{
 		
 		System.out.println("----------------------------");
