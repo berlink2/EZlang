@@ -22,7 +22,7 @@ public enum TokenType {
 		  IF, THEN, ELSE, PRINT, NULL, TRUE, FALSE, WHILE, 
 		  
 	// Literals.                                     
-		   ID, STRING, NUMBER,                      	  
+		   ID, STRING, INTEGER, FLOAT,                       	  
 		  
 	//End of file 
 		  EOF

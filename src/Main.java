@@ -1,10 +1,7 @@
 
-import java.util.ArrayList;
 import java.util.List;
 
 import ast.*;
-import ast.Stmt.Print;
-import ast.Stmt.Var;
 import lexer.*;
 import parser.*;
 

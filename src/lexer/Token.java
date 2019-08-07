@@ -40,7 +40,7 @@ public class Token {
 
 
 	public String toString() {
-		return lexeme;
+		return type + ": " + lexeme;
 	}
 
 }

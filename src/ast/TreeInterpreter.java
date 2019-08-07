@@ -3,12 +3,17 @@ package ast;
 import ast.Expr.*;
 import ast.Stmt.*;
 import java.util.List;
+import lexer.TokenType;
 
 public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 	private Environment table = new Environment();
+	
+	
 
-	public void evaluate(Stmt stmt) {
+	public void execute(List<Stmt> stmtList) {
+		for (Stmt stmt:stmtList) {
 		execute(stmt);
+		}
 
 	}
 
@@ -54,11 +59,11 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 
 		Object left = call(expr.getLeft());
 		Object right = call(expr.getRight());
-		Object op = expr.getOp();
+		TokenType opType = expr.getOp().getType();
 		String leftString = left.toString();
 		String rightString = right.toString();
 
-		switch (expr.getOp().getType()) {
+		switch (opType) {
 		case PLUS:
 			if (left instanceof Integer && right instanceof Integer) {
 
@@ -158,6 +163,8 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 					return right;
 				}
 			}
+		default:
+			break;
 			
 
 		}
@@ -170,7 +177,7 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 	 */
 	@Override
 	public Object visitLiteral(Literal expr) {
-
+		
 		return expr.getVal();
 	}
 
@@ -185,6 +192,8 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 			return !isTruthy(right);
 		case MINUS:
 			return -Double.parseDouble(rightString);
+		default:
+			break;
 
 		}
 
@@ -208,7 +217,7 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 		if (left == null && right == null) {
 			return true;
 		}
-		if (left == null || right == null) {
+		else if (left == null || right == null) {
 			return false;
 		}
 
@@ -295,11 +304,11 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 	public Void visitIf(If stmt) {
 		// checks if cond is truthy or not.
 		// if truthy then statement is executed, if falsey else statement is executed
-		boolean cond = isTruthy(stmt.Cond);
+		boolean cond = isTruthy(evaluate(stmt.Cond));
 		if (cond) {
-			execute(stmt.Then);
-		} else if (cond == false) {
-			execute(stmt.Else);
+			execute(stmt.getThen());
+		} else if (stmt.getElse() !=null) {
+			execute(stmt.getElse());
 		}
 		return null;
 	}
@@ -314,7 +323,7 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 
 	@Override
 	public Void visitWhile(While stmt) {
-		boolean loopCheck = isTruthy(stmt.getCond()); //checks if expression if truthy or falsey
+		boolean loopCheck = isTruthy(evaluate(stmt.getCond())); //checks if expression if truthy or falsey
 		while (loopCheck) { //continuously execute statement until loop termination condition is met
 			execute(stmt.getBody()); 
 		}

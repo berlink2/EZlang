@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Lexer {
-	private final String source;
+	private final String sourceCode;
 	private final List<Token> tokens = new ArrayList<>();
 	private static final Map<String, TokenType> resKeywords = new HashMap<>();
 	private int start = 0;
@@ -14,8 +14,8 @@ public class Lexer {
 	private int line = 1;
 	private boolean isEnd;
 
-	public Lexer(String source) {
-		this.source = source;
+	public Lexer(String sourceCode) {
+		this.sourceCode = sourceCode;
 		resKeywords.put("and", TokenType.AND);
 		resKeywords.put("else", TokenType.ELSE);
 		resKeywords.put("false", TokenType.FALSE);
@@ -113,9 +113,9 @@ public class Lexer {
 			tokenizeString();
 			break;
 		default:
-			if (isDigit(c)) {
+			if (checkNumber(c)) {
 				tokenizeNumber();
-			} else if (isAlpha(c)) {
+			} else if (checkLetter(c)) {
 				tokenizeID();
 			}
 			break;
@@ -123,10 +123,10 @@ public class Lexer {
 	}
 
 	private void tokenizeID() {
-		while (isAlpha(getCurrChar())) {
+		while (checkLetter(getCurrChar())) {
 			next();
 		}
-		String kw = source.substring(start, curr);
+		String kw = sourceCode.substring(start, curr);
 		if (resKeywords.get(kw) == null) {
 			tokenize(TokenType.ID);
 		} else {
@@ -145,7 +145,7 @@ public class Lexer {
 
 		curr++;
 
-		return source.charAt(curr - 1);
+		return sourceCode.charAt(curr - 1);
 
 	}
 
@@ -158,7 +158,7 @@ public class Lexer {
 		if (checkEnd()) {
 			return false;
 		}
-		else if (source.charAt(curr)!= input) {
+		else if (sourceCode.charAt(curr)!= input) {
 			return false;
 		}
 		curr++;
@@ -172,24 +172,24 @@ public class Lexer {
 		if (checkEnd()) {
 			return '\0';
 		}
-		return source.charAt(curr);
+		return sourceCode.charAt(curr);
 	}
 
 	private char getNextChar() {
-		if (curr + 1 >= source.length()) {
+		if (curr + 1 >= sourceCode.length()) {
 			return '\0';
 		}
-		return source.charAt(curr + 1);
+		return sourceCode.charAt(curr + 1);
 	}
 
-	private boolean isAlpha(char c) {
+	private boolean checkLetter(char c) {
 		return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_';
 	}
 
 	/*
 	 * checks if char is a digit
 	 */
-	private boolean isDigit(char c) {
+	private boolean checkNumber(char c) {
 		return c >= '0' && c <= '9';
 	}
 
@@ -197,20 +197,20 @@ public class Lexer {
 	 * method for tokenizing numbers
 	 */
 	private void tokenizeNumber() {
-		while (isDigit(getCurrChar())) {
+		while (checkNumber(getCurrChar())) {
 			next();
 		}
 
 		// if . is encountered check to see if next char is a number
-		if (getCurrChar() == '.' && isDigit(getNextChar())) {
+		if (getCurrChar() == '.' && checkNumber(getNextChar())) {
 			next();
-			while (isDigit(getCurrChar())) {
+			while (checkNumber(getCurrChar())) {
 				next();
 			}
-			tokenize(TokenType.FLOAT, Double.parseDouble(source.substring(start, curr)));
+			tokenize(TokenType.FLOAT, Double.parseDouble(sourceCode.substring(start, curr)));
 		} else {
 
-		tokenize(TokenType.INTEGER, Integer.parseInt(source.substring(start, curr)));
+		tokenize(TokenType.INTEGER, Integer.parseInt(sourceCode.substring(start, curr)));
 		}
 
 	}
@@ -229,7 +229,7 @@ public class Lexer {
 
 		next();
 
-		String string = source.substring(start + 1, curr - 1);
+		String string = sourceCode.substring(start + 1, curr - 1);
 		tokenize(TokenType.STRING, string);
 
 	}
@@ -245,7 +245,7 @@ public class Lexer {
 	 * method that makes tokens for literals with values
 	 */
 	private void tokenize(TokenType tokenType, Object literal) {
-		String text = source.substring(start, curr);
+		String text = sourceCode.substring(start, curr);
 		tokens.add(new Token(tokenType, text, literal, line));
 	}
 
@@ -253,7 +253,7 @@ public class Lexer {
 	 * method that checks if all chars have been iterated through.
 	 */
 	private boolean checkEnd() {
-		isEnd = curr >= source.length();
+		isEnd = curr >= sourceCode.length();
 		return isEnd;
 	}
 
