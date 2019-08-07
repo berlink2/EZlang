@@ -67,6 +67,9 @@ public class Lexer {
 		case '.':
 			tokenize(TokenType.DOT);
 			break;
+		case '%':
+			tokenize(TokenType.MODULO);
+			break;
 		case '-':
 			tokenize(TokenType.MINUS);
 			break;
@@ -209,7 +212,7 @@ public class Lexer {
 			}
 			tokenize(TokenType.FLOAT, Double.parseDouble(sourceCode.substring(start, curr)));
 		} else {
-
+			
 		tokenize(TokenType.INTEGER, Integer.parseInt(sourceCode.substring(start, curr)));
 		}
 
@@ -219,6 +222,7 @@ public class Lexer {
 	 * method for tokenizing strings
 	 */
 	private void tokenizeString() {
+		
 		while (getCurrChar() != '"' && !checkEnd()) {
 			if (getCurrChar() == '\n') {
 				line++;
@@ -228,7 +232,7 @@ public class Lexer {
 		}
 
 		next();
-
+		
 		String string = sourceCode.substring(start + 1, curr - 1);
 		tokenize(TokenType.STRING, string);
 

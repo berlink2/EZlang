@@ -14,7 +14,9 @@ public class EZLang {
 	private static final TreeInterpreter interpreter = new TreeInterpreter();
 	private static Scanner s = new Scanner(System.in);
 	
+	///Users/mac/Documents/eclipse-workspace/MScProject/src/tests/ConditionalTests/or.ez
 	public static void main(String[] args) throws IOException{
+		
 		System.out.println("----------------------------");
 		System.out.println("---- Welcome to EZlang! ----");
 		System.out.println("----------------------------");
@@ -54,7 +56,9 @@ public class EZLang {
 	}
 	
 	public static void runEZFile(String path) throws IOException {
+		System.out.println("Running .ez file...");
 		byte[] byteArray = Files.readAllBytes(Paths.get(path));
+		
 		String sourceCode = new String(byteArray, Charset.defaultCharset());
 		runSourceCode(sourceCode);
 	}
@@ -65,7 +69,12 @@ public class EZLang {
 		Parser parser = new Parser(tokenList);
 		parser.parse();
 		List<Stmt> statementList = parser.getStatementList();
+		
+	
 		interpreter.execute(statementList);
+//		for (Token token:tokenList) {
+//			System.out.println(token);
+//		}
 	}
 
 }

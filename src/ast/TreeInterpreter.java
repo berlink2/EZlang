@@ -190,13 +190,17 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 		switch (expr.getOp().getType()) {
 		case EXCLAMATION:
 			return !isTruthy(right);
-		case MINUS:
-			return -Double.parseDouble(rightString);
+		case MINUS: if (right instanceof Integer) {
+			return -Integer.parseInt(rightString);
+		} else {
+			return -Double.parseDouble(rightString);	
+		}
+			
 		default:
 			break;
 
 		}
-
+		
 		return null;
 	}
 	
@@ -315,8 +319,9 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 
 	@Override
 	public Void visitPrint(Print stmt) {
-		Object value = call(stmt.getPrintedString());
+		Object value = evaluate(stmt.getPrintedString());
 		String printedValue = value.toString();
+		
 		System.out.println(printedValue);
 		return null;
 	}

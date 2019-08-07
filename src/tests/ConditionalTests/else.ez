@@ -1,0 +1,3 @@
+
+if (false) {print "if";} else {print "else";} #should print else
+	
