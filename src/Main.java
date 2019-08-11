@@ -10,13 +10,15 @@ public class Main {
 	public static void main(String[] args) {
 		
 
-		String test = "a = 5;\n" + 
-				"b = 3;\n" + 
-				"c = 2;\n" + 
-				"d = a+b*c;\n" + 
-				"print d;";
+		String test = "a ='a';b='b';c = a+b;print c;";
 		
-
+//		String a ="five";
+//		if(true){
+//			a = "tt";
+//			System.out.println(a);
+//		}
+//		System.out.println(a);
+//		
 		
 		
 		Lexer lexer = new Lexer(test);
@@ -24,11 +26,11 @@ public class Main {
 		Parser parser = new Parser(tokenList);
 		List<Stmt> stmtList = parser.parse();
 		TreeInterpreter interpreter = new TreeInterpreter();
-		interpreter.execute(stmtList);
+	interpreter.execute(stmtList);
 	
-		for (Token token:tokenList) {
-			System.out.println(token);
-		}
+//		for (Token token:tokenList) {
+//			System.out.println(token);
+//		}
 		
 		
 	 

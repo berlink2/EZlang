@@ -3,6 +3,8 @@ package ast;
 import ast.Expr.*;
 import ast.Stmt.*;
 import java.util.List;
+import java.util.Scanner;
+
 import lexer.TokenType;
 
 public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
@@ -62,9 +64,10 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 		TokenType opType = expr.getOp().getType();
 		String leftString = left.toString();
 		String rightString = right.toString();
-
+		
 		switch (opType) {
 		case PLUS:
+			
 			if (left instanceof Integer && right instanceof Integer) {
 
 				return Integer.parseInt(leftString) + Integer.parseInt(rightString);
@@ -79,6 +82,9 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 
 			if (left instanceof String && right instanceof String) {
 				return leftString + rightString;
+			}
+			if (left instanceof Character && right instanceof Character) {
+				return String.valueOf(left) + right;
 			}
 		case MINUS:
 
@@ -124,10 +130,8 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 				return Double.parseDouble(leftString) % Double.parseDouble(rightString);
 				
 			}
-			
-
 		case GREATER:
-
+			
 			return Double.parseDouble(leftString) > Double.parseDouble(rightString);
 		case GREATER_EQUAL:
 
@@ -320,9 +324,12 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 	@Override
 	public Void visitPrint(Print stmt) {
 		Object value = evaluate(stmt.getPrintedString());
-		String printedValue = value.toString();
 		
-		System.out.println(printedValue);
+		if (value == null) {
+			System.out.println("null");
+		} else {
+		System.out.println(value.toString());
+		}
 		return null;
 	}
 
@@ -332,6 +339,17 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 		while (loopCheck) { //continuously execute statement until loop termination condition is met
 			execute(stmt.getBody()); 
 		}
+		return null;
+	}
+
+	@Override
+	public Void visitRead(Read stmt) {
+		Scanner s = new Scanner(System.in);
+		String variable = stmt.getVariable().getLexeme();
+		System.out.print("Please input a value for " + variable+":");
+		Object input = s.nextLine();
+		table.define(stmt.getVariable().getLexeme(), input);
+		
 		return null;
 	}
 

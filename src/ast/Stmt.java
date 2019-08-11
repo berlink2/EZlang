@@ -11,6 +11,7 @@ public abstract class Stmt {
 		T visitIf(If stmt);
 		T visitPrint(Print stmt);
 		T visitWhile(While stmt);
+		T visitRead(Read stmt);
 	}
 	
 	abstract <T> T accept(Visitor<T> v);
@@ -153,6 +154,35 @@ public abstract class Stmt {
 
 			public Stmt getBody() {
 				return body;
+			}
+
+			
+		}
+		
+		public static class Read extends Stmt {
+			
+
+			final Token variable;
+			final Expr value = null;
+			
+			public Read(Token variable) {
+				this.variable = variable;
+			}
+			
+			
+			@Override
+			<T> T accept(Visitor<T> v) {
+				// TODO Auto-generated method stub
+				return v.visitRead(this);
+			}
+			
+			public Token getVariable() {
+				return variable;
+			}
+
+
+			public Expr getValue() {
+				return value;
 			}
 
 			

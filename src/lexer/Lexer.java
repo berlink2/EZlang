@@ -25,6 +25,7 @@ public class Lexer {
 		resKeywords.put("print", TokenType.PRINT);
 		resKeywords.put("true", TokenType.TRUE);
 		resKeywords.put("while", TokenType.WHILE);
+		resKeywords.put("read", TokenType.READ);
 	}
 
 	/*
@@ -95,7 +96,7 @@ public class Lexer {
 			tokenize(match('=') ? TokenType.GREATER_EQUAL : TokenType.GREATER);
 			break;
 		case '#':
-			
+
 			while (getCurrChar() != '\n' && !checkEnd()) {
 				next();
 			}
@@ -115,6 +116,9 @@ public class Lexer {
 		case '"':
 			tokenizeString();
 			break;
+		case '\'':
+			tokenizeChar();
+			break;
 		default:
 			if (checkNumber(c)) {
 				tokenizeNumber();
@@ -123,6 +127,39 @@ public class Lexer {
 			}
 			break;
 		}
+	}
+
+	private void tokenizeChar() {
+		while (!checkEnd() && getCurrChar() != '\'') {
+			if (getCurrChar() == '\'') {
+				line++;
+			}
+			next();
+		}
+		next();
+
+		char read = sourceCode.charAt(start + 1);
+		tokenize(TokenType.CHAR, read);
+	}
+
+	/*
+	 * method for tokenizing strings
+	 */
+	private void tokenizeString() {
+
+		while (getCurrChar() != '"' && !checkEnd()) {
+			if (getCurrChar() == '\n') {
+				line++;
+
+			}
+			next();
+		}
+
+		next();
+
+		String string = sourceCode.substring(start + 1, curr - 1);
+		tokenize(TokenType.STRING, string);
+
 	}
 
 	private void tokenizeID() {
@@ -160,8 +197,7 @@ public class Lexer {
 	private boolean match(char input) {
 		if (checkEnd()) {
 			return false;
-		}
-		else if (sourceCode.charAt(curr)!= input) {
+		} else if (sourceCode.charAt(curr) != input) {
 			return false;
 		}
 		curr++;
@@ -212,29 +248,9 @@ public class Lexer {
 			}
 			tokenize(TokenType.FLOAT, Double.parseDouble(sourceCode.substring(start, curr)));
 		} else {
-			
-		tokenize(TokenType.INTEGER, Integer.parseInt(sourceCode.substring(start, curr)));
+
+			tokenize(TokenType.INTEGER, Integer.parseInt(sourceCode.substring(start, curr)));
 		}
-
-	}
-
-	/*
-	 * method for tokenizing strings
-	 */
-	private void tokenizeString() {
-		
-		while (getCurrChar() != '"' && !checkEnd()) {
-			if (getCurrChar() == '\n') {
-				line++;
-
-			}
-			next();
-		}
-
-		next();
-		
-		String string = sourceCode.substring(start + 1, curr - 1);
-		tokenize(TokenType.STRING, string);
 
 	}
 

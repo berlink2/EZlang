@@ -22,14 +22,23 @@ public class Parser {
 	
 	public List<Stmt> parse() {
 		while (!checkEnd()) {
-			statementList.add(parseDeclare());
+			statementList.add(parseRead());
 		}
 		return statementList;
 	}
 	
+	private Stmt parseRead() {
+		if (match(TokenType.READ)) {
+			return parseReadStmt();
+		}
+		return parseDeclare();
+	}
+	
 	private Stmt parseDeclare() {
+		
 		if (match(TokenType.ID)) {
 			return parseVarDeclare();
+			
 		}
 		return parseStmt();
 	}
@@ -44,6 +53,14 @@ public class Parser {
 		consume(TokenType.SEMICOLON);
 		return new Stmt.Var(variable, initial);
 	}
+	
+	private Stmt parseReadStmt() {
+		Token variable = consume(TokenType.ID);
+		consume(TokenType.SEMICOLON);
+		return new Stmt.Read(variable);
+	}
+	
+	
 
 	private Stmt parseStmt() {
 
@@ -62,6 +79,7 @@ public class Parser {
 		if (match(TokenType.PRINT)) {
 			return parsePrintStmt();
 		}
+		
 
 		return parseExprStmt();
 	}
@@ -71,6 +89,7 @@ public class Parser {
 		consume(TokenType.SEMICOLON);
 		return new Stmt.Print(printedString);
 	}
+	
 
 	private Stmt parseIfStmt() {
 			consume(TokenType.LEFT_PARENTHESIS);
@@ -211,6 +230,9 @@ public class Parser {
 		if (match(TokenType.STRING)) {
 		      return new Expr.Literal(getPreviousToken().getLiteral());
 		    }
+		if (match(TokenType.CHAR)) {
+			return new Expr.Literal(getPreviousToken().getLiteral());
+		}
 		if (match(TokenType.INTEGER)) {
 		      return new Expr.Literal(getPreviousToken().getLiteral());
 		    }
