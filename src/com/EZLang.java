@@ -16,7 +16,7 @@ public class EZLang {
 	
 	
 	public static void main(String[] args) throws IOException{
-		
+		///Users/mac/Documents/eclipse-workspace/MScProject/src/tests/CommentTests/MultiCommentTest.ez
 		System.out.println("----------------------------");
 		System.out.println("---- Welcome to EZlang! ----");
 		System.out.println("----------------------------");
@@ -56,7 +56,7 @@ public class EZLang {
 	}
 	
 	public static void runEZFile(String path) throws IOException {
-		System.out.println("Running .ez file...");
+		System.out.println("Running .ez file...The result of running the program can be found below:");
 		byte[] byteArray = Files.readAllBytes(Paths.get(path));
 		
 		String sourceCode = new String(byteArray, Charset.defaultCharset());

@@ -10,7 +10,7 @@ public class Main {
 	public static void main(String[] args) {
 		
 
-		String test = "/* comment \n \n \n     */";
+		String test = "i=1;while(i<10) {i=i+1;}";
 	
 		
 		
@@ -21,13 +21,13 @@ public class Main {
 		parser.parse();
 		List<Stmt> stmtList = parser.getStatementList();
 		TreeInterpreter interpreter = new TreeInterpreter();
-		interpreter.execute(stmtList);
-	for (Stmt stmt:stmtList) {
-		System.out.println(stmt);
-	}
-	for (Token token:tokenList) {
-		System.out.println(token);
-	}	
+	interpreter.execute(stmtList);
+//	for (Stmt stmt:stmtList) {
+//		System.out.println(stmt);
+//	}
+//	for (Token token:tokenList) {
+//		System.out.println(token);
+//	}	
 		
 		
 		

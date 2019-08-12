@@ -247,16 +247,16 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 	 */
 	@Override
 	public Void visitBlock(Block stmt) {
-		List<Stmt> statements = stmt.getStatements();
+		List<Stmt> statementList = stmt.getStatements();
 
 		Environment oldTable = this.table;
-		Environment newTable = new Environment(table);
+		Environment newTable = new Environment(oldTable);
 
 		try {
 			this.table = newTable;
-			for (Stmt statement : statements) {
-				execute(statement);
-			}
+			
+				execute(statementList);
+			
 
 		} finally {
 			this.table = oldTable;
@@ -273,7 +273,7 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 			value = call(stmt.getInitial());
 
 		}
-		table.define(stmt.getName().getLexeme(), value);
+		table.declare(stmt.getName().getLexeme(), value);
 
 		return null;
 	}
@@ -330,6 +330,7 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 		boolean loopCheck = isTruthy(evaluate(stmt.getCond())); // checks if expression if truthy or falsey
 		while (loopCheck) { // continuously execute statement until loop termination condition is met
 			execute(stmt.getBody());
+			loopCheck = isTruthy(evaluate(stmt.getCond()));
 		}
 		return null;
 	}

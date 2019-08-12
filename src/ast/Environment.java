@@ -16,7 +16,7 @@ public class Environment {
 		enclosingScope = null;
 	}
 	
-	public void define(String key, Object value) {
+	public void declare(String key, Object value) {
 		table.put(key, value);
 	}
 	

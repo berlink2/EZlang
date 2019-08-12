@@ -32,9 +32,7 @@ public class Parser {
 	
 	
 	private Stmt parseDeclare() {
-//		if (match(TokenType.READ)) {
-//			return parseReadStmt();
-//		}
+
 		if (match(TokenType.ID)) {
 			return parseVarDeclare();
 			
@@ -42,16 +40,7 @@ public class Parser {
 		return parseStmt();
 	}
 	
-//	private Stmt parseReadStmt() {
-//		
-//		Token name = consume(TokenType.ID);
-//		Expr initial = null;
-//		
-//		consume(TokenType.SEMICOLON);
-//		Var var = new Stmt.Var(name, initial);
-//		statementList.add(new Stmt.Read(var));
-//		return var;
-//	}
+
 	
 	private Stmt parseVarDeclare() {
 		Token variable = consume(TokenType.ID);
@@ -127,7 +116,8 @@ public class Parser {
 	private List<Stmt> parseBlockStmt() {
 		List<Stmt> newStmtList = new ArrayList<>();
 		while(!match(TokenType.RIGHT_BRACKET) && !checkEnd()) {
-			newStmtList.add(parseDeclare());
+			Stmt newStmt = parseDeclare();
+			newStmtList.add(newStmt);
 		}
 		consume(TokenType.RIGHT_BRACKET);
 		return newStmtList;
