@@ -150,29 +150,6 @@ public class Lexer {
 		}
 	}
 
-	private void handleMultiComments() {
-		while (true) {
-
-			if (getCurrChar() == '/') {
-				next();
-				if (match('*')) {
-					handleMultiComments();
-				}
-			} else if (getCurrChar() == '*') {
-				next();
-				if (match('/')) {
-					return;
-				}
-			} else if (getCurrChar() == '\n') {
-				line++;
-
-			}
-			if (!checkEnd()) {
-				next();
-			}
-		}
-	}
-
 	private void tokenizeChar() {
 		while (!checkEnd() && getCurrChar() != '\'') {
 			if (getCurrChar() == '\'') {
