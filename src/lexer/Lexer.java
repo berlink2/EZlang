@@ -6,8 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 public class Lexer {
+
 	private final String sourceCode;
-	private final List<Token> tokens = new ArrayList<>();
+	private final List<Token> tokenList = new ArrayList<>();
 	private static final Map<String, TokenType> resKeywords = new HashMap<>();
 	private int start = 0;
 	private int curr = 0;
@@ -34,14 +35,17 @@ public class Lexer {
 	 * 
 	 * @return
 	 */
-	public List<Token> tokenStream() {
+	public void tokenStream() {
 		while (!checkEnd()) {
 			start = curr;
 			scanToken();
 		}
 
-		tokens.add(new Token(TokenType.EOF, "", null, line));
-		return tokens;
+		tokenList.add(new Token(TokenType.EOF, "", null, line));
+	}
+
+	public List<Token> getTokenList() {
+		return tokenList;
 	}
 
 	/*
@@ -69,7 +73,7 @@ public class Lexer {
 			tokenize(TokenType.DOT);
 			break;
 		case '%':
-			tokenize(TokenType.MODULO);
+			tokenize(TokenType.PERCENT);
 			break;
 		case '-':
 			tokenize(TokenType.MINUS);
@@ -97,13 +101,30 @@ public class Lexer {
 			break;
 		case '#':
 
-			while (getCurrChar() != '\n' && !checkEnd()) {
+			while (!match('\n') && !checkEnd()) {
 				next();
 			}
 
 			break;
 		case '/':
-			tokenize(TokenType.SLASH);
+			if (match('*')) {
+				while (!checkEnd()) {
+					next();
+					if (match('\n')) {
+						line++;
+
+					}
+					if (match('*')) {
+						next();
+						if (match('/')) {
+							break;
+						}
+					}
+
+				}
+			} else {
+				tokenize(TokenType.SLASH);
+			}
 			break;
 		case ' ':
 		case '\r':
@@ -126,6 +147,29 @@ public class Lexer {
 				tokenizeID();
 			}
 			break;
+		}
+	}
+
+	private void handleMultiComments() {
+		while (true) {
+
+			if (getCurrChar() == '/') {
+				next();
+				if (match('*')) {
+					handleMultiComments();
+				}
+			} else if (getCurrChar() == '*') {
+				next();
+				if (match('/')) {
+					return;
+				}
+			} else if (getCurrChar() == '\n') {
+				line++;
+
+			}
+			if (!checkEnd()) {
+				next();
+			}
 		}
 	}
 
@@ -266,7 +310,7 @@ public class Lexer {
 	 */
 	private void tokenize(TokenType tokenType, Object literal) {
 		String text = sourceCode.substring(start, curr);
-		tokens.add(new Token(tokenType, text, literal, line));
+		tokenList.add(new Token(tokenType, text, literal, line));
 	}
 
 	/*

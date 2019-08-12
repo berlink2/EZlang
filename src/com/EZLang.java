@@ -65,7 +65,8 @@ public class EZLang {
 	
 	public static void runSourceCode(String sourceCode) {
 		Lexer lexer = new Lexer(sourceCode);
-		List<Token> tokenList = lexer.tokenStream();
+		lexer.tokenStream();
+		List<Token> tokenList = lexer.getTokenList();
 		Parser parser = new Parser(tokenList);
 		parser.parse();
 		List<Stmt> statementList = parser.getStatementList();

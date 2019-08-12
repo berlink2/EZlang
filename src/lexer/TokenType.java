@@ -7,7 +7,7 @@ public enum TokenType {
 		  COMMA, DOT,  SEMICOLON, 
 	
 	//Arithmetic
-		  MINUS, PLUS, SLASH, STAR, MODULO,
+		  MINUS, PLUS, SLASH, STAR, PERCENT,
 		  
 	// Comparisons                  
 		  EQUAL, EXCLAMATION_EQUAL,                                

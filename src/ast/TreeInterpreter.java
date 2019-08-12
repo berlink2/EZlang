@@ -117,7 +117,7 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 
 			}
 			break;
-		case MODULO:
+		case PERCENT:
 			if (left instanceof Integer && right instanceof Integer) {
 
 				return Integer.parseInt(leftString) % Integer.parseInt(rightString);

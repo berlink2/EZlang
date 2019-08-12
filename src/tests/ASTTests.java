@@ -189,7 +189,7 @@ class ASTTests {
 		assertEquals(test5, expr5Eval, "should be the same");
 
 		// tests if "te" + "st" = "test"
-		Expr expr6 = new Expr.binOp(new Token(TokenType.MODULO, "%", null, 1), new Expr.Literal(10),
+		Expr expr6 = new Expr.binOp(new Token(TokenType.PERCENT, "%", null, 1), new Expr.Literal(10),
 				new Expr.Literal(5));
 		Object expr6Eval = eval.evaluate(expr6);
 		int test6 = 0;

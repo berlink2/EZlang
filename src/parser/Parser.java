@@ -25,7 +25,7 @@ public class Parser {
 		while (!checkEnd()) {
 			statementList.add(parseDeclare());
 		}
-		consume(TokenType.EOF);
+		
 		
 	}
 	
@@ -211,7 +211,7 @@ public class Parser {
 	
 	private Expr parseMultiplicative() {
 		Expr expression = parseRead();
-		while (match(TokenType.STAR, TokenType.SLASH, TokenType.MODULO)) {
+		while (match(TokenType.STAR, TokenType.SLASH, TokenType.PERCENT)) {
 			Token op = getPreviousToken();
 			Expr right = parseRead();
 			expression = new Expr.binOp(op, expression, right);
