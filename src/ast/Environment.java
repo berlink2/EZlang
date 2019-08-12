@@ -4,7 +4,7 @@ import java.util.Map;
 import lexer.Token;
 
 public class Environment {
-	private final Map<String, Object> table = new HashMap<>();
+	final Map<String, Object> table = new HashMap<>();
 	final Environment enclosingScope;
 	
 	//this constructor creates a new environment and is passed the environment which encloses the new one
@@ -34,10 +34,18 @@ public class Environment {
 	}
 	
 	public Object get(Token name) {
+		Object value = null;
+		String variable = name.getLexeme();
+		if(table.containsKey(variable) ) {
+			value = table.get(variable);
+			
+		}
+		
 		if(enclosingScope!=null) {
 			return enclosingScope.get(name);
 		}
-			return table.get(name.getLexeme());
+		return value;
+			
 		
 		
 		       

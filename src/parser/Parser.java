@@ -2,6 +2,7 @@ package parser;
 
 import lexer.*;
 import ast.*;
+
 import java.util.List;
 import java.util.ArrayList;
 
@@ -20,28 +21,37 @@ public class Parser {
 		return statementList;
 	}
 	
-	public List<Stmt> parse() {
+	public void parse() {
 		while (!checkEnd()) {
-			statementList.add(parseRead());
+			statementList.add(parseDeclare());
 		}
-		return statementList;
+		consume(TokenType.EOF);
+		
 	}
 	
-	private Stmt parseRead() {
-		if (match(TokenType.READ)) {
-			return parseReadStmt();
-		}
-		return parseDeclare();
-	}
+	
 	
 	private Stmt parseDeclare() {
-		
+//		if (match(TokenType.READ)) {
+//			return parseReadStmt();
+//		}
 		if (match(TokenType.ID)) {
 			return parseVarDeclare();
 			
 		}
 		return parseStmt();
 	}
+	
+//	private Stmt parseReadStmt() {
+//		
+//		Token name = consume(TokenType.ID);
+//		Expr initial = null;
+//		
+//		consume(TokenType.SEMICOLON);
+//		Var var = new Stmt.Var(name, initial);
+//		statementList.add(new Stmt.Read(var));
+//		return var;
+//	}
 	
 	private Stmt parseVarDeclare() {
 		Token variable = consume(TokenType.ID);
@@ -54,11 +64,7 @@ public class Parser {
 		return new Stmt.Var(variable, initial);
 	}
 	
-	private Stmt parseReadStmt() {
-		Token variable = consume(TokenType.ID);
-		consume(TokenType.SEMICOLON);
-		return new Stmt.Read(variable);
-	}
+	
 	
 	
 
@@ -119,12 +125,12 @@ public class Parser {
 	}
 
 	private List<Stmt> parseBlockStmt() {
-		List<Stmt> newStmt = new ArrayList<>();
+		List<Stmt> newStmtList = new ArrayList<>();
 		while(!match(TokenType.RIGHT_BRACKET) && !checkEnd()) {
-			newStmt.add(parseDeclare());
+			newStmtList.add(parseDeclare());
 		}
 		consume(TokenType.RIGHT_BRACKET);
-		return newStmt;
+		return newStmtList;
 	}
 	
 	private Stmt parseExprStmt() {
@@ -204,13 +210,23 @@ public class Parser {
 	}
 	
 	private Expr parseMultiplicative() {
-		Expr expression = parseUnary();
+		Expr expression = parseRead();
 		while (match(TokenType.STAR, TokenType.SLASH, TokenType.MODULO)) {
 			Token op = getPreviousToken();
-			Expr right = parseUnary();
+			Expr right = parseRead();
 			expression = new Expr.binOp(op, expression, right);
 		}
 		return expression;
+	}
+	
+	private Expr parseRead() {
+		
+		if (match(TokenType.READ)) {
+			Token name = tokenList.get(curr-3);
+			Expr value = null;
+			return new Expr.Read(name, value);
+		}
+		return parseUnary();
 	}
 
 	private Expr parseUnary() {
@@ -260,6 +276,7 @@ public class Parser {
 	private boolean checkEnd() {
 		TokenType check = getCurrToken().getType();
 		if (check == TokenType.EOF) {
+			
 			return true;
 		}
 		return false;

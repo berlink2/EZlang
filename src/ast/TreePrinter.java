@@ -5,7 +5,7 @@ import ast.Stmt.Block;
 import ast.Stmt.Expression;
 import ast.Stmt.If;
 import ast.Stmt.Print;
-import ast.Stmt.Read;
+import ast.Expr.Read;
 import ast.Stmt.Var;
 import ast.Stmt.While;
 import lexer.*;
@@ -136,7 +136,7 @@ public class TreePrinter implements Expr.Visitor<String>, Stmt.Visitor<String> {
 
 
 	@Override
-	public String visitRead(Read stmt) {
+	public String visitRead(Read expr) {
 		// TODO Auto-generated method stub
 		return null;
 	}

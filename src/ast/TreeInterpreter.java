@@ -9,12 +9,10 @@ import lexer.TokenType;
 
 public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 	private Environment table = new Environment();
-	
-	
 
 	public void execute(List<Stmt> stmtList) {
-		for (Stmt stmt:stmtList) {
-		execute(stmt);
+		for (Stmt stmt : stmtList) {
+			execute(stmt);
 		}
 
 	}
@@ -58,16 +56,14 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 	 */
 	@Override
 	public Object visitBinOp(binOp expr) {
-
 		Object left = call(expr.getLeft());
 		Object right = call(expr.getRight());
 		TokenType opType = expr.getOp().getType();
 		String leftString = left.toString();
 		String rightString = right.toString();
-		
+
 		switch (opType) {
 		case PLUS:
-			
 			if (left instanceof Integer && right instanceof Integer) {
 
 				return Integer.parseInt(leftString) + Integer.parseInt(rightString);
@@ -75,9 +71,7 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 			if (left instanceof Double || right instanceof Double) {
 
 				return Double.parseDouble(leftString) + Double.parseDouble(rightString);
-				
 
-				
 			}
 
 			if (left instanceof String && right instanceof String) {
@@ -86,6 +80,7 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 			if (left instanceof Character && right instanceof Character) {
 				return String.valueOf(left) + right;
 			}
+			break;
 		case MINUS:
 
 			if (left instanceof Integer && right instanceof Integer) {
@@ -95,8 +90,9 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 			if (left instanceof Double || right instanceof Double) {
 
 				return Double.parseDouble(leftString) - Double.parseDouble(rightString);
-				
+
 			}
+			break;
 
 		case SLASH:
 
@@ -107,9 +103,9 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 			if (left instanceof Double || right instanceof Double) {
 
 				return Double.parseDouble(leftString) / Double.parseDouble(rightString);
-				
-			}
 
+			}
+			break;
 		case STAR:
 			if (left instanceof Integer && right instanceof Integer) {
 
@@ -118,8 +114,9 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 			if (left instanceof Double || right instanceof Double) {
 
 				return Double.parseDouble(leftString) * Double.parseDouble(rightString);
-				
+
 			}
+			break;
 		case MODULO:
 			if (left instanceof Integer && right instanceof Integer) {
 
@@ -128,11 +125,13 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 			if (left instanceof Double || right instanceof Double) {
 
 				return Double.parseDouble(leftString) % Double.parseDouble(rightString);
-				
+
 			}
+			break;
 		case GREATER:
-			
+
 			return Double.parseDouble(leftString) > Double.parseDouble(rightString);
+
 		case GREATER_EQUAL:
 
 			return Double.parseDouble(leftString) >= Double.parseDouble(rightString);
@@ -147,29 +146,28 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 		case EQUAL_EQUAL:
 			return isEqual(left, right);
 		case OR:
-			if (isTruthy(left)==true || isTruthy(right)==true) {
-				if (isTruthy(left)==true) {
+			if (isTruthy(left) == true || isTruthy(right) == true) {
+				if (isTruthy(left) == true) {
 					return left;
-				} else if (isTruthy(right)==true) {
+				} else if (isTruthy(right) == true) {
 					return right;
 				}
-				
+
 			} else {
 				return false;
-			}			
+			}
 		case AND:
-			if (isTruthy(left)==true && isTruthy(right)==true) {
+			if (isTruthy(left) == true && isTruthy(right) == true) {
 				return left;
 			} else {
-				if (isTruthy(left)!=true) {
+				if (isTruthy(left) != true) {
 					return left;
-				} else if (isTruthy(right)!=true) {
+				} else if (isTruthy(right) != true) {
 					return right;
 				}
 			}
 		default:
 			break;
-			
 
 		}
 
@@ -181,7 +179,7 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 	 */
 	@Override
 	public Object visitLiteral(Literal expr) {
-		
+
 		return expr.getVal();
 	}
 
@@ -194,21 +192,20 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 		switch (expr.getOp().getType()) {
 		case EXCLAMATION:
 			return !isTruthy(right);
-		case MINUS: if (right instanceof Integer) {
-			return -Integer.parseInt(rightString);
-		} else {
-			return -Double.parseDouble(rightString);	
-		}
-			
+		case MINUS:
+			if (right instanceof Integer) {
+				return -Integer.parseInt(rightString);
+			} else {
+				return -Double.parseDouble(rightString);
+			}
+
 		default:
 			break;
 
 		}
-		
+
 		return null;
 	}
-	
-	
 
 	/**
 	 * evaluates expression in a grouping
@@ -222,13 +219,6 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 	// helper method to check if two operands are equal and returns boolean
 	private boolean isEqual(Object left, Object right) {
 		boolean isEqual = left.equals(right);
-		if (left == null && right == null) {
-			return true;
-		}
-		else if (left == null || right == null) {
-			return false;
-		}
-
 		return isEqual;
 	}
 
@@ -259,8 +249,8 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 	public Void visitBlock(Block stmt) {
 		List<Stmt> statements = stmt.getStatements();
 
-		Environment newTable = new Environment(table);
 		Environment oldTable = this.table;
+		Environment newTable = new Environment(table);
 
 		try {
 			this.table = newTable;
@@ -281,8 +271,10 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 		Object value = null;
 		if (stmt.getInitial() != null) {
 			value = call(stmt.getInitial());
+
 		}
 		table.define(stmt.getName().getLexeme(), value);
+
 		return null;
 	}
 
@@ -299,8 +291,8 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 	}
 
 	/**
-	 * This method returns looks at the current environment table and retrieves the
-	 * value that corresponds to the variable's name
+	 * This method looks at the current environment table and retrieves the value
+	 * that corresponds to the variable's name
 	 */
 	@Override
 	public Object visitVariable(Variable expr) {
@@ -315,7 +307,7 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 		boolean cond = isTruthy(evaluate(stmt.Cond));
 		if (cond) {
 			execute(stmt.getThen());
-		} else if (stmt.getElse() !=null) {
+		} else if (stmt.getElse() != null) {
 			execute(stmt.getElse());
 		}
 		return null;
@@ -324,33 +316,58 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 	@Override
 	public Void visitPrint(Print stmt) {
 		Object value = evaluate(stmt.getPrintedString());
-		
+
 		if (value == null) {
 			System.out.println("null");
 		} else {
-		System.out.println(value.toString());
+			System.out.println(value.toString());
 		}
 		return null;
 	}
 
 	@Override
 	public Void visitWhile(While stmt) {
-		boolean loopCheck = isTruthy(evaluate(stmt.getCond())); //checks if expression if truthy or falsey
-		while (loopCheck) { //continuously execute statement until loop termination condition is met
-			execute(stmt.getBody()); 
+		boolean loopCheck = isTruthy(evaluate(stmt.getCond())); // checks if expression if truthy or falsey
+		while (loopCheck) { // continuously execute statement until loop termination condition is met
+			execute(stmt.getBody());
 		}
 		return null;
 	}
 
+	/**
+	 * 
+	 */
 	@Override
-	public Void visitRead(Read stmt) {
+	public Object visitRead(Read expr) {
+		String input = null;
 		Scanner s = new Scanner(System.in);
-		String variable = stmt.getVariable().getLexeme();
-		System.out.print("Please input a value for " + variable+":");
-		Object input = s.nextLine();
-		table.define(stmt.getVariable().getLexeme(), input);
 		
-		return null;
+		try {
+			String variable = expr.getName().getLexeme();
+			System.out.print("Please input a value for " + variable + ": ");
+			input = s.nextLine();
+			int length = input.length();
+			char first = input.charAt(0);
+
+			if (length == 1 && first >= 'A' && first <= 'z') {
+				return first;
+			}
+
+			if (first >= '0' && first <= '9') {
+				for (int i = 0; i < length; i++) {
+					if (input.charAt(i) == '.') {
+						return Double.parseDouble(input);
+					}
+				}
+				return Integer.parseInt(input);
+			}
+
+		} catch (Exception e) {
+				e.printStackTrace();
+		} finally {
+			s.close();
+		}
+		return input;
 	}
 
 }

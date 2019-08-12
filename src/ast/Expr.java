@@ -13,6 +13,7 @@ public abstract class Expr  {
 		T visitGroup(Group expr);
 		T visitAssign(Assign expr);
 		T visitVariable(Variable expr);
+		T visitRead(Read expr);
 	}
 	
 	abstract <T> T accept(Visitor<T> v);
@@ -148,4 +149,28 @@ public abstract class Expr  {
 			}
 		                           
 		  }
+	 
+	 public static class Read extends Expr {
+		final Token name;
+		 final Expr value;
+		 
+		 public Read(Token name, Expr value) {
+			 this.name = name;
+			 this.value = value;
+		 }
+
+		@Override
+		<T> T accept(Visitor<T> v) {
+			return v.visitRead(this);
+		}
+		
+		 public Token getName() {
+				return name;
+			}
+
+			public Expr getValue() {
+				return value;
+			}
+		 
+	 }
 }

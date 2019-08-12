@@ -11,7 +11,7 @@ public abstract class Stmt {
 		T visitIf(If stmt);
 		T visitPrint(Print stmt);
 		T visitWhile(While stmt);
-		T visitRead(Read stmt);
+		//T visitRead(Read stmt);
 	}
 	
 	abstract <T> T accept(Visitor<T> v);
@@ -57,7 +57,7 @@ public abstract class Stmt {
 	
 	public static class Var extends Stmt {
 		final Token name;
-		final Expr initial;
+		Expr initial;
 		
 		public Var(Token name, Expr initial) {
 			this.name = name;
@@ -159,32 +159,33 @@ public abstract class Stmt {
 			
 		}
 		
-		public static class Read extends Stmt {
-			
-
-			final Token variable;
-			final Expr value = null;
-			
-			public Read(Token variable) {
-				this.variable = variable;
-			}
-			
-			
-			@Override
-			<T> T accept(Visitor<T> v) {
-				// TODO Auto-generated method stub
-				return v.visitRead(this);
-			}
-			
-			public Token getVariable() {
-				return variable;
-			}
-
-
-			public Expr getValue() {
-				return value;
-			}
-
-			
-		}
+//		public static class Read extends Stmt {
+//			final Var var;
+//			
+////			public Read(Token name, Expr initial) {
+////				this.name = name;
+////				this.initial = initial;
+////			}
+//			public Read(Var var) {
+//				this.var = var;
+//			}
+//			
+//			
+//			@Override
+//			<T> T accept(Visitor<T> v) {
+//				// TODO Auto-generated method stub
+//				return v.visitRead(this);
+//			}
+//			
+////			public Token getName() {
+////				return name;
+////			}
+////			
+////			public Expr getInitial() {
+////				return initial;
+////			}
+//			
+//
+//			
+//		}
 }

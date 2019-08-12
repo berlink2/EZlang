@@ -10,27 +10,24 @@ public class Main {
 	public static void main(String[] args) {
 		
 
-		String test = "a ='a';b='b';c = a+b;print c;";
-		
-//		String a ="five";
-//		if(true){
-//			a = "tt";
-//			System.out.println(a);
-//		}
-//		System.out.println(a);
-//		
+		String test = "a= read;b=8;c=a+b;print c;";
+	
 		
 		
 		Lexer lexer = new Lexer(test);
 		List<Token> tokenList = lexer.tokenStream();
 		Parser parser = new Parser(tokenList);
-		List<Stmt> stmtList = parser.parse();
+		parser.parse();
+		List<Stmt> stmtList = parser.getStatementList();
 		TreeInterpreter interpreter = new TreeInterpreter();
-	interpreter.execute(stmtList);
-	
-//		for (Token token:tokenList) {
-//			System.out.println(token);
-//		}
+		interpreter.execute(stmtList);
+//	for (Stmt stmt:stmtList) {
+//		System.out.println(stmt);
+//	}
+//	for (Token token:tokenList) {
+//		System.out.println(token);
+//	}	
+		
 		
 		
 	 
