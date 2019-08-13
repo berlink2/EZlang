@@ -10,7 +10,8 @@ public class Main {
 	public static void main(String[] args) {
 		
 
-		String test = "i=1;while(i<10) {i=i+1;}";
+		//String test = "i=0;while(i<=10) {i=i+1;print i;}";
+		String test = "a=1;{b=2;print a+b;}";
 	
 		
 		

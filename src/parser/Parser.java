@@ -90,9 +90,9 @@ public class Parser {
 			consume(TokenType.LEFT_PARENTHESIS);
 			Expr cond = parseExpr();
 			consume(TokenType.RIGHT_PARENTHESIS);
-			consume(TokenType.LEFT_BRACKET);
+			
 			Stmt then = parseStmt();
-			consume(TokenType.RIGHT_BRACKET);
+			
 			Stmt Else = null;
 			if(match(TokenType.ELSE)) {
 				consume(TokenType.LEFT_BRACKET);
@@ -107,21 +107,35 @@ public class Parser {
 		consume(TokenType.LEFT_PARENTHESIS);
 		Expr cond = parseExpr();
 		consume(TokenType.RIGHT_PARENTHESIS);
-		consume(TokenType.LEFT_BRACKET);
+		
 		Stmt body = parseStmt();
-		consume(TokenType.RIGHT_BRACKET);
+		
 		return new Stmt.While(cond, body);
 	}
 
-	private List<Stmt> parseBlockStmt() {
-		List<Stmt> newStmtList = new ArrayList<>();
-		while(!match(TokenType.RIGHT_BRACKET) && !checkEnd()) {
-			Stmt newStmt = parseDeclare();
-			newStmtList.add(newStmt);
-		}
-		consume(TokenType.RIGHT_BRACKET);
-		return newStmtList;
-	}
+//	private List<Stmt> parseBlockStmt() {
+//		List<Stmt> newStmtList = new ArrayList<>();
+//		Stmt newStmt = null;
+//		while(!match(TokenType.RIGHT_BRACKET) && !checkEnd()) {
+//			
+//			 newStmt = parseDeclare();
+//			newStmtList.add(newStmt);
+//			
+//		}
+//		consume(TokenType.RIGHT_BRACKET);
+//		return newStmtList;
+//	}
+	
+	private List<Stmt> parseBlockStmt() {                      
+	    List<Stmt> statements = new ArrayList<>();
+
+	    while (!match(TokenType.RIGHT_BRACKET) && !checkEnd()) {     
+	      statements.add(parseDeclare());                
+	    }                                               
+
+	    consume(TokenType.RIGHT_BRACKET);
+	    return statements;                              
+	  }  
 	
 	private Stmt parseExprStmt() {
 		Expr expression = parseExpr();

@@ -1,0 +1,3 @@
+i=5;
+while(true) {print i;} #should print 5 endlessly
+	

@@ -9,6 +9,7 @@ import lexer.TokenType;
 
 public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 	private Environment table = new Environment();
+	
 
 	public void execute(List<Stmt> stmtList) {
 		for (Stmt stmt : stmtList) {
@@ -264,6 +265,8 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 		return null;
 
 	}
+	
+
 
 	// if variable is not initialized it is set to null
 	@Override
