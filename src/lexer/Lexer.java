@@ -61,10 +61,16 @@ public class Lexer {
 			tokenize(TokenType.RIGHT_PARENTHESIS);
 			break;
 		case '{':
-			tokenize(TokenType.LEFT_BRACKET);
+			tokenize(TokenType.LEFT_CURLY_BRACKET);
 			break;
 		case '}':
-			tokenize(TokenType.RIGHT_BRACKET);
+			tokenize(TokenType.RIGHT_CURLY_BRACKET);
+			break;
+		case '[':
+			tokenize(TokenType.LEFT_SQUARE_BRACKET);
+			break;
+		case ']':
+			tokenize(TokenType.RIGHT_SQUARE_BRACKET);
 			break;
 		case ',':
 			tokenize(TokenType.COMMA);

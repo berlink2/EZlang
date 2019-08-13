@@ -1,4 +1,6 @@
 package ast;
+import java.util.List;
+
 import lexer.*;
 
 
@@ -14,6 +16,9 @@ public abstract class Expr  {
 		T visitAssign(Assign expr);
 		T visitVariable(Variable expr);
 		T visitRead(Read expr);
+		T visitArray(Array expr);
+		T visitSubscript(Subscript expr);
+		T visitAssignArray(AssignArray expr);
 	}
 	
 	abstract <T> T accept(Visitor<T> v);
@@ -173,4 +178,82 @@ public abstract class Expr  {
 			}
 		 
 	 }
+	 
+	 public static class Array extends Expr {
+		final List<Expr> arrayValues;
+		
+		 
+		 
+		 public Array(List<Expr> arrayValues) {
+			 this.arrayValues = arrayValues;
+			 
+		 }
+		@Override
+		<T> T accept(Visitor<T> v) {
+			// TODO Auto-generated method stub
+			return v.visitArray(this);
+		}
+		 public List<Expr> getArrayValues() {
+				return arrayValues;
+			}
+		 
+		 
+	 }
+	 
+	 public static class Subscript extends Expr {
+		final Token name;
+		 final Expr arrayIndex;
+		 final Expr array;
+		 
+		 public Subscript(Token name, Expr arrayIndex, Expr array) {
+			 this.name = name;
+			 this.arrayIndex = arrayIndex;
+			 this.array = array;
+		 }
+		 
+		@Override
+		<T> T accept(Visitor<T> v) {
+			// TODO Auto-generated method stub
+			return v.visitSubscript(this);
+		}
+		
+		 public Token getName() {
+				return name;
+			}
+
+			public Expr getArrayIndex() {
+				return arrayIndex;
+			}
+
+			public Expr getArray() {
+				return array;
+			}
+		 
+	 }
+	 
+	 public static class AssignArray extends Expr{
+		 final Expr subscript;
+		 final Expr value;
+		 
+		 public AssignArray(Expr subscript, Expr value) {
+			 this.subscript = subscript;
+			 this.value=value;
+		 }
+		@Override
+		<T> T accept(Visitor<T> v) {
+			// TODO Auto-generated method stub
+			return v.visitAssignArray(this);
+		}
+		
+		
+			public Expr getsubscript() {
+				return subscript;
+			}
+			public Expr getValue() {
+				return value;
+			}
+		 
+	 }
+	 
+	 
 }

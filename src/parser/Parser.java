@@ -34,7 +34,13 @@ public class Parser {
 	private Stmt parseDeclare() {
 
 		if (match(TokenType.ID)) {
+			if(getCurrToken().getType() == TokenType.LEFT_SQUARE_BRACKET) {
+				
+				  parseSubscript();
+				 
+			} 
 			return parseVarDeclare();
+			
 			
 		}
 		return parseStmt();
@@ -67,7 +73,7 @@ public class Parser {
 			return parseWhileStmt();
 		}
 
-		if (match(TokenType.LEFT_BRACKET)) {
+		if (match(TokenType.LEFT_CURLY_BRACKET)) {
 			return new Stmt.Block(parseBlockStmt());
 		}
 
@@ -95,9 +101,9 @@ public class Parser {
 			
 			Stmt Else = null;
 			if(match(TokenType.ELSE)) {
-				consume(TokenType.LEFT_BRACKET);
+				consume(TokenType.LEFT_CURLY_BRACKET);
 			Else = parseStmt();
-			consume(TokenType.RIGHT_BRACKET);
+			consume(TokenType.RIGHT_CURLY_BRACKET);
 			}
 			return new Stmt.If(cond, then, Else);
 			
@@ -113,29 +119,18 @@ public class Parser {
 		return new Stmt.While(cond, body);
 	}
 
-//	private List<Stmt> parseBlockStmt() {
-//		List<Stmt> newStmtList = new ArrayList<>();
-//		Stmt newStmt = null;
-//		while(!match(TokenType.RIGHT_BRACKET) && !checkEnd()) {
-//			
-//			 newStmt = parseDeclare();
-//			newStmtList.add(newStmt);
-//			
-//		}
-//		consume(TokenType.RIGHT_BRACKET);
-//		return newStmtList;
-//	}
-	
-	private List<Stmt> parseBlockStmt() {                      
-	    List<Stmt> statements = new ArrayList<>();
-
-	    while (!match(TokenType.RIGHT_BRACKET) && !checkEnd()) {     
-	      statements.add(parseDeclare());                
-	    }                                               
-
-	    consume(TokenType.RIGHT_BRACKET);
-	    return statements;                              
-	  }  
+	private List<Stmt> parseBlockStmt() {
+		List<Stmt> newStmtList = new ArrayList<>();
+		Stmt newStmt = null;
+		while(!match(TokenType.RIGHT_CURLY_BRACKET) && !checkEnd()) {
+			
+			 newStmt = parseDeclare();
+			newStmtList.add(newStmt);
+			
+		}
+		consume(TokenType.RIGHT_CURLY_BRACKET);
+		return newStmtList;
+	} 
 	
 	private Stmt parseExprStmt() {
 		Expr expression = parseExpr();
@@ -151,12 +146,15 @@ public class Parser {
 		Expr expression = parseLogicOr();
 		
 		if(match(TokenType.EQUAL)) {
-			Token left = getPreviousToken();
+			
 			Expr value = parseAssignment();
 			
 			if (expression instanceof Expr.Variable) {
 				Token variable = ((Expr.Variable) expression).getName();
 				return new Expr.Assign(variable, value);
+			} else if (expression instanceof Expr.Subscript) {
+				System.out.println(5);
+				return new Expr.AssignArray(expression, value);
 			}
 		}
 		
@@ -239,9 +237,33 @@ public class Parser {
 			Expr right = parseUnary();
 			return new Expr.unaryOp(op, right);
 		}
-		return parsePrimitive();
+		return parseSubscript();
 		
 	}
+	
+
+    private Expr parseSubscript() {
+        Expr expr = parsePrimitive();
+        Token exprName = getPreviousToken();
+        
+        
+        while (true) {
+            
+             if (match(TokenType.LEFT_SQUARE_BRACKET)) {
+            	 
+                Expr index = parsePrimitive();
+                consume(TokenType.RIGHT_SQUARE_BRACKET);
+                
+                //creates a Subscript expression where exprName = array name, index =array index, expr = array
+                expr = new Expr.Subscript(exprName, index, expr);
+                
+            } else {
+                break;
+            }
+        }
+
+        return expr;
+    }
 	
 	private Expr parsePrimitive() {
 		if (match(TokenType.NULL)) return new Expr.Literal(null);
@@ -268,7 +290,28 @@ public class Parser {
 			return new Expr.Group(expression);
 		}
 		
+		if(match(TokenType.LEFT_SQUARE_BRACKET)) {
+			
+			return new Expr.Array(parseArray());
+		}
+		
+		
 		throw error(getCurrToken(), "");
+		
+	}
+	
+	private List<Expr> parseArray() {
+		List<Expr> arrayExpr = new ArrayList<>();
+		Expr expression = null;
+		while (!checkEnd() && !match(TokenType.RIGHT_SQUARE_BRACKET)) {
+			expression = parseExpr();
+			arrayExpr.add(expression);
+			
+			consume(TokenType.COMMA);
+			
+		}
+		
+		return arrayExpr;
 		
 	}
 	
@@ -293,6 +336,15 @@ public class Parser {
 	 */
 	private Token getCurrToken() {
 		return tokenList.get(curr);
+	}
+	
+	/**
+	 * returns current token
+	 * 
+	 * @return Token
+	 */
+	private Token getNextToken() {
+		return tokenList.get(curr+1);
 	}
 
 	

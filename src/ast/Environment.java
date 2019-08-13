@@ -5,6 +5,8 @@ import java.util.Map;
 import lexer.Token;
 
 public class Environment {
+
+
 	final Map<String, Object> table = new HashMap<>();
 	final Environment enclosingScope;
 
@@ -50,6 +52,14 @@ public class Environment {
 		}
 		return value;
 
+	}
+	
+	public Map<String, Object> getTable() {
+		return table;
+	}
+
+	public Environment getEnclosingScope() {
+		return enclosingScope;
 	}
 
 }

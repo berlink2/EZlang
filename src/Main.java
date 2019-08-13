@@ -11,8 +11,8 @@ public class Main {
 		
 		
 		//String test = "i=1;while(i<=10) {i=i+1;print i;}";
-		String test = "a=[5,6,7,8];print a;";
-//		//String test = " a = \"global a\";\n" + 
+	String test = "a=[1,2,3];print a[0];";
+//		String test = " a = \"global a\";\n" + 
 //				" b = \"global b\";\n" + 
 //				" c = \"global c\";\n" + 
 //				"{\n" + 

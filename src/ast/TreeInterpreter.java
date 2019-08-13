@@ -2,14 +2,20 @@ package ast;
 
 import ast.Expr.*;
 import ast.Stmt.*;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
+import lexer.Token;
 import lexer.TokenType;
 
 public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 	private Environment table = new Environment();
-	
+	private Environment tempTable = new Environment(table);
+	final Map<Token, List<Object>> arrayTable = new HashMap<>();
 
 	public void execute(List<Stmt> stmtList) {
 		for (Stmt stmt : stmtList) {
@@ -252,21 +258,23 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 
 		Environment oldTable = this.table;
 		Environment newTable = new Environment(oldTable);
-
+	
+		
 		try {
 			this.table = newTable;
-			
-				execute(statementList);
+
+			execute(statementList);
 			
 
 		} finally {
+			tempTable = newTable;
 			this.table = oldTable;
+
 		}
+
 		return null;
 
 	}
-	
-
 
 	// if variable is not initialized it is set to null
 	@Override
@@ -330,11 +338,18 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 
 	@Override
 	public Void visitWhile(While stmt) {
-		boolean loopCheck = isTruthy(evaluate(stmt.getCond())); // checks if expression if truthy or falsey
-		while (loopCheck) { // continuously execute statement until loop termination condition is met
-			execute(stmt.getBody());
-			loopCheck = isTruthy(evaluate(stmt.getCond()));
-		}
+		
+		
+		// checks if expression if truthy or falsey
+		boolean loopCheck = isTruthy(evaluate(stmt.getCond()));
+		
+			while (loopCheck) { // continuously execute statement until loop termination condition is met
+				execute(stmt.getBody());
+
+				loopCheck = isTruthy(evaluate(stmt.getCond()));
+			}
+		
+
 		return null;
 	}
 
@@ -345,7 +360,7 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 	public Object visitRead(Read expr) {
 		String input = null;
 		Scanner s = new Scanner(System.in);
-		
+
 		try {
 			String variable = expr.getName().getLexeme();
 			System.out.print("Please input a value for " + variable + ": ");
@@ -367,11 +382,58 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 			}
 
 		} catch (Exception e) {
-				e.printStackTrace();
+			e.printStackTrace();
 		} finally {
 			s.close();
 		}
 		return input;
 	}
+
+	@Override
+	public Object visitArray(Array expr) {
+		List<Object> arrayValues = new ArrayList<>();
+		for (Expr expression: expr.getArrayValues()) {
+			arrayValues.add(evaluate(expression));
+		}
+		
+		return arrayValues;
+	}
+
+	@Override
+	public Object visitSubscript(Subscript expr) {
+		
+		List arrayValues = (List) evaluate(expr.getArray());
+		int index = (int)evaluate(expr.arrayIndex);
+		
+		
+		return arrayValues.get(index);
+	}
+
+	@Override
+	public Object visitAssignArray(AssignArray expr) {
+		Object assignment = evaluate(expr.getValue());
+		
+		Subscript subscript = null;
+		if(expr.subscript instanceof Subscript) {
+			subscript = (Subscript) expr.subscript;
+		}
+		
+		Object listObject = evaluate(subscript.array);
+		List<Object> list = (List)listObject;
+		
+		Object indexObject = evaluate(subscript.arrayIndex);
+		
+		int index = ((Double) indexObject).intValue();
+		list.set(index, assignment);
+		
+		
+		
+		
+		
+		
+		return assignment;
+	}
+
+	
 
 }

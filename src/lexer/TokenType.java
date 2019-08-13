@@ -3,7 +3,8 @@ package lexer;
 public enum TokenType {
 	// One character tokens.                      
 		  LEFT_PARENTHESIS, RIGHT_PARENTHESIS
-		  , LEFT_BRACKET, RIGHT_BRACKET,  
+		  , LEFT_CURLY_BRACKET, RIGHT_CURLY_BRACKET,  
+		  LEFT_SQUARE_BRACKET, RIGHT_SQUARE_BRACKET,
 		  COMMA, DOT,  SEMICOLON, 
 	
 	//Arithmetic
