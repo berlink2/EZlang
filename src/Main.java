@@ -9,9 +9,29 @@ public class Main {
 
 	public static void main(String[] args) {
 		
-
-		//String test = "i=0;while(i<=10) {i=i+1;print i;}";
-		String test = "a=1;{b=2;print a+b;}";
+		
+		//String test = "i=1;while(i<=10) {i=i+1;print i;}";
+		String test = "a=[5,6,7,8];print a;";
+//		//String test = " a = \"global a\";\n" + 
+//				" b = \"global b\";\n" + 
+//				" c = \"global c\";\n" + 
+//				"{\n" + 
+//				"   a = \"outer a\";\n" + 
+//				"   b = \"outer b\";\n" + 
+//				"  {\n" + 
+//				"     a = \"inner a\";\n" + 
+//				
+//				"    print a;\n" + 
+//				"    print b;\n" + 
+//				"    print c;\n" + 
+//				"  }\n" + 
+//				"  print a;\n" + 
+//				"  print b;\n" + 
+//				"  print c;\n" + 
+//				"}\n" + 
+//				"print a;\n" + 
+//				"print b;\n" + 
+//				"print c;";
 	
 		
 		
