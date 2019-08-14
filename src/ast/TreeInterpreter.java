@@ -21,7 +21,6 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 		for (Stmt stmt : stmtList) {
 			execute(stmt);
 		}
-		
 
 	}
 
@@ -70,7 +69,6 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 		TokenType opTokenType = opToken.getType();
 		String leftString = left.toString();
 		String rightString = right.toString();
-		
 
 		switch (opTokenType) {
 		case PLUS:
@@ -78,13 +76,13 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 
 				return Integer.parseInt(leftString) + Integer.parseInt(rightString);
 			}
-			
+
 			if (left instanceof Double || right instanceof Double) {
 
 				return Double.parseDouble(leftString) + Double.parseDouble(rightString);
 
 			}
-
+			
 			if (left instanceof String && right instanceof String) {
 				return leftString + rightString;
 			}
@@ -92,17 +90,15 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 				return String.valueOf(left) + right;
 			}
 			if (left instanceof List && right instanceof List) {
-				List newArray = (List)left;
-				newArray.addAll((List)right);
-				
-				
+				List newArray = (List) left;
+				newArray.addAll((List) right);
+
 				return newArray;
 			}
-			if (left instanceof List ) {
+			if (left instanceof List) {
 				List array = (List) left;
 				array.add(right);
-				
-				
+
 				return array;
 			} else if (right instanceof List) {
 				List array = (List) right;
@@ -111,87 +107,64 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 			}
 			throw new RuntimeError(opToken, "Invalid operand types for a '+' operation.");
 		case MINUS:
-			if(left instanceof List && right instanceof Integer) {
-				List oldArray = (List)left;
+			if (left instanceof List && right instanceof Integer) {
+				List oldArray = (List) left;
 				int oldArraySize = oldArray.size();
 				List<Object> newArray = new ArrayList<>();
 				int newArraySize = oldArraySize - Integer.parseInt(rightString);
-				if (newArraySize<0) {
+				if (newArraySize < 0) {
 					throw new RuntimeError(opToken, "You can't shrink that array to that size.");
 				}
-				int i=0;
-				while(i<newArraySize) {
+				int i = 0;
+				while (i < newArraySize) {
 					newArray.add(oldArray.get(i));
 					i++;
 				}
-				
+
 				return newArray;
-				
-			}
-			
-			if (left instanceof Integer && right instanceof Integer) {
-
-				return Integer.parseInt(leftString) - Integer.parseInt(rightString);
-			}
-			if (left instanceof Double || right instanceof Double) {
-
-				return Double.parseDouble(leftString) - Double.parseDouble(rightString);
 
 			}
-			
+
+			if(checkTypes(opToken,left,right)) {
+				return performArith(opTokenType, left, right);
+			}
+
 			throw new RuntimeError(opToken, "Invalid operand types for a '-' operation.");
 
 		case SLASH:
-			if(Double.parseDouble(rightString)==0) {
+			if (Double.parseDouble(rightString) == 0) {
 				throw new RuntimeError(opToken, "Can't divide by zero.");
 			}
-			if (left instanceof Integer && right instanceof Integer) {
-
-				return Integer.parseInt(leftString) / Integer.parseInt(rightString);
+			if(checkTypes(opToken,left,right)) {
+				return performArith(opTokenType, left, right);
 			}
-			if (left instanceof Double || right instanceof Double) {
 
-				return Double.parseDouble(leftString) / Double.parseDouble(rightString);
-
-			}
 			throw new RuntimeError(opToken, "Invalid operand types. Operands must be an integer or a double.");
 		case STAR:
-			if (left instanceof Integer && right instanceof Integer) {
-
-				return Integer.parseInt(leftString) * Integer.parseInt(rightString);
-			}
-			if (left instanceof Double || right instanceof Double) {
-
-				return Double.parseDouble(leftString) * Double.parseDouble(rightString);
-
+			if(checkTypes(opToken,left,right)) {
+				return performArith(opTokenType, left, right);
 			}
 			throw new RuntimeError(opToken, "Invalid operand types. Operands must be an integer or a double.");
 		case PERCENT:
-			if (left instanceof Integer && right instanceof Integer) {
-
-				return Integer.parseInt(leftString) % Integer.parseInt(rightString);
-			}
-			if (left instanceof Double || right instanceof Double) {
-
-				return Double.parseDouble(leftString) % Double.parseDouble(rightString);
-
+			if(checkTypes(opToken,left,right)) {
+				return performArith(opTokenType, left, right);
 			}
 			throw new RuntimeError(opToken, "Invalid operand types. Operands must be an integer or a double.");
 		case GREATER:
-			checkTypes(opToken,left, right);
+			checkTypes(opToken, left, right);
 			return Double.parseDouble(leftString) > Double.parseDouble(rightString);
-			
+
 		case GREATER_EQUAL:
-			checkTypes(opToken,left, right);
+			checkTypes(opToken, left, right);
 			return Double.parseDouble(leftString) >= Double.parseDouble(rightString);
 		case LESS:
-			checkTypes(opToken,left, right);
+			checkTypes(opToken, left, right);
 			return Double.parseDouble(leftString) < Double.parseDouble(rightString);
 		case LESS_EQUAL:
-			checkTypes(opToken,left, right);
+			checkTypes(opToken, left, right);
 			return Double.parseDouble(leftString) <= Double.parseDouble(rightString);
 		case EXCLAMATION_EQUAL:
-			
+
 			return !isEqual(left, right);
 		case EQUAL_EQUAL:
 			return isEqual(left, right);
@@ -223,16 +196,56 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 
 		return null;
 	}
-	
-	private void checkTypes(Token operator, Object left, Object right) {
-		if (left instanceof Double && right instanceof Double) {
-			return;
-		}
+
+	private boolean checkTypes(Token operator, Object left, Object right) {
+		if ((left instanceof Double || left instanceof Integer) && (right instanceof Double || right instanceof Integer)) {
+			return true;
+		} 
 		throw new RuntimeError(operator, "Invalid Operand types. Operands must be numbers.");
 	}
 	
+	private Object performArith(TokenType type, Object left, Object right) {
+		String leftString = left.toString();
+		String rightString = right.toString();
+		if (left instanceof Integer && right instanceof Integer) {
+			switch(type) {
+			case PLUS:
+				return (int)left + (int)right;
+			case MINUS:
+				return (int)left - (int)right;
+			case STAR:
+				return (int)left * (int)right;
+			case SLASH:
+				return (int)left / (int)right;
+			case PERCENT:
+				return (int)left % (int)right;
+			default:
+				break;
+			}
+			
+		}
+		if (left instanceof Double || right instanceof Double) {
+			switch(type) {
+			case PLUS:
+				return Double.parseDouble(leftString) + Double.parseDouble(rightString);
+			case MINUS:
+				return Double.parseDouble(leftString) - Double.parseDouble(rightString);
+			case STAR:
+				return Double.parseDouble(leftString) * Double.parseDouble(rightString);
+			case SLASH:
+				return Double.parseDouble(leftString) / Double.parseDouble(rightString);
+			case PERCENT:
+				return Double.parseDouble(leftString) % Double.parseDouble(rightString);
+			default:
+				break;
+			}
+			
 
-	
+		}
+		return null;
+		
+	}
+
 	/**
 	 * returns the value of a literal
 	 */
@@ -266,7 +279,7 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 
 		return null;
 	}
-	
+
 	private void checkType(Token operator, Object operand) {
 		if (operand instanceof Integer || operand instanceof Double) {
 			return;
@@ -318,13 +331,11 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 
 		Environment oldTable = this.table;
 		Environment newTable = new Environment(oldTable);
-	
-		
+
 		try {
 			this.table = newTable;
 
 			execute(statementList);
-			
 
 		} finally {
 			tempTable = newTable;
@@ -398,17 +409,15 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 
 	@Override
 	public Void visitWhile(While stmt) {
-		
-		
+
 		// checks if expression if truthy or falsey
 		boolean loopCheck = isTruthy(evaluate(stmt.getCond()));
-		
-			while (loopCheck) { // continuously execute statement until loop termination condition is met
-				execute(stmt.getBody());
 
-				loopCheck = isTruthy(evaluate(stmt.getCond()));
-			}
-		
+		while (loopCheck) { // continuously execute statement until loop termination condition is met
+			execute(stmt.getBody());
+
+			loopCheck = isTruthy(evaluate(stmt.getCond()));
+		}
 
 		return null;
 	}
@@ -452,42 +461,40 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 	@Override
 	public Object visitArray(Array expr) {
 		List<Object> arrayValues = new ArrayList<>();
-		for (Expr expression: expr.getArrayValues()) {
+		for (Expr expression : expr.getArrayValues()) {
 			arrayValues.add(evaluate(expression));
 		}
-		
+
 		return arrayValues;
 	}
 
 	@Override
 	public Object visitSubscript(Subscript expr) {
-		
+
 		List arrayValues = (List) evaluate(expr.getArray());
-		int index = (int)evaluate(expr.arrayIndex);
-		
-		
+		int index = (int) evaluate(expr.arrayIndex);
+
 		return arrayValues.get(index);
 	}
 
 	@Override
 	public Object visitAssignArray(AssignArray expr) {
-		
+
 		Object newValue = evaluate(expr.getValue());
-		
+
 		Token name = expr.getName();
 		Object arrayObject = table.get(name);
 		List<Object> array = (List) arrayObject;
-		
-		Subscript subscript = (Subscript)expr.getsubscript();;
+
+		Subscript subscript = (Subscript) expr.getsubscript();
+		;
 		Object indexObject = evaluate(subscript.getArrayIndex());
-		
-		int index = (int)indexObject;
-		
+
+		int index = (int) indexObject;
+
 		array.set(index, newValue);
-				
+
 		return newValue;
 	}
-
-	
 
 }
