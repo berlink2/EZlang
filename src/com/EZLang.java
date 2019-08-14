@@ -16,7 +16,7 @@ public class EZLang {
 	
 	
 	public static void main(String[] args) throws IOException{
-		///Users/mac/Documents/eclipse-workspace/MScProject/src/tests/ConditionalTests/While2.ez
+		///Users/mac/Documents/eclipse-workspace/MScProject/src/tests/ArrayTests
 		System.out.println("----------------------------");
 		System.out.println("---- Welcome to EZlang! ----");
 		System.out.println("----------------------------");
@@ -31,14 +31,13 @@ public class EZLang {
 				if (validFile) {
 				hasFile = true;
 				} else {
-				System.out.println("That is not an EZlang file. Please restart program and enter a valid file.");
-				System.exit(0);
+				System.out.println("That is not an EZlang file. Please enter a valid filepath.");
+				
+				continue;
 				}
 			} catch (StringIndexOutOfBoundsException e) {
-				System.out.println("That is not an EZlang file. Please try again");
-			} finally {
-				s.close();
-			}
+				System.out.println("That is not an EZlang file. Please try again.");
+			} 
 			
 		}
 		

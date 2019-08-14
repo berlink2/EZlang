@@ -9,7 +9,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		
-		String test ="a= [1,2,3]b=[4,5,6];c=a+b;print c;";
+		String test ="a=5;a=a+'t';print a;";
 		//String test = "i=1;while(i<=10) {i=i+1;print i;}";
 	//String test = "a=[1,2,3];a[0]=0;print a[0];";
 	//	String test = "a=5;{a=3;{a=4;}print a;}{a=6;print a;}print a;";
