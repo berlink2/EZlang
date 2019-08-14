@@ -82,7 +82,7 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 				return Double.parseDouble(leftString) + Double.parseDouble(rightString);
 
 			}
-			
+
 			if (left instanceof String && right instanceof String) {
 				return leftString + rightString;
 			}
@@ -125,7 +125,7 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 
 			}
 
-			if(checkTypes(opToken,left,right)) {
+			if (checkTypes(opToken, left, right)) {
 				return performArith(opTokenType, left, right);
 			}
 
@@ -135,18 +135,18 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 			if (Double.parseDouble(rightString) == 0) {
 				throw new RuntimeError(opToken, "Can't divide by zero.");
 			}
-			if(checkTypes(opToken,left,right)) {
+			if (checkTypes(opToken, left, right)) {
 				return performArith(opTokenType, left, right);
 			}
 
 			throw new RuntimeError(opToken, "Invalid operand types. Operands must be an integer or a double.");
 		case STAR:
-			if(checkTypes(opToken,left,right)) {
+			if (checkTypes(opToken, left, right)) {
 				return performArith(opTokenType, left, right);
 			}
 			throw new RuntimeError(opToken, "Invalid operand types. Operands must be an integer or a double.");
 		case PERCENT:
-			if(checkTypes(opToken,left,right)) {
+			if (checkTypes(opToken, left, right)) {
 				return performArith(opTokenType, left, right);
 			}
 			throw new RuntimeError(opToken, "Invalid operand types. Operands must be an integer or a double.");
@@ -198,34 +198,35 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 	}
 
 	private boolean checkTypes(Token operator, Object left, Object right) {
-		if ((left instanceof Double || left instanceof Integer) && (right instanceof Double || right instanceof Integer)) {
+		if ((left instanceof Double || left instanceof Integer)
+				&& (right instanceof Double || right instanceof Integer)) {
 			return true;
-		} 
+		}
 		throw new RuntimeError(operator, "Invalid Operand types. Operands must be numbers.");
 	}
-	
+
 	private Object performArith(TokenType type, Object left, Object right) {
 		String leftString = left.toString();
 		String rightString = right.toString();
 		if (left instanceof Integer && right instanceof Integer) {
-			switch(type) {
+			switch (type) {
 			case PLUS:
-				return (int)left + (int)right;
+				return (int) left + (int) right;
 			case MINUS:
-				return (int)left - (int)right;
+				return (int) left - (int) right;
 			case STAR:
-				return (int)left * (int)right;
+				return (int) left * (int) right;
 			case SLASH:
-				return (int)left / (int)right;
+				return (int) left / (int) right;
 			case PERCENT:
-				return (int)left % (int)right;
+				return (int) left % (int) right;
 			default:
 				break;
 			}
-			
+
 		}
 		if (left instanceof Double || right instanceof Double) {
-			switch(type) {
+			switch (type) {
 			case PLUS:
 				return Double.parseDouble(leftString) + Double.parseDouble(rightString);
 			case MINUS:
@@ -239,11 +240,10 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 			default:
 				break;
 			}
-			
 
 		}
 		return null;
-		
+
 	}
 
 	/**
