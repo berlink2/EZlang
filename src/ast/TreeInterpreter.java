@@ -21,6 +21,7 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 		for (Stmt stmt : stmtList) {
 			execute(stmt);
 		}
+		
 
 	}
 
@@ -411,27 +412,21 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 
 	@Override
 	public Object visitAssignArray(AssignArray expr) {
-		Object assignment = evaluate(expr.getValue());
 		
-		Subscript subscript = null;
-		if(expr.subscript instanceof Subscript) {
-			subscript = (Subscript) expr.subscript;
-		}
+		Object newValue = evaluate(expr.getValue());
 		
-		Object listObject = evaluate(subscript.array);
-		List<Object> list = (List)listObject;
+		Token name = expr.getName();
+		Object arrayObject = table.get(name);
+		List<Object> array = (List) arrayObject;
 		
-		Object indexObject = evaluate(subscript.arrayIndex);
+		Subscript subscript = (Subscript)expr.getsubscript();;
+		Object indexObject = evaluate(subscript.getArrayIndex());
 		
-		int index = ((Double) indexObject).intValue();
-		list.set(index, assignment);
+		int index = (int)indexObject;
 		
-		
-		
-		
-		
-		
-		return assignment;
+		array.set(index, newValue);
+				
+		return newValue;
 	}
 
 	

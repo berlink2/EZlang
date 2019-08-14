@@ -234,10 +234,12 @@ public abstract class Expr  {
 	 public static class AssignArray extends Expr{
 		 final Expr subscript;
 		 final Expr value;
+		 final Token name;
 		 
-		 public AssignArray(Expr subscript, Expr value) {
+		 public AssignArray(Token name, Expr subscript, Expr value) {
 			 this.subscript = subscript;
 			 this.value=value;
+			 this.name = name;
 		 }
 		@Override
 		<T> T accept(Visitor<T> v) {
@@ -251,6 +253,10 @@ public abstract class Expr  {
 			}
 			public Expr getValue() {
 				return value;
+			}
+			
+			public Token getName() {
+				return name;
 			}
 		 
 	 }

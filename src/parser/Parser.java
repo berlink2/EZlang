@@ -32,20 +32,35 @@ public class Parser {
 	
 	
 	private Stmt parseDeclare() {
-
+		
+if(getCurrToken().getType() == TokenType.ID && varExists(getCurrToken().getLexeme())) {
+	
+	
 		if (match(TokenType.ID)) {
+			
 			if(getCurrToken().getType() == TokenType.LEFT_SQUARE_BRACKET) {
 				
 				  parseSubscript();
 				 
 			} 
+			
 			return parseVarDeclare();
 			
 			
 		}
+}
+
 		return parseStmt();
 	}
 	
+	private boolean varExists(String current) {
+		for (int i=0;i<curr;i++) {
+			if (tokenList.get(i).getLexeme().equals(current)) {
+				return false;
+			}
+		}
+		return true;
+	}
 
 	
 	private Stmt parseVarDeclare() {
@@ -153,8 +168,8 @@ public class Parser {
 				Token variable = ((Expr.Variable) expression).getName();
 				return new Expr.Assign(variable, value);
 			} else if (expression instanceof Expr.Subscript) {
-				System.out.println(5);
-				return new Expr.AssignArray(expression, value);
+				Token name = ((Expr.Subscript) expression).getName();
+				return new Expr.AssignArray(name, expression, value);
 			}
 		}
 		
@@ -251,11 +266,14 @@ public class Parser {
             
              if (match(TokenType.LEFT_SQUARE_BRACKET)) {
             	 
+            	
                 Expr index = parsePrimitive();
+                
                 consume(TokenType.RIGHT_SQUARE_BRACKET);
                 
                 //creates a Subscript expression where exprName = array name, index =array index, expr = array
                 expr = new Expr.Subscript(exprName, index, expr);
+                //if (getNextToken().getType()==TokenType.EQUAL)
                 
             } else {
                 break;
