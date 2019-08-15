@@ -45,7 +45,7 @@ public class Environment {
 			value = table.get(variable);
 			return value;
 		}
-		
+	
 
 		if (enclosingScope != null) {
 			return enclosingScope.get(name);

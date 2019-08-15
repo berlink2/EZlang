@@ -14,14 +14,12 @@ import lexer.TokenType;
 
 public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 	private Environment table = new Environment();
-	private Environment tempTable = new Environment(table);
-	final Map<Token, List<Object>> arrayTable = new HashMap<>();
 
 	public void execute(List<Stmt> stmtList) {
 		for (Stmt stmt : stmtList) {
 			execute(stmt);
 		}
-
+		
 	}
 
 	/**
@@ -338,10 +336,11 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 			execute(statementList);
 
 		} finally {
-			tempTable = newTable;
+			
 			this.table = oldTable;
 
 		}
+		
 
 		return null;
 
