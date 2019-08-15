@@ -10,31 +10,31 @@ public class Main {
 	public static void main(String[] args) {
 		
 		//String test ="a='c'+'c';print a;";
-		//String test = "i=1;while(i<=10) {i=i+1;print i;}";
+		//String test = "i=0;while(i<=10) {i=i+1;print i;}";
 	//String test = "a=[1,2,3];a[0]=0;print a[0];";
-		//String test = "b=7;{ b=3;}  print b;";
+		String test = "{ b=3;} b=9; print b;";
 		
 		//int a=5;{a=3;{a=4;}System.out.println(a); }{a=6;System.out.println(a);}System.out.println(a);
-		String test = " a = \"global a\";\n" + 
-				" b = \"global b\";\n" + 
-				" c = \"global c\";\n" + 
-				"{\n" + 
-				"   a = \"outer a\";\n" + 
-				"   b = \"outer b\";\n" + 
-				"  {\n" + 
-				"     a = \"inner a\";\n" + 
-				
-				"    print a;\n" + 
-				"    print b;\n" + 
-				"    print c;\n" + 
-				"  }\n" + 
-				"  print a;\n" + 
-				"  print b;\n" + 
-				"  print c;\n" + 
-				"}\n" + 
-				"print a;\n" + 
-				"print b;\n" + 
-				"print c;";
+//		String test = " a = \"global a\";\n" + 
+//				" b = \"global b\";\n" + 
+//				" c = \"global c\";\n" + 
+//				"{\n" + 
+//				"   a = \"outer a\";\n" + 
+//				"   b = \"outer b\";\n" + 
+//				"  {\n" + 
+//				"     a = \"inner a\";\n" + 
+//				
+//				"    print a;\n" + 
+//				"    print b;\n" + 
+//				"    print c;\n" + 
+//				"  }\n" + 
+//				"  print a;\n" + 
+//				"  print b;\n" + 
+//				"  print c;\n" + 
+//				"}\n" + 
+//				"print a;\n" + 
+//				"print b;\n" + 
+//				"print c;";
 	
 		
 		

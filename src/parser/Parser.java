@@ -50,7 +50,7 @@ public class Parser {
 
 	private boolean varExists(String current) {
 		for (int i = 0; i < curr; i++) {
-			if (tokenList.get(i).getLexeme().equals(current) &&tokenList.get(i).getLexeme().equals("=")) {
+			if (tokenList.get(i).getLexeme().equals(current) ) {
 				return false;
 			}
 		}
