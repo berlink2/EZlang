@@ -30,7 +30,7 @@ public class Parser {
 
 	private Stmt parseDeclare() {
 
-		if (getCurrToken().getType() == TokenType.ID && varExists(getCurrToken().getLexeme())) {
+		if (getNextToken().getType() == TokenType.EQUAL && getCurrToken().getType() == TokenType.ID && varExists(getCurrToken().getLexeme())) {
 
 			if (match(TokenType.ID)) {
 
@@ -99,14 +99,14 @@ public class Parser {
 		consume(TokenType.LEFT_PARENTHESIS);
 		Expr cond = parseExpr();
 		consume(TokenType.RIGHT_PARENTHESIS);
-
+		
 		Stmt then = parseStmt();
-
+		
 		Stmt Else = null;
 		if (match(TokenType.ELSE)) {
-			consume(TokenType.LEFT_CURLY_BRACKET);
+			
 			Else = parseStmt();
-			consume(TokenType.RIGHT_CURLY_BRACKET);
+			
 		}
 		return new Stmt.If(cond, then, Else);
 

@@ -16,7 +16,7 @@ public class EZLang {
 	
 	
 	public static void main(String[] args) throws IOException{
-		///Users/mac/Documents/eclipse-workspace/MScProject/src/tests/ArrayTests
+		///Users/mac/Documents/eclipse-workspace/MScProject/src/tests/ConditionalTests/WhileIncrement.ez
 		System.out.println("----------------------------");
 		System.out.println("---- Welcome to EZlang! ----");
 		System.out.println("----------------------------");

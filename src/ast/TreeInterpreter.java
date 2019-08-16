@@ -19,7 +19,7 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 		for (Stmt stmt : stmtList) {
 			execute(stmt);
 		}
-		
+		//System.out.println(table.getTable().toString());
 	}
 
 	/**
