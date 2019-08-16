@@ -1,4 +1,4 @@
-package ast;
+package interpreter;
 
 import lexer.Token;
 

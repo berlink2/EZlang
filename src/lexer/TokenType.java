@@ -20,7 +20,7 @@ public enum TokenType {
 		  EXCLAMATION, AND, OR,
 		  
 	// Reserved Keywords
-		  IF, THEN, ELSE, PRINT, NULL, TRUE, FALSE, WHILE, READ, LOCAL,
+		  IF, THEN, ELSE, PRINT, NULL, TRUE, FALSE, WHILE, READ, APPEND, SHRINK,
 		  
 	// Literals.                                     
 		   ID, STRING, INTEGER, FLOAT, CHAR,                    	  

@@ -27,7 +27,8 @@ public class Lexer {
 		resKeywords.put("true", TokenType.TRUE);
 		resKeywords.put("while", TokenType.WHILE);
 		resKeywords.put("read", TokenType.READ);
-		resKeywords.put("local", TokenType.LOCAL);
+		resKeywords.put("append", TokenType.APPEND);
+		resKeywords.put("shrink", TokenType.SHRINK);
 	}
 
 	/*

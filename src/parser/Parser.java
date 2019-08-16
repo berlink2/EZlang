@@ -30,7 +30,7 @@ public class Parser {
 
 	private Stmt parseDeclare() {
 
-		if (checkVarAlreadyDeclared(getCurrToken().getLexeme())) {
+		if (!checkVarAlreadyDeclared(getCurrToken().getLexeme())) {
 
 			if (match(TokenType.ID)) {
 
@@ -50,11 +50,11 @@ public class Parser {
 
 	private boolean checkVarAlreadyDeclared(String current) {
 		for (int i = 0; i < curr; i++) {
-			if (tokenList.get(i).getLexeme().equals(current) && getNextToken().getType() == TokenType.EQUAL && getCurrToken().getType() == TokenType.ID) {
-				return false;
+			if (tokenList.get(i).getLexeme().equals(current) && getCurrToken().getType() == TokenType.ID) {
+				return true;
 			}
 		}
-		return true;
+		return false;
 	}
 
 	private Stmt parseVarDeclare() {
@@ -205,8 +205,18 @@ public class Parser {
 	}
 
 	private Expr parseAdditive() {
-		Expr expression = parseMultiplicative();
+		Expr expression = parseShrinkAppend();
 		while (match(TokenType.PLUS, TokenType.MINUS)) {
+			Token op = getPreviousToken();
+			Expr right = parseShrinkAppend();
+			expression = new ExprBinOp(op, expression, right);
+		}
+		return expression;
+	}
+	
+	private Expr parseShrinkAppend() {
+		Expr expression = parseMultiplicative();
+		while (match(TokenType.SHRINK, TokenType.APPEND)) {
 			Token op = getPreviousToken();
 			Expr right = parseMultiplicative();
 			expression = new ExprBinOp(op, expression, right);
@@ -268,8 +278,29 @@ public class Parser {
 
 		return expr;
 	}
+	
+	private List<Expr> parseArray() {
+		List<Expr> arrayExpr = new ArrayList<>();
+		Expr expression = null;
+		while (!checkEnd() && !match(TokenType.RIGHT_SQUARE_BRACKET)) {
+			expression = parseExpr();
+			arrayExpr.add(expression);
+
+			consume(TokenType.COMMA);
+
+		}
+
+		return arrayExpr;
+
+	}
+	
+	
 
 	private Expr parsePrimitive() {
+		if (match(TokenType.LEFT_SQUARE_BRACKET)) {
+
+			return new ExprArray(parseArray());
+		}
 		if (match(TokenType.NULL))
 			return new ExprLiteral(null);
 		if (match(TokenType.TRUE))
@@ -288,6 +319,7 @@ public class Parser {
 		if (match(TokenType.FLOAT)) {
 			return new ExprLiteral(getPreviousToken().getLiteral());
 		}
+		
 		if (match(TokenType.ID)) {
 			return new ExprVariable(getPreviousToken());
 		}
@@ -297,29 +329,13 @@ public class Parser {
 			return new ExprGroup(expression);
 		}
 
-		if (match(TokenType.LEFT_SQUARE_BRACKET)) {
+		
 
-			return new ExprArray(parseArray());
-		}
-
-		throw error(getCurrToken(), "");
+		throw new ParserError(getCurrToken(), "Missing an expression.");
 
 	}
 
-	private List<Expr> parseArray() {
-		List<Expr> arrayExpr = new ArrayList<>();
-		Expr expression = null;
-		while (!checkEnd() && !match(TokenType.RIGHT_SQUARE_BRACKET)) {
-			expression = parseExpr();
-			arrayExpr.add(expression);
-
-			consume(TokenType.COMMA);
-
-		}
-
-		return arrayExpr;
-
-	}
+	
 
 	/**
 	 * 
@@ -378,6 +394,7 @@ public class Parser {
 
 		if (!checkEnd() && getCurrToken().getType() == token) {
 			move();
+			
 		}
 		return getPreviousToken();
 
@@ -401,8 +418,6 @@ public class Parser {
 		return false;
 	}
 
-	private ParseError error(Token token, String message) {
-		return new ParseError();
-	}
+	
 
 }

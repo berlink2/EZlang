@@ -91,41 +91,10 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 			if (left instanceof Character && right instanceof Character) {
 				return String.valueOf(left) + right;
 			}
-			if (left instanceof List && right instanceof List) {
-				List newArray = (List) left;
-				newArray.addAll((List) right);
-
-				return newArray;
-			}
-			if (left instanceof List) {
-				List array = (List) left;
-				array.add(right);
-
-				return array;
-			} else if (right instanceof List) {
-				List array = (List) right;
-				array.add(left);
-				return array;
-			}
+			
+			
 			throw new RuntimeError(opToken, "Invalid operand types for a '+' operation.");
 		case MINUS:
-			if (left instanceof List && right instanceof Integer) {
-				List oldArray = (List) left;
-				int oldArraySize = oldArray.size();
-				List<Object> newArray = new ArrayList<>();
-				int newArraySize = oldArraySize - Integer.parseInt(rightString);
-				if (newArraySize < 0) {
-					throw new RuntimeError(opToken, "You can't shrink that array to that size.");
-				}
-				int i = 0;
-				while (i < newArraySize) {
-					newArray.add(oldArray.get(i));
-					i++;
-				}
-
-				return newArray;
-
-			}
 
 			if (checkTypes(opToken, left, right)) {
 				return performArith(opTokenType, left, right);
@@ -152,6 +121,45 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 				return performArith(opTokenType, left, right);
 			}
 			throw new RuntimeError(opToken, "Invalid operand types. Operands must be an integer or a double.");
+		case APPEND:
+			if (left instanceof List && right instanceof List) {
+				List newArray = (List) left;
+				newArray.addAll((List) right);
+
+				return newArray;
+			}
+			if (left instanceof List) {
+				List array = (List) left;
+				array.add(right);
+
+				return array;
+			} else if (right instanceof List) {
+				List array = (List) right;
+				array.add(left);
+				return array;
+			}
+			throw new RuntimeError(opToken, "Append operations must involve at least one array.");
+		case SHRINK:
+			if (left instanceof List && right instanceof Integer) {
+				List oldArray = (List) left;
+				int oldArraySize = oldArray.size();
+				List<Object> newArray = new ArrayList<>();
+				int newArraySize = oldArraySize - Integer.parseInt(rightString);
+				if (newArraySize < 0) {
+					throw new RuntimeError(opToken, "You can't shrink that array to that size.");
+				}
+				int i = 0;
+				while (i < newArraySize) {
+					newArray.add(oldArray.get(i));
+					i++;
+				}
+
+				return newArray;
+
+			}
+			throw new RuntimeError(opToken, "You can only perform a shrink operation with an array and an integer. The array must be on the left side.");
+			
+			
 		case GREATER:
 			checkTypes(opToken, left, right);
 			return Double.parseDouble(leftString) > Double.parseDouble(rightString);
@@ -213,15 +221,15 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 		if (left instanceof Integer && right instanceof Integer) {
 			switch (type) {
 			case PLUS:
-				return (int) left + (int) right;
+				return (Integer) left + (Integer) right;
 			case MINUS:
-				return (int) left - (int) right;
+				return (Integer) left - (Integer) right;
 			case STAR:
-				return (int) left * (int) right;
+				return (Integer) left * (Integer) right;
 			case SLASH:
-				return (int) left / (int) right;
+				return (Integer) left / (Integer) right;
 			case PERCENT:
-				return (int) left % (int) right;
+				return (Integer) left % (Integer) right;
 			default:
 				break;
 			}
