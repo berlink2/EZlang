@@ -27,8 +27,10 @@ public class Main {
 				"}\n" + 
 				"if (found == true) {\n" + 
 				"print \"It exists!\";\n" + 
-				"} else {array+x;print array;}";
-				
+				"} else {\n" + 
+				"array=array +x;\n" + 
+				"print array;}";
+		
 		
 		//int a=5;{a=3;{a=4;}System.out.println(a); }{a=6;System.out.println(a);}System.out.println(a);
 //		String test = " a = \"global a\";\n" + 

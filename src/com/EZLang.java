@@ -2,6 +2,7 @@ package com;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Scanner;
@@ -16,7 +17,7 @@ public class EZLang {
 	
 	
 	public static void main(String[] args) throws IOException{
-		///Users/mac/Documents/eclipse-workspace/MScProject/src/tests/ConditionalTests/WhileIncrement.ez
+		///Users/mac/Documents/eclipse-workspace/MScProject/src/tests/FrankensteinTests/ExistsinArray.ez
 		System.out.println("----------------------------");
 		System.out.println("---- Welcome to EZlang! ----");
 		System.out.println("----------------------------");
@@ -54,12 +55,18 @@ public class EZLang {
 		return false;
 	}
 	
-	public static void runEZFile(String path) throws IOException {
+	public static void runEZFile(String path)  {
 		System.out.println("Running .ez file...The result of running the program can be found below:");
+		try {
 		byte[] byteArray = Files.readAllBytes(Paths.get(path));
 		
 		String sourceCode = new String(byteArray, Charset.defaultCharset());
-		runSourceCode(sourceCode);
+		runSourceCode(sourceCode); 
+		} catch (NoSuchFileException e) {
+			System.out.println("That is not an EZlang file. Please enter a valid filepath.");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public static void runSourceCode(String sourceCode) {
