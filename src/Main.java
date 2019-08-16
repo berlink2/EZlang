@@ -11,6 +11,7 @@ public class Main {
 		
 		//String test ="a=[1,2,3,4,5];if(false) {a+5;print a;}else {print a;}";
 	//String test = "i=0;while(i<=10) {i=i+1;print i;}";
+		//String test = "print a=5;";
 		//String test = "array = [1,2,3,4,5];if(true){array=array+5;print array;}else {print array;}";
 		String test = "array = [1,2,3,4,5];\n" + 
 				"x=read;\n" + 

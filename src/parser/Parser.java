@@ -30,7 +30,7 @@ public class Parser {
 
 	private Stmt parseDeclare() {
 
-		if (getNextToken().getType() == TokenType.EQUAL && getCurrToken().getType() == TokenType.ID && varExists(getCurrToken().getLexeme())) {
+		if (checkVarAlreadyDeclared(getCurrToken().getLexeme())) {
 
 			if (match(TokenType.ID)) {
 
@@ -48,9 +48,9 @@ public class Parser {
 		return parseStmt();
 	}
 
-	private boolean varExists(String current) {
+	private boolean checkVarAlreadyDeclared(String current) {
 		for (int i = 0; i < curr; i++) {
-			if (tokenList.get(i).getLexeme().equals(current) ) {
+			if (tokenList.get(i).getLexeme().equals(current) && getNextToken().getType() == TokenType.EQUAL && getCurrToken().getType() == TokenType.ID) {
 				return false;
 			}
 		}

@@ -12,6 +12,7 @@ public abstract class Stmt {
 		T visitPrint(Print stmt);
 		T visitWhile(While stmt);
 		
+		
 	}
 	
 	abstract <T> T accept(Visitor<T> v);
@@ -158,6 +159,8 @@ public abstract class Stmt {
 
 			
 		}
+		
+		
 		
 
 }
