@@ -1,7 +1,10 @@
-package ast;
+package interpreter;
 
-import ast.Expr.*;
+
+
+import ast.*;
 import ast.Stmt.*;
+import ast.Expr.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,8 +15,9 @@ import java.util.Scanner;
 import lexer.Token;
 import lexer.TokenType;
 
-public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
+public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 	private Environment table = new Environment();
+	
 
 	public void execute(List<Stmt> stmtList) {
 		for (Stmt stmt : stmtList) {
@@ -60,7 +64,7 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 	 * evaluates and returns the result of a binary expression
 	 */
 	@Override
-	public Object visitBinOp(binOp expr) {
+	public Object visitBinOp(ExprBinOp expr) {
 		Object left = call(expr.getLeft());
 		Object right = call(expr.getRight());
 		Token opToken = expr.getOp();
@@ -248,14 +252,14 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 	 * returns the value of a literal
 	 */
 	@Override
-	public Object visitLiteral(Literal expr) {
+	public Object visitLiteral(ExprLiteral expr) {
 
 		return expr.getVal();
 	}
 
 	// returns the evaluation of a unary expression
 	@Override
-	public Object visitUnaryOp(unaryOp expr) {
+	public Object visitUnaryOp(ExprUnaryOp expr) {
 		Object right = call(expr.getRight());
 		String rightString = right.toString();
 
@@ -289,9 +293,9 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 	 * evaluates expression in a grouping
 	 */
 	@Override
-	public Object visitGroup(Group expr) {
+	public Object visitGroup(ExprGroup expr) {
 
-		return call(expr.getNode());
+		return call(expr.getGroupExpr());
 	}
 
 	// helper method to check if two operands are equal and returns boolean
@@ -313,7 +317,7 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 
 	// this method evaluates the expression in a statement expression
 	@Override
-	public Void visitExpr(Expression stmt) {
+	public Void visitExpr(StmtExpression stmt) {
 		call(stmt.getExpr());
 		return null;
 	}
@@ -324,7 +328,7 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 	 * environment table
 	 */
 	@Override
-	public Void visitBlock(Block stmt) {
+	public Void visitBlock(StmtBlock stmt) {
 		List<Stmt> statementList = stmt.getStatements();
 
 		Environment oldTable = this.table;
@@ -348,7 +352,7 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 
 	// if variable is not initialized it is set to null
 	@Override
-	public Void visitVar(Var stmt) {
+	public Void visitVar(StmtVar stmt) {
 		Object value = null;
 		if (stmt.getInitial() != null) {
 			value = call(stmt.getInitial());
@@ -364,7 +368,7 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 	 * value
 	 */
 	@Override
-	public Object visitAssign(Assign expr) {
+	public Object visitAssign(ExprAssignment expr) {
 		Object value = call(expr.getValue());
 
 		table.assign(expr.getName(), value);
@@ -376,16 +380,16 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 	 * that corresponds to the variable's name
 	 */
 	@Override
-	public Object visitVariable(Variable expr) {
+	public Object visitVariable(ExprVariable expr) {
 
 		return table.get(expr.getName());
 	}
 
 	@Override
-	public Void visitIf(If stmt) {
+	public Void visitIf(StmtIf stmt) {
 		// checks if cond is truthy or not.
 		// if truthy then statement is executed, if falsey else statement is executed
-		boolean cond = isTruthy(evaluate(stmt.Cond));
+		boolean cond = isTruthy(evaluate(stmt.getCond()));
 		if (cond) {
 			execute(stmt.getThen());
 		} else if (stmt.getElse() != null) {
@@ -395,7 +399,7 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 	}
 
 	@Override
-	public Void visitPrint(Print stmt) {
+	public Void visitPrint(StmtPrint stmt) {
 		Object value = evaluate(stmt.getPrintedString());
 
 		if (value == null) {
@@ -407,7 +411,7 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 	}
 
 	@Override
-	public Void visitWhile(While stmt) {
+	public Void visitWhile(StmtWhile stmt) {
 
 		// checks if expression if truthy or falsey
 		boolean loopCheck = isTruthy(evaluate(stmt.getCond()));
@@ -425,7 +429,7 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 	 * 
 	 */
 	@Override
-	public Object visitRead(Read expr) {
+	public Object visitRead(ExprRead expr) {
 		String input = null;
 		Scanner s = new Scanner(System.in);
 
@@ -458,7 +462,7 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 	}
 
 	@Override
-	public Object visitArray(Array expr) {
+	public Object visitArray(ExprArray expr) {
 		List<Object> arrayValues = new ArrayList<>();
 		for (Expr expression : expr.getArrayValues()) {
 			arrayValues.add(evaluate(expression));
@@ -468,16 +472,16 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 	}
 
 	@Override
-	public Object visitSubscript(Subscript expr) {
+	public Object visitSubscript(ExprSubscript expr) {
 
 		List arrayValues = (List) evaluate(expr.getArray());
-		int index = (int) evaluate(expr.arrayIndex);
+		int index = (int) evaluate(expr.getArrayIndex());
 
 		return arrayValues.get(index);
 	}
 
 	@Override
-	public Object visitAssignArray(AssignArray expr) {
+	public Object visitAssignArray(ExprArrayAccess expr) {
 
 		Object newValue = evaluate(expr.getValue());
 
@@ -485,7 +489,7 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 		Object arrayObject = table.get(name);
 		List<Object> array = (List) arrayObject;
 
-		Subscript subscript = (Subscript) expr.getsubscript();
+		ExprSubscript subscript = (ExprSubscript) expr.getsubscript();
 		;
 		Object indexObject = evaluate(subscript.getArrayIndex());
 
@@ -495,5 +499,7 @@ public class TreeInterpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>
 
 		return newValue;
 	}
+
+	
 
 }

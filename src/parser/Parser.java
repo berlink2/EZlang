@@ -65,7 +65,7 @@ public class Parser {
 		}
 
 		consume(TokenType.SEMICOLON);
-		return new Stmt.Var(variable, initial);
+		return new StmtVar(variable, initial);
 	}
 
 	private Stmt parseStmt() {
@@ -79,7 +79,7 @@ public class Parser {
 		}
 
 		if (match(TokenType.LEFT_CURLY_BRACKET)) {
-			return new Stmt.Block(parseBlockStmt());
+			return new StmtBlock(parseBlockStmt());
 		}
 
 		if (match(TokenType.PRINT)) {
@@ -92,7 +92,7 @@ public class Parser {
 	private Stmt parsePrintStmt() {
 		Expr printedString = parseExpr();
 		consume(TokenType.SEMICOLON);
-		return new Stmt.Print(printedString);
+		return new StmtPrint(printedString);
 	}
 
 	private Stmt parseIfStmt() {
@@ -108,7 +108,7 @@ public class Parser {
 			Else = parseStmt();
 			
 		}
-		return new Stmt.If(cond, then, Else);
+		return new StmtIf(cond, then, Else);
 
 	}
 
@@ -119,7 +119,7 @@ public class Parser {
 
 		Stmt body = parseStmt();
 
-		return new Stmt.While(cond, body);
+		return new StmtWhile(cond, body);
 	}
 
 	private List<Stmt> parseBlockStmt() {
@@ -138,7 +138,7 @@ public class Parser {
 	private Stmt parseExprStmt() {
 		Expr expression = parseExpr();
 		consume(TokenType.SEMICOLON);
-		return new Stmt.Expression(expression);
+		return new StmtExpression(expression);
 	}
 
 	private Expr parseExpr() {
@@ -152,12 +152,12 @@ public class Parser {
 
 			Expr value = parseAssignment();
 
-			if (expression instanceof Expr.Variable) {
-				Token variable = ((Expr.Variable) expression).getName();
-				return new Expr.Assign(variable, value);
-			} else if (expression instanceof Expr.Subscript) {
-				Token name = ((Expr.Subscript) expression).getName();
-				return new Expr.AssignArray(name, expression, value);
+			if (expression instanceof ExprVariable) {
+				Token variable = ((ExprVariable) expression).getName();
+				return new ExprAssignment(variable, value);
+			} else if (expression instanceof ExprSubscript) {
+				Token name = ((ExprSubscript) expression).getName();
+				return new ExprArrayAccess(name, expression, value);
 			}
 		}
 
@@ -169,7 +169,7 @@ public class Parser {
 		while (match(TokenType.OR)) {
 			Token op = getPreviousToken();
 			Expr right = parseLogicAnd();
-			expression = new Expr.binOp(op, expression, right);
+			expression = new ExprBinOp(op, expression, right);
 		}
 		return expression;
 	}
@@ -179,7 +179,7 @@ public class Parser {
 		while (match(TokenType.AND)) {
 			Token op = getPreviousToken();
 			Expr right = parseEquality();
-			expression = new Expr.binOp(op, expression, right);
+			expression = new ExprBinOp(op, expression, right);
 		}
 		return expression;
 	}
@@ -189,7 +189,7 @@ public class Parser {
 		while (match(TokenType.EQUAL_EQUAL, TokenType.EXCLAMATION_EQUAL)) {
 			Token op = getPreviousToken();
 			Expr right = parseRelational();
-			expression = new Expr.binOp(op, expression, right);
+			expression = new ExprBinOp(op, expression, right);
 		}
 		return expression;
 	}
@@ -199,7 +199,7 @@ public class Parser {
 		while (match(TokenType.GREATER_EQUAL, TokenType.GREATER, TokenType.LESS, TokenType.LESS_EQUAL)) {
 			Token op = getPreviousToken();
 			Expr right = parseAdditive();
-			expression = new Expr.binOp(op, expression, right);
+			expression = new ExprBinOp(op, expression, right);
 		}
 		return expression;
 	}
@@ -209,7 +209,7 @@ public class Parser {
 		while (match(TokenType.PLUS, TokenType.MINUS)) {
 			Token op = getPreviousToken();
 			Expr right = parseMultiplicative();
-			expression = new Expr.binOp(op, expression, right);
+			expression = new ExprBinOp(op, expression, right);
 		}
 		return expression;
 	}
@@ -219,7 +219,7 @@ public class Parser {
 		while (match(TokenType.STAR, TokenType.SLASH, TokenType.PERCENT)) {
 			Token op = getPreviousToken();
 			Expr right = parseRead();
-			expression = new Expr.binOp(op, expression, right);
+			expression = new ExprBinOp(op, expression, right);
 		}
 		return expression;
 	}
@@ -229,7 +229,7 @@ public class Parser {
 		if (match(TokenType.READ)) {
 			Token name = tokenList.get(curr - 3);
 			Expr value = null;
-			return new Expr.Read(name, value);
+			return new ExprRead(name, value);
 		}
 		return parseUnary();
 	}
@@ -238,7 +238,7 @@ public class Parser {
 		if (match(TokenType.EXCLAMATION, TokenType.MINUS)) {
 			Token op = getPreviousToken();
 			Expr right = parseUnary();
-			return new Expr.unaryOp(op, right);
+			return new ExprUnaryOp(op, right);
 		}
 		return parseSubscript();
 
@@ -258,7 +258,7 @@ public class Parser {
 
 				// creates a Subscript expression where exprName = array name, index =array
 				// index, expr = array
-				expr = new Expr.Subscript(exprName, index, expr);
+				expr = new ExprSubscript(exprName, index, expr);
 				// if (getNextToken().getType()==TokenType.EQUAL)
 
 			} else {
@@ -271,35 +271,35 @@ public class Parser {
 
 	private Expr parsePrimitive() {
 		if (match(TokenType.NULL))
-			return new Expr.Literal(null);
+			return new ExprLiteral(null);
 		if (match(TokenType.TRUE))
-			return new Expr.Literal(true);
+			return new ExprLiteral(true);
 		if (match(TokenType.FALSE))
-			return new Expr.Literal(false);
+			return new ExprLiteral(false);
 		if (match(TokenType.STRING)) {
-			return new Expr.Literal(getPreviousToken().getLiteral());
+			return new ExprLiteral(getPreviousToken().getLiteral());
 		}
 		if (match(TokenType.CHAR)) {
-			return new Expr.Literal(getPreviousToken().getLiteral());
+			return new ExprLiteral(getPreviousToken().getLiteral());
 		}
 		if (match(TokenType.INTEGER)) {
-			return new Expr.Literal(getPreviousToken().getLiteral());
+			return new ExprLiteral(getPreviousToken().getLiteral());
 		}
 		if (match(TokenType.FLOAT)) {
-			return new Expr.Literal(getPreviousToken().getLiteral());
+			return new ExprLiteral(getPreviousToken().getLiteral());
 		}
 		if (match(TokenType.ID)) {
-			return new Expr.Variable(getPreviousToken());
+			return new ExprVariable(getPreviousToken());
 		}
 		if (match(TokenType.LEFT_PARENTHESIS)) {
 			Expr expression = parseExpr();
 			consume(TokenType.RIGHT_PARENTHESIS);
-			return new Expr.Group(expression);
+			return new ExprGroup(expression);
 		}
 
 		if (match(TokenType.LEFT_SQUARE_BRACKET)) {
 
-			return new Expr.Array(parseArray());
+			return new ExprArray(parseArray());
 		}
 
 		throw error(getCurrToken(), "");

@@ -2,6 +2,7 @@
 import java.util.List;
 
 import ast.*;
+import interpreter.TreeInterpreter;
 import lexer.*;
 import parser.*;
 
@@ -10,27 +11,29 @@ public class Main {
 	public static void main(String[] args) {
 		
 		//String test ="a=[1,2,3,4,5];if(false) {a+5;print a;}else {print a;}";
-	//String test = "i=0;while(i<=10) {i=i+1;print i;}";
+	String test = "i=0;while(i<=10) {i=i+1;print i;}";
 		//String test = "print a=5;";
 		//String test = "array = [1,2,3,4,5];if(true){array=array+5;print array;}else {print array;}";
-		String test = "array = [1,2,3,4,5];\n" + 
-				"x=read;\n" + 
-				"i=0;\n" + 
-				"found = false;\n" + 
-				"\n" + 
-				"while(i<5) {\n" + 
-				"if (array[i]==x) {\n" + 
-				"found = true;\n" + 
-				"\n" + 
-				"} \n" + 
-				"i=i+1;\n" + 
-				"\n" + 
-				"}\n" + 
-				"if (found == true) {\n" + 
-				"print \"It exists!\";\n" + 
-				"} else {\n" + 
-				"array=array +x;\n" + 
-				"print array;}";
+//		String test = "array = [1,2,3,4,5];\n" + 
+//				"x=read;\n" + 
+//				"i=0;\n" + 
+//				"found = false;\n" + 
+//				"\n" + 
+//				"while(i<5) {\n" + 
+//				"if (array[i]==x) {\n" + 
+//				"found = true;\n" + 
+//				"\n" + 
+//				"} \n" + 
+//				"i=i+1;\n" + 
+//				"\n" + 
+//				"}\n" + 
+//				"if (found == true) {\n" + 
+//				"print \"It exists!\";\n" + 
+//				"} else {\n" + 
+//				"array=array +x;\n" + 
+//				"print array;}";
+//		
+		//String test = "a =5;{a=6;print a;}print a;";
 		
 		
 		//int a=5;{a=3;{a=4;}System.out.println(a); }{a=6;System.out.println(a);}System.out.println(a);
