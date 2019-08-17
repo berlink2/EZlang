@@ -9,30 +9,33 @@ import parser.*;
 public class Main {
 
 	public static void main(String[] args) {
-		//String test = "array = [1,2,3,4];array shrink 1;print array;";
-		//String test = "a=5;a+5;print a;";
+		//String test = "array = [1,2,3,4];array=array shrink 1;print array;";
+	String test = "a =1;print a;{a=2;print a;{a=3;}print a;}print a; ";
+		//String test = "a=5;a+50;print a;";
 		//String test ="a=[1,2,3,4,5];if(false) {a+5;print a;}else {print a;}";
 	//String test = "i=0;while(i<=10) {i=i+1;print i;}";
 		//String test = "print a=5;";
 		//String test = "array = [1,2,3,4,5];if(true){array=array+5;print array;}else {print array;}";
-		String test = "array = [1,2,3,4,5];\n" + 
-				"x=read;\n" + 
-				"i=0;\n" + 
-				"found = false;\n" + 
-				"\n" + 
-				"while(i<5) {\n" + 
-				"if (array[i]==x) {\n" + 
-				"found = true;array[i]=\"Was here.\"\n" + 
-				"\n" + 
-				"} \n" + 
-				"i=i+1;\n" + 
-				"\n" + 
-				"}\n" + 
-				"if (found == true) {\n" + 
-				"print \"Found!\";print array;\n" + 
-				"} else {\n" + 
-				"array append x;\n" + 
-				"print array;}";
+//		String test = "array = [1,2,3,4,5];\n" + 
+//				"x=read;\n" + 
+//				"i=0;\n" + 
+//				"found = false;\n" + 
+//				"\n" + 
+//				"while(i<5) {\n" + 
+//				"if (array[i]==x) {\n" + 
+//				"found = true;array[i]=\"Was here.\"\n" + 
+//				"\n" + 
+//				"} \n" + 
+//				"i=i+1;\n" + 
+//				"\n" + 
+//				"}\n" + 
+//				"if (found == true) {\n" + 
+//				"print \"Found!\";print array;\n" + 
+//				"} else {\n" + 
+//				"array append 1;\n" + 
+//				"print array;}";
+
+		
 		
 		//String test = "a=5;{a=6;print a;}print a;";
 		
@@ -75,7 +78,7 @@ public class Main {
 //	for (Token token:tokenList) {
 //		System.out.println(token);
 //	}	
-		
+//		
 		
 		
 	 

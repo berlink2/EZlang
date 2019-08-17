@@ -18,7 +18,7 @@ public class EZLang {
 	
 	
 	public static void main(String[] args) throws IOException{
-		///Users/mac/Documents/eclipse-workspace/MScProject/src/tests/FrankensteinTests/ExistsinArray.ez
+		///Users/mac/Documents/eclipse-workspace/MScProject/src/tests/ArrayTests/ManipulateArray.ez
 		System.out.println("----------------------------");
 		System.out.println("---- Welcome to EZlang! ----");
 		System.out.println("----------------------------");
@@ -76,7 +76,7 @@ public class EZLang {
 		List<Token> tokenList = lexer.getTokenList();
 		Parser parser = new Parser(tokenList);
 		parser.parse();
-		List<Stmt> statementList = parser.getStatementList();
+			List<Stmt> statementList = parser.getStatementList();
 		
 	
 		interpreter.execute(statementList);
