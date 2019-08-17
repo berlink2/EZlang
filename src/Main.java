@@ -10,7 +10,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		//String test = "array = [1,2,3,4];array=array shrink 1;print array;";
-	String test = " i=0;repeat(5){i=i+1;print i;} ";
+	String test = " i=0;repeat(0){i=i+1;print i;} ";
 		//String test = "a=5;a+50;print a;";
 		//String test ="a=[1,2,3,4,5];if(false) {a+5;print a;}else {print a;}";
 	//String test = "i=0;while(i<=10) {i=i+1;print i;}";

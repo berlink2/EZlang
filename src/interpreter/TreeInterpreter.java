@@ -13,6 +13,7 @@ import lexer.TokenType;
 
 public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 	private Environment table = new Environment();
+	private Environment localTable = table;
 
 	public void execute(List<Stmt> stmtList) {
 		for (Stmt stmt : stmtList) {
@@ -52,6 +53,19 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 	 */
 	private void execute(Stmt stmt) {
 		stmt.accept(this);
+	}
+	
+	private void execute(List<Stmt> stmtList, Environment localTable) {
+		Environment oldTable = this.table;
+		Environment newTable = localTable;
+		try {
+			this.table = newTable;
+			for(Stmt stmt:stmtList) {
+				execute(stmt);
+			}
+		} finally {
+			this.table = oldTable;
+		}
 	}
 
 	/**
@@ -507,16 +521,18 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 		if (loopsObject instanceof Integer) {
 		Integer loops = (Integer) loopsObject;
 		
-		if (loops>0) {
+		
 			int i =0;
-			while (i<loops ) {
+			do {
 				execute(stmt.getBody());
 				i++;
-			}
-			
-		} else {
-			throw new RuntimeException("Can't repeat 0 times. Repeat amount must be greater than 0.");
-		}
+			} while(i<=loops);
+//			while (i<loops ) {
+//				execute(stmt.getBody());
+//				i++;
+//			}
+//			
+		 
 		} else {
 			throw new RuntimeException("Repeat amount must be an integer.");
 		}
