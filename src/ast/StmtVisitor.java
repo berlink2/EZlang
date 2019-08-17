@@ -9,4 +9,5 @@ public interface StmtVisitor<T> {
 	T visitIf(StmtIf stmt);
 	T visitPrint(StmtPrint stmt);
 	T visitWhile(StmtWhile stmt);
+	T visitRepeat(StmtRepeat stmt);
 }

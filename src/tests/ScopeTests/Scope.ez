@@ -1,0 +1,1 @@
+a=6;print a;{a=7;print a;}print a;  #should print 6 then 7 then 7

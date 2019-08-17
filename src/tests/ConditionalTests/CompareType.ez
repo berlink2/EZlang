@@ -1,0 +1,6 @@
+a = 123 == 123;
+print a;        #Should print true
+
+b =123 == "123";     #Should print false
+print b;
+	

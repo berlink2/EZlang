@@ -77,7 +77,9 @@ public class Parser {
 		if (match(TokenType.WHILE)) {
 			return parseWhileStmt();
 		}
-
+		if (match(TokenType.REPEAT)) {
+			return parseRepeatStmt();
+		}
 		if (match(TokenType.LEFT_CURLY_BRACKET)) {
 			return new StmtBlock(parseBlockStmt());
 		}
@@ -120,6 +122,15 @@ public class Parser {
 		Stmt body = parseStmt();
 
 		return new StmtWhile(cond, body);
+	}
+	
+	private Stmt parseRepeatStmt() {
+		consume(TokenType.LEFT_PARENTHESIS);
+		Expr loops = parseExpr();
+		consume(TokenType.RIGHT_PARENTHESIS);
+		
+		Stmt body = parseStmt();
+		return new StmtRepeat(loops,body);
 	}
 
 	private List<Stmt> parseBlockStmt() {

@@ -29,6 +29,7 @@ public class Lexer {
 		resKeywords.put("read", TokenType.READ);
 		resKeywords.put("append", TokenType.APPEND);
 		resKeywords.put("shrink", TokenType.SHRINK);
+		resKeywords.put("repeat", TokenType.REPEAT);
 	}
 
 	/*

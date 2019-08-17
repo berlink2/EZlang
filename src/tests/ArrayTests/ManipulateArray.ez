@@ -1,0 +1,10 @@
+a=[1,2,3]; 
+a= a append 4;
+print a;  #Should print array [1,2,3,4]
+a[0]=0;
+print a; #Should print array [0,2,3,4]
+a=a shrink 4;
+print a; #Should print array [0]
+
+
+

@@ -1,0 +1,13 @@
+a=5;
+print a;   #Should print the above
+a="five";
+print a;#Should print the above
+a = 6.9;
+print a;#Should print the above
+a= 'c';
+print a;#Should print the above
+a= true;
+print a;#Should print the above
+a= [1,2,3];
+print a;#Should print the above
+

@@ -1,15 +1,11 @@
 package interpreter;
 
-
-
 import ast.*;
-import ast.Stmt.*;
-import ast.Expr.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+
 import java.util.List;
-import java.util.Map;
+
 import java.util.Scanner;
 
 import lexer.Token;
@@ -17,13 +13,12 @@ import lexer.TokenType;
 
 public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 	private Environment table = new Environment();
-	
 
 	public void execute(List<Stmt> stmtList) {
 		for (Stmt stmt : stmtList) {
 			execute(stmt);
 		}
-		//System.out.println(table.getTable().toString());
+		// System.out.println(table.getTable().toString());
 	}
 
 	/**
@@ -91,8 +86,7 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 			if (left instanceof Character && right instanceof Character) {
 				return String.valueOf(left) + right;
 			}
-			
-			
+
 			throw new RuntimeError(opToken, "Invalid operand types for a '+' operation.");
 		case MINUS:
 
@@ -157,9 +151,9 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 				return newArray;
 
 			}
-			throw new RuntimeError(opToken, "You can only perform a shrink operation with an array and an integer. The array must be on the left side.");
-			
-			
+			throw new RuntimeError(opToken,
+					"You can only perform a shrink operation with an array and an integer. The array must be on the left side.");
+
 		case GREATER:
 			checkTypes(opToken, left, right);
 			return Double.parseDouble(leftString) > Double.parseDouble(rightString);
@@ -348,11 +342,10 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 			execute(statementList);
 
 		} finally {
-			
+
 			this.table = oldTable;
 
 		}
-		
 
 		return null;
 
@@ -508,6 +501,26 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 		return newValue;
 	}
 
-	
+	@Override
+	public Void visitRepeat(StmtRepeat stmt) {
+		Object loopsObject = evaluate(stmt.getRepeatAmount());
+		if (loopsObject instanceof Integer) {
+		Integer loops = (Integer) loopsObject;
+		
+		if (loops>0) {
+			int i =0;
+			while (i<loops ) {
+				execute(stmt.getBody());
+				i++;
+			}
+			
+		} else {
+			throw new RuntimeException("Can't repeat 0 times. Repeat amount must be greater than 0.");
+		}
+		} else {
+			throw new RuntimeException("Repeat amount must be an integer.");
+		}
+		return null;
+	}
 
 }
