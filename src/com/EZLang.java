@@ -18,7 +18,7 @@ public class EZLang {
 	
 	
 	public static void main(String[] args) throws IOException{
-		///Users/mac/Documents/eclipse-workspace/MScProject/src/tests/ArrayTests/ManipulateArray.ez
+		///Users/mac/Documents/eclipse-workspace/MScProject/src/tests/FrankensteinTests
 		System.out.println("----------------------------");
 		System.out.println("---- Welcome to EZlang! ----");
 		System.out.println("----------------------------");
@@ -72,7 +72,7 @@ public class EZLang {
 	
 	public static void runSourceCode(String sourceCode) {
 		Lexer lexer = new Lexer(sourceCode);
-		lexer.tokenStream();
+		lexer.LexicalAnalysis();
 		List<Token> tokenList = lexer.getTokenList();
 		Parser parser = new Parser(tokenList);
 		parser.parse();

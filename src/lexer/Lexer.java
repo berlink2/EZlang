@@ -10,7 +10,7 @@ public class Lexer {
 	private final String sourceCode;
 	private final List<Token> tokenList = new ArrayList<>();
 	private static final Map<String, TokenType> resKeywords = new HashMap<>();
-	private int start = 0;
+	private int startOfToken = 0;
 	private int curr = 0;
 	private int line = 1;
 	private boolean isEnd;
@@ -38,23 +38,21 @@ public class Lexer {
 	 * 
 	 * @return
 	 */
-	public void tokenStream() {
-		while (!checkEnd()) {
-			start = curr;
-			scanToken();
-		}
-
-		tokenList.add(new Token(TokenType.EOF, "", null, line));
-	}
+	
 
 	public List<Token> getTokenList() {
 		return tokenList;
 	}
 
 	/*
-	 * method that scans source code for tokens
+	 * method that performs lexical analysis on the source code. It turns code that matches tokens into tokens
+	 * and puts them into a token list.
+	 * Once all the source code has been analyzed, an end of file token is made and inserted into the token list.
 	 */
-	private void scanToken() {
+	public void LexicalAnalysis() {
+		while (!checkEnd()) {
+			startOfToken = curr;
+			
 		char c = next();
 		switch (c) {
 		case '(':
@@ -157,6 +155,8 @@ public class Lexer {
 			}
 			break;
 		}
+		}
+		tokenList.add(new Token(TokenType.EOF, "", null, line));
 	}
 
 	private void tokenizeChar() {
@@ -168,7 +168,7 @@ public class Lexer {
 		}
 		next();
 
-		char read = sourceCode.charAt(start + 1);
+		char read = sourceCode.charAt(startOfToken + 1);
 		tokenize(TokenType.CHAR, read);
 	}
 
@@ -187,7 +187,7 @@ public class Lexer {
 
 		next();
 
-		String string = sourceCode.substring(start + 1, curr - 1);
+		String string = sourceCode.substring(startOfToken + 1, curr - 1);
 		tokenize(TokenType.STRING, string);
 
 	}
@@ -196,7 +196,7 @@ public class Lexer {
 		while (checkLetter(getCurrChar())) {
 			next();
 		}
-		String kw = sourceCode.substring(start, curr);
+		String kw = sourceCode.substring(startOfToken, curr);
 		if (resKeywords.get(kw) == null) {
 			tokenize(TokenType.ID);
 		} else {
@@ -276,10 +276,10 @@ public class Lexer {
 			while (checkNumber(getCurrChar())) {
 				next();
 			}
-			tokenize(TokenType.FLOAT, Double.parseDouble(sourceCode.substring(start, curr)));
+			tokenize(TokenType.FLOAT, Double.parseDouble(sourceCode.substring(startOfToken, curr)));
 		} else {
 
-			tokenize(TokenType.INTEGER, Integer.parseInt(sourceCode.substring(start, curr)));
+			tokenize(TokenType.INTEGER, Integer.parseInt(sourceCode.substring(startOfToken, curr)));
 		}
 
 	}
@@ -295,7 +295,7 @@ public class Lexer {
 	 * method that makes tokens for literals with values
 	 */
 	private void tokenize(TokenType tokenType, Object literal) {
-		String text = sourceCode.substring(start, curr);
+		String text = sourceCode.substring(startOfToken, curr);
 		tokenList.add(new Token(tokenType, text, literal, line));
 	}
 

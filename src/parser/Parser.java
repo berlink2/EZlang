@@ -391,7 +391,7 @@ public class Parser {
 	/**
 	 * moves to next token in list
 	 */
-	private void move() {
+	private void next() {
 		curr++;
 	}
 
@@ -404,7 +404,7 @@ public class Parser {
 	private Token consume(TokenType token) {
 
 		if (!checkEnd() && getCurrToken().getType() == token) {
-			move();
+			next();
 			
 		}
 		return getPreviousToken();
@@ -421,7 +421,7 @@ public class Parser {
 	private boolean match(TokenType... types) {
 		for (TokenType type : types) {
 			if (getCurrToken().getType() == type) {
-				move();
+				next();
 				return true;
 			}
 		}
