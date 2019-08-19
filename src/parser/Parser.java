@@ -22,6 +22,7 @@ public class Parser {
 	}
 
 	public void parse() {
+		
 		while (!checkEnd()) {
 			statementList.add(parseDeclare());
 		}
@@ -279,14 +280,14 @@ public class Parser {
 
 			if (match(TokenType.LEFT_SQUARE_BRACKET)) {
 
-				Expr index = parsePrimitive();
+				Expr index = parseExpr();
 
 				consume(TokenType.RIGHT_SQUARE_BRACKET);
 
 				// creates a Subscript expression where exprName = array name, index =array
 				// index, expr = array
 				expr = new ExprSubscript(exprName, index, expr);
-				// if (getNextToken().getType()==TokenType.EQUAL)
+				
 
 			} else {
 				break;
@@ -348,7 +349,7 @@ public class Parser {
 
 		
 
-		throw new ParserError(getCurrToken(), "Missing an expression.");
+		throw new ParserError("Incorrect EZlang syntax. Please check your code.");
 
 	}
 
@@ -414,6 +415,8 @@ public class Parser {
 			
 		}
 		return getPreviousToken();
+		
+		
 
 	}
 

@@ -9,13 +9,14 @@ import parser.*;
 public class Main {
 
 	public static void main(String[] args) {
-	//String test = "{a=10;}{a=6;print a;}";
-//		String b = String.valueOf(55.567);
-//		System.out.println(b);
-	String test = " a=\"6\";b=7;a=6.5;a=b+a; print a; ";
-		//String test = "a=5;a+50;print a;";
+	String test = "x=5;{y=x;   y=3;    print y;}print x;\n" + 
+			"";
+		
+		
+	//String test = " a=\"6\";b=6;a=b+a; print a; ";
+		//String test = "x=5; {print x;  x=3;} print x";
 		//String test ="a=[1,2,3,4,5];if(false) {a+5;print a;}else {print a;}";
-//String test = "i=0;while(i<=10) {i=i+1;print i;}";
+//String test = "i=0;while(i<=10){i=i+1;print i;}";
 		//String test = "print a=5;";
 		//String test = "array = [1,2,3,4,5];if(true){array=array+5;print array;}else {print array;}";
 //		String test = "array = [1,2,3,4,5];\n" + 
@@ -73,7 +74,7 @@ public class Main {
 		parser.parse();
 		List<Stmt> stmtList = parser.getStatementList();
 		TreeInterpreter interpreter = new TreeInterpreter();
-	interpreter.execute(stmtList);
+		interpreter.execute(stmtList);
 //	for (Stmt stmt:stmtList) {
 //		System.out.println(stmt);
 //	}
