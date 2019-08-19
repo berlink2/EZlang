@@ -18,7 +18,7 @@ public class EZLang {
 	
 	
 	public static void main(String[] args) throws IOException{
-		///Users/mac/Documents/eclipse-workspace/MScProject/src/tests/FrankensteinTests/BubbleSort.ez
+		///Users/mac/Documents/eclipse-workspace/MScProject/src/tests/FrankensteinTests/Sort.ez
 		///Users/mac/Documents/eclipse-workspace/MScProject/src/tests/UserTest.ez
 		
 		System.out.println("----------------------------");

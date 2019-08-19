@@ -22,7 +22,6 @@ public class Parser {
 	}
 
 	public void parse() {
-		
 		while (!checkEnd()) {
 			statementList.add(parseDeclare());
 		}
@@ -44,7 +43,7 @@ public class Parser {
 				return parseVarDeclare();
 
 			}
-	}
+		}
 
 		return parseStmt();
 	}
@@ -52,13 +51,7 @@ public class Parser {
 	private boolean checkVarAlreadyDeclared(String current) {
 		for (int i = 0; i < curr; i++) {
 			if (tokenList.get(i).getLexeme().equals(current) && getCurrToken().getType() == TokenType.ID) {
-					for (int j=0;j<i;j++) {
-					if(tokenList.get(j).getType()==TokenType.LEFT_CURLY_BRACKET) {
-						return false;
-					}
-				}
 				return true;
-				
 			}
 		}
 		return false;
@@ -80,13 +73,14 @@ public class Parser {
 		if (match(TokenType.IF)) {
 			return parseIfStmt();
 		}
+		if (match(TokenType.REPEAT)) {
+			return parseRepeatStmt();
+		}
 
 		if (match(TokenType.WHILE)) {
 			return parseWhileStmt();
 		}
-		if (match(TokenType.REPEAT)) {
-			return parseRepeatStmt();
-		}
+
 		if (match(TokenType.LEFT_CURLY_BRACKET)) {
 			return new StmtBlock(parseBlockStmt());
 		}
@@ -349,7 +343,7 @@ public class Parser {
 
 		
 
-		throw new ParserError("Incorrect EZlang syntax. Please check your code.");
+		throw new ParserError("Missing an expression.");
 
 	}
 
@@ -398,7 +392,7 @@ public class Parser {
 	/**
 	 * moves to next token in list
 	 */
-	private void next() {
+	private void move() {
 		curr++;
 	}
 
@@ -411,12 +405,10 @@ public class Parser {
 	private Token consume(TokenType token) {
 
 		if (!checkEnd() && getCurrToken().getType() == token) {
-			next();
+			move();
 			
 		}
 		return getPreviousToken();
-		
-		
 
 	}
 
@@ -430,7 +422,7 @@ public class Parser {
 	private boolean match(TokenType... types) {
 		for (TokenType type : types) {
 			if (getCurrToken().getType() == type) {
-				next();
+				move();
 				return true;
 			}
 		}

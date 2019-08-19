@@ -13,7 +13,7 @@ import lexer.TokenType;
 
 public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 	private Environment table = new Environment();
-	private Environment localTable = table;
+	
 
 	public void execute(List<Stmt> stmtList) {
 		for (Stmt stmt : stmtList) {
@@ -71,6 +71,7 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 		switch (opTokenType) {
 		case PLUS:
 			
+
 			if (left instanceof Integer && right instanceof Integer) {
 
 				return Integer.parseInt(leftString) + Integer.parseInt(rightString);
@@ -110,6 +111,8 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 			}
 
 			throw new RuntimeError(opToken, "Invalid operand types for a '+' operation.");
+
+			
 		case MINUS:
 
 			if (checkTypes(opToken, left, right)) {
@@ -438,12 +441,11 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 	public Void visitWhile(StmtWhile stmt) {
 
 		// checks if expression if truthy or falsey
-		boolean loopCheck = isTruthy(evaluate(stmt.getCond()));
+		
 
-		while (loopCheck) { // continuously execute statement until loop termination condition is met
+		while (isTruthy(evaluate(stmt.getCond()))) { // continuously execute statement until loop termination condition is met
 			execute(stmt.getBody());
 
-			loopCheck = isTruthy(evaluate(stmt.getCond()));
 		}
 
 		return null;
