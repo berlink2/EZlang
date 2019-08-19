@@ -76,11 +76,7 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 				return Integer.parseInt(leftString) + Integer.parseInt(rightString);
 			}
 
-			if (left instanceof Double || right instanceof Double) {
-
-				return Double.parseDouble(leftString) + Double.parseDouble(rightString);
-
-			}
+			
 
 			if (left instanceof String && (right instanceof String||right instanceof Character)) {
 				return leftString + rightString;
@@ -90,6 +86,11 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 				return leftString + String.valueOf(right);
 			}
 			
+			if (left instanceof Double || right instanceof Double) {
+
+				return Double.parseDouble(leftString) + Double.parseDouble(rightString);
+
+			}
 			
 			
 			if (left instanceof Character && right instanceof Character) {

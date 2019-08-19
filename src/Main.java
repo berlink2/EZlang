@@ -10,8 +10,9 @@ public class Main {
 
 	public static void main(String[] args) {
 	//String test = "{a=10;}{a=6;print a;}";
-
-	String test = " a=\"String\";b=;a=a+b; print a; ";
+		String b = String.valueOf(55.567);
+		System.out.println(b);
+	String test = " a=\"67.9\";b=67.6;a=a+b; print a; ";
 		//String test = "a=5;a+50;print a;";
 		//String test ="a=[1,2,3,4,5];if(false) {a+5;print a;}else {print a;}";
 //String test = "i=0;while(i<=10) {i=i+1;print i;}";
