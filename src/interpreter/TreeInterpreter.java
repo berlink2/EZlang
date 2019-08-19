@@ -70,41 +70,39 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 
 		switch (opTokenType) {
 		case PLUS:
-			
+
 			if (left instanceof Integer && right instanceof Integer) {
 
 				return Integer.parseInt(leftString) + Integer.parseInt(rightString);
 			}
 
-			if (left instanceof String && (right instanceof String||right instanceof Character)) {
+			if (left instanceof String && (right instanceof String || right instanceof Character)) {
 				return leftString + rightString;
 			}
-			
-			if (left instanceof String && (right instanceof Integer||right instanceof Double)) {
+
+			if (left instanceof String && (right instanceof Integer || right instanceof Double)) {
 				return leftString + String.valueOf(right);
 			}
-			
+
 			if (left instanceof Double && right instanceof String) {
 
 				return Double.parseDouble(leftString) + Double.parseDouble(rightString);
 
 			}
-			
-			if (left instanceof Integer &&  right instanceof String) {
+
+			if (left instanceof Integer && right instanceof String) {
 
 				return Integer.parseInt(leftString) + Integer.parseInt(rightString);
 
 			}
-			
-			if ((left instanceof Double && right instanceof Integer) || (left instanceof Integer && right instanceof Double)) {
+
+			if ((left instanceof Double && right instanceof Integer)
+					|| (left instanceof Integer && right instanceof Double)) {
 
 				return Double.parseDouble(leftString) + Double.parseDouble(rightString);
 
 			}
-			
-			
-			
-			
+
 			if (left instanceof Character && right instanceof Character) {
 				return String.valueOf(left) + right;
 			}
@@ -381,7 +379,7 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 			value = evaluate(stmt.getInitial());
 
 		}
-		
+
 		table.declare(stmt.getName().getLexeme(), value);
 
 		return null;
