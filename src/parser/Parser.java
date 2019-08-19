@@ -51,7 +51,13 @@ public class Parser {
 	private boolean checkVarAlreadyDeclared(String current) {
 		for (int i = 0; i < curr; i++) {
 			if (tokenList.get(i).getLexeme().equals(current) && getCurrToken().getType() == TokenType.ID) {
+					for (int j=0;j<i;j++) {
+					if(tokenList.get(j).getType()==TokenType.LEFT_CURLY_BRACKET) {
+						return false;
+					}
+				}
 				return true;
+				
 			}
 		}
 		return false;
