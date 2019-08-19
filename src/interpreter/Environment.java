@@ -29,7 +29,7 @@ public class Environment {
 		if (table.containsKey(name.getLexeme())) {
 			table.put(name.getLexeme(), value);
 			return;
-		}
+		} 
 		if (enclosingScope != null) {
 			enclosingScope.assign(name, value);
 			return;

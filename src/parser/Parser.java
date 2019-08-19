@@ -43,7 +43,7 @@ public class Parser {
 				return parseVarDeclare();
 
 			}
-		}
+	}
 
 		return parseStmt();
 	}

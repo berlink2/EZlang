@@ -9,14 +9,12 @@ import parser.*;
 public class Main {
 
 	public static void main(String[] args) {
-		String test = "a=10;{a=5;}{a=6;print a;}{a=8;print a;}print a;";
-//		int x =5;
-//		{x=6;}
-//		System.out.println(x);
-	//String test = " a=\"String\";b=\"String\";a=a+b; print a; ";
+	//String test = "{a=10;}{a=6;print a;}";
+
+	String test = " a=\"String\";b=;a=a+b; print a; ";
 		//String test = "a=5;a+50;print a;";
 		//String test ="a=[1,2,3,4,5];if(false) {a+5;print a;}else {print a;}";
-	//String test = "i=0;while(i<=10) {i=i+1;print i;}";
+//String test = "i=0;while(i<=10) {i=i+1;print i;}";
 		//String test = "print a=5;";
 		//String test = "array = [1,2,3,4,5];if(true){array=array+5;print array;}else {print array;}";
 //		String test = "array = [1,2,3,4,5];\n" + 
@@ -40,10 +38,10 @@ public class Main {
 
 		
 		
-		//String test = "a=5;{a=6;print a;}print a;";
 		
 		
-		//int a=5;{a=3;{a=4;}System.out.println(a); }{a=6;System.out.println(a);}System.out.println(a);
+		
+		
 //		String test = " a = \"global a\";\n" + 
 //				" b = \"global b\";\n" + 
 //				" c = \"global c\";\n" + 

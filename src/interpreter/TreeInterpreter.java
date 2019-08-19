@@ -54,19 +54,6 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 	private void execute(Stmt stmt) {
 		stmt.accept(this);
 	}
-	
-	private void execute(List<Stmt> stmtList, Environment localTable) {
-		Environment oldTable = this.table;
-		Environment newTable = localTable;
-		try {
-			this.table = newTable;
-			for(Stmt stmt:stmtList) {
-				execute(stmt);
-			}
-		} finally {
-			this.table = oldTable;
-		}
-	}
 
 	/**
 	 * 
@@ -83,6 +70,7 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 
 		switch (opTokenType) {
 		case PLUS:
+			
 			if (left instanceof Integer && right instanceof Integer) {
 
 				return Integer.parseInt(leftString) + Integer.parseInt(rightString);
@@ -94,9 +82,16 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 
 			}
 
-			if (left instanceof String && right instanceof String) {
+			if (left instanceof String && (right instanceof String||right instanceof Character)) {
 				return leftString + rightString;
 			}
+			
+			if (left instanceof String && (right instanceof Integer||right instanceof Double)) {
+				return leftString + String.valueOf(right);
+			}
+			
+			
+			
 			if (left instanceof Character && right instanceof Character) {
 				return String.valueOf(left) + right;
 			}
@@ -276,7 +271,7 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 	// returns the evaluation of a unary expression
 	@Override
 	public Object visitUnaryOp(ExprUnaryOp expr) {
-		Object right = call(expr.getRight());
+		Object right = evaluate(expr.getRight());
 		String rightString = right.toString();
 
 		switch (expr.getOp().getType()) {
@@ -311,7 +306,7 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 	@Override
 	public Object visitGroup(ExprGroup expr) {
 
-		return call(expr.getGroupExpr());
+		return evaluate(expr.getGroupExpr());
 	}
 
 	// helper method to check if two operands are equal and returns boolean
@@ -334,7 +329,7 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 	// this method evaluates the expression in a statement expression
 	@Override
 	public Void visitExpr(StmtExpression stmt) {
-		call(stmt.getExpr());
+		evaluate(stmt.getExpr());
 		return null;
 	}
 
@@ -370,9 +365,10 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 	public Void visitVar(StmtVar stmt) {
 		Object value = null;
 		if (stmt.getInitial() != null) {
-			value = call(stmt.getInitial());
+			value = evaluate(stmt.getInitial());
 
 		}
+		
 		table.declare(stmt.getName().getLexeme(), value);
 
 		return null;
@@ -384,7 +380,7 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 	 */
 	@Override
 	public Object visitAssign(ExprAssignment expr) {
-		Object value = call(expr.getValue());
+		Object value = evaluate(expr.getValue());
 
 		table.assign(expr.getName(), value);
 		return value;
@@ -519,20 +515,14 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 	public Void visitRepeat(StmtRepeat stmt) {
 		Object loopsObject = evaluate(stmt.getRepeatAmount());
 		if (loopsObject instanceof Integer) {
-		Integer loops = (Integer) loopsObject;
-		
-		
-			int i =0;
+			Integer loops = (Integer) loopsObject;
+
+			int i = 0;
 			do {
 				execute(stmt.getBody());
 				i++;
-			} while(i<=loops);
-//			while (i<loops ) {
-//				execute(stmt.getBody());
-//				i++;
-//			}
-//			
-		 
+			} while (i <= loops);
+
 		} else {
 			throw new RuntimeException("Repeat amount must be an integer.");
 		}
