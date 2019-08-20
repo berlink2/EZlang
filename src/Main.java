@@ -15,31 +15,33 @@ public class Main {
 //			"			if(a == \"\") {a =i;}\n" + 
 //			"					print a; }";
 		
+	String test = "a = 5;{a=1*(3-2);print a;}print a;";
 		
-	//String test = " a=\"6\";b=6;a=a+b; print a; ";
-		//String test = "x=5; {print x;  x=3;} print x";
-		//String test ="a=[1,2,3,4,5];if(false) {a+5;print a;}else {print a;}";
-//String test = "i=0;while(i<=10){i=i+1;print i;}";
+		
+	//String test = " a=\"6\";b='6';a=a+b; print a; ";
+		//String test = "x=7;print x";
+	//String test ="make a=[1,2,3,4,5];print a[1];";
+//String test = " i=0;while(i<10){i=i+1;print i;}";
 		//String test = "print a=5;";
-		//String test = "array = [1,2,3,4,5];if(true){array=array+5;print array;}else {print array;}";
-		String test = "array = [1,2,3,4,5];\n" + 
-				"x=read;\n" + 
-				"i=0;\n" + 
-				"found = false;\n" + 
-				"\n" + 
-				"while(i<5) {\n" + 
-				"if (array[i]==x) {\n" + 
-				"found = true;array[i]=\"Was here.\"\n" + 
-				"\n" + 
-				"} \n" + 
-				"i=i+1;\n" + 
-				"\n" + 
-				"}\n" + 
-				"if (found == true) {\n" + 
-				"print \"Found!\";print array;\n" + 
-				"} else {\n" + 
-				"array=array append x;\n" + 
-				"print array;}";
+		//String test = "array = [1,2,3,4,5];if(true){array=array append array[4];print array;}";
+//		String test = "array = [1,2,3,4,5];\n" + 
+//				"x=read;\n" + 
+//				"i=0;\n" + 
+//				"found = false;\n" + 
+//				"\n" + 
+//				"while(i<5) {\n" + 
+//				"if (array[i]==x) {\n" + 
+//				"found = true;array[i]=\"Was here\"\n" + 
+//				"\n" + 
+//				"} \n" + 
+//				"i=i+1;\n" + 
+//				"\n" + 
+//				"}\n" + 
+//				"if (found == true) {\n" + 
+//				"print \"Found!\";print array;\n" + 
+//				"} else {\n" + 
+//				"array=array append x;\n" + 
+//				"print array;}";
 
 		
 		
@@ -76,7 +78,7 @@ public class Main {
 		Parser parser = new Parser(tokenList);
 		parser.parse();
 		List<Stmt> stmtList = parser.getStatementList();
-		TreeInterpreter interpreter = new TreeInterpreter();
+		 final TreeInterpreter interpreter = new TreeInterpreter();
 		interpreter.execute(stmtList);
 //	for (Stmt stmt:stmtList) {
 //		System.out.println(stmt);

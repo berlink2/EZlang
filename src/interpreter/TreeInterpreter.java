@@ -441,11 +441,11 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 	public Void visitWhile(StmtWhile stmt) {
 
 		// checks if expression if truthy or falsey
-		
+		boolean loopCheck = isTruthy(evaluate(stmt.getCond()));
 
-		while (isTruthy(evaluate(stmt.getCond()))) { // continuously execute statement until loop termination condition is met
+		while (loopCheck) { // continuously execute statement until loop termination condition is met
 			execute(stmt.getBody());
-
+			loopCheck = isTruthy(evaluate(stmt.getCond()));
 		}
 
 		return null;

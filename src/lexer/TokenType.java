@@ -21,10 +21,10 @@ public enum TokenType {
 		  
 	// Reserved Keywords
 		  IF, THEN, ELSE, PRINT, NULL, TRUE, FALSE, WHILE, READ, APPEND, SHRINK,
-		  REPEAT, 
+		  REPEAT, MAKE,
 		  
 	// Literals.                                     
-		   ID, STRING, INTEGER, FLOAT, CHAR,                    	  
+		  ID, STRING, INTEGER, FLOAT, CHAR,                   	  
 		  
 	//End of file 
 		  EOF

@@ -51,6 +51,8 @@ public class Parser {
 	private boolean checkVarAlreadyDeclared(String current) {
 		for (int i = 0; i < curr; i++) {
 			if (tokenList.get(i).getLexeme().equals(current) && getCurrToken().getType() == TokenType.ID) {
+				
+				
 				return true;
 			}
 		}
@@ -58,13 +60,16 @@ public class Parser {
 	}
 
 	private Stmt parseVarDeclare() {
-		Token variable = consume(TokenType.ID);
+		
+		Token variable = getPreviousToken();
+		
 		Expr initial = null;
 		if (match(TokenType.EQUAL)) {
 			initial = parseExpr();
 		}
-
+		
 		consume(TokenType.SEMICOLON);
+		
 		return new StmtVar(variable, initial);
 	}
 
@@ -309,41 +314,47 @@ public class Parser {
 	
 
 	private Expr parsePrimitive() {
-		if (match(TokenType.LEFT_SQUARE_BRACKET)) {
-
-			return new ExprArray(parseArray());
-		}
-		if (match(TokenType.NULL))
-			return new ExprLiteral(null);
-		if (match(TokenType.TRUE))
-			return new ExprLiteral(true);
-		if (match(TokenType.FALSE))
-			return new ExprLiteral(false);
-		if (match(TokenType.STRING)) {
-			return new ExprLiteral(getPreviousToken().getLiteral());
-		}
-		if (match(TokenType.CHAR)) {
-			return new ExprLiteral(getPreviousToken().getLiteral());
-		}
-		if (match(TokenType.INTEGER)) {
-			return new ExprLiteral(getPreviousToken().getLiteral());
-		}
-		if (match(TokenType.FLOAT)) {
-			return new ExprLiteral(getPreviousToken().getLiteral());
-		}
+		TokenType currType = getCurrToken().getType();
+		next();
+		switch(currType) {
 		
-		if (match(TokenType.ID)) {
+		case LEFT_SQUARE_BRACKET:
+			
+			return new ExprArray(parseArray());
+		case NULL:
+			
+			return new ExprLiteral(null);
+		case TRUE:
+			
+			return new ExprLiteral(true);
+		case FALSE:
+			
+			return new ExprLiteral(false);
+		case STRING:
+			
+			return new ExprLiteral(getPreviousToken().getLiteral());
+		case CHAR:
+			
+			return new ExprLiteral(getPreviousToken().getLiteral());
+		case INTEGER:
+			
+			return new ExprLiteral(getPreviousToken().getLiteral());
+		case FLOAT:
+			
+			return new ExprLiteral(getPreviousToken().getLiteral());
+		case ID: 
+			
 			return new ExprVariable(getPreviousToken());
-		}
-		if (match(TokenType.LEFT_PARENTHESIS)) {
+		case LEFT_PARENTHESIS:
+			
 			Expr expression = parseExpr();
 			consume(TokenType.RIGHT_PARENTHESIS);
 			return new ExprGroup(expression);
+		default:
+			throw new ParserError("Incorrect EZlang syntax, please check your code.");
+		
 		}
 
-		
-
-		throw new ParserError("Missing an expression.");
 
 	}
 
@@ -390,22 +401,22 @@ public class Parser {
 	}
 
 	/**
-	 * moves to next token in list
+	 * nexts to next token in list
 	 */
-	private void move() {
+	private void next() {
 		curr++;
 	}
 
 	/**
 	 * 
 	 * @param token
-	 * @return moves position in list of tokens by 1 and returns previous token if
+	 * @return nexts position in list of tokens by 1 and returns previous token if
 	 *         not at end of file and current token matches expected token
 	 */
 	private Token consume(TokenType token) {
 
 		if (!checkEnd() && getCurrToken().getType() == token) {
-			move();
+			next();
 			
 		}
 		return getPreviousToken();
@@ -414,7 +425,7 @@ public class Parser {
 
 	/**
 	 * method that checks if current token matches a particular token type. If it
-	 * does, that token will be parsed, and curr will move to the next token.
+	 * does, that token will be parsed, and curr will next to the next token.
 	 * 
 	 * @param TokenType
 	 * @return boolean
@@ -422,7 +433,7 @@ public class Parser {
 	private boolean match(TokenType... types) {
 		for (TokenType type : types) {
 			if (getCurrToken().getType() == type) {
-				move();
+				next();
 				return true;
 			}
 		}
