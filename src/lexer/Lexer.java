@@ -123,7 +123,7 @@ public class Lexer {
 
 					}
 					if (match('*')) {
-						next();
+						
 						if (match('/')) {
 							break;
 						}

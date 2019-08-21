@@ -74,6 +74,7 @@ public class Parser {
 	}
 
 	private Stmt parseStmt() {
+		
 
 		if (match(TokenType.IF)) {
 			return parseIfStmt();

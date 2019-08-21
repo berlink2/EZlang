@@ -15,11 +15,11 @@ public class Main {
 //			"			if(a == \"\") {a =i;}\n" + 
 //			"					print a; }";
 		
-	String test = "a = 5;{a=1*(3-2);print a;}print a;";
+	//String test = "a = 5;print a;";
 		
 		
 	//String test = " a=\"6\";b='6';a=a+b; print a; ";
-		//String test = "x=7;print x";
+		String test = "/*x=4;\n */x=7;print x";
 	//String test ="make a=[1,2,3,4,5];print a[1];";
 //String test = " i=0;while(i<10){i=i+1;print i;}";
 		//String test = "print a=5;";
@@ -86,7 +86,7 @@ public class Main {
 //	for (Token token:tokenList) {
 //		System.out.println(token);
 //	}	
-//		
+		
 		
 		
 	 
