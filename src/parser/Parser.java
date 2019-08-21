@@ -223,20 +223,10 @@ public class Parser {
 	}
 
 	private Expr parseAdditive() {
-		Expr expression = parseShrinkAppend();
-		while (match(TokenType.PLUS, TokenType.MINUS)) {
-			Token op = getPreviousToken();
-			Expr right = parseShrinkAppend();
-			expression = new ExprBinOp(op, expression, right);
-		}
-		return expression;
-	}
-	
-	private Expr parseShrinkAppend() {
 		Expr expression = parseMultiplicative();
-		while (match(TokenType.SHRINK, TokenType.APPEND)) {
+		while (match(TokenType.PLUS, TokenType.MINUS,TokenType.SHRINK, TokenType.APPEND)) {
 			Token op = getPreviousToken();
-			Expr right = parseMultiplicative();
+			Expr right = parseAdditive();
 			expression = new ExprBinOp(op, expression, right);
 		}
 		return expression;
