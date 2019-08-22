@@ -31,14 +31,14 @@ public class Parser {
 	private Stmt parseDeclare() {
 
 		if (!checkVarAlreadyDeclared(getCurrToken().getLexeme())) {
-
+			
 			if (match(TokenType.ID)) {
-
-				if (getCurrToken().getType() == TokenType.LEFT_SQUARE_BRACKET) {
-
-					parseSubscript();
-
-				}
+				
+//				if (getCurrToken().getType() == TokenType.LEFT_SQUARE_BRACKET) {
+//
+//					parseSubscript();
+//
+//				}
 
 				return parseVarDeclare();
 
@@ -65,7 +65,9 @@ public class Parser {
 		
 		Expr initial = null;
 		if (match(TokenType.EQUAL)) {
+			
 			initial = parseExpr();
+			
 		}
 		
 		consume(TokenType.SEMICOLON);
@@ -143,7 +145,7 @@ public class Parser {
 	private List<Stmt> parseBlockStmt() {
 		List<Stmt> newStmtList = new ArrayList<>();
 		Stmt newStmt = null;
-		while (!match(TokenType.RIGHT_CURLY_BRACKET) && !checkEnd()) {
+		while (getCurrToken().getType()!=TokenType.RIGHT_CURLY_BRACKET && !checkEnd()) {
 
 			newStmt = parseDeclare();
 			newStmtList.add(newStmt);
@@ -269,7 +271,7 @@ public class Parser {
 		while (true) {
 
 			if (match(TokenType.LEFT_SQUARE_BRACKET)) {
-
+				
 				Expr index = parseExpr();
 
 				consume(TokenType.RIGHT_SQUARE_BRACKET);
@@ -288,17 +290,22 @@ public class Parser {
 	}
 	
 	private List<Expr> parseArray() {
-		List<Expr> arrayExpr = new ArrayList<>();
-		Expr expression = null;
-		while (!checkEnd() && !match(TokenType.RIGHT_SQUARE_BRACKET)) {
-			expression = parseExpr();
-			arrayExpr.add(expression);
-
+		List<Expr> elements = new ArrayList<>();
+		
+		
+		while (!match(TokenType.RIGHT_SQUARE_BRACKET)) {
+			//System.out.println(getCurrToken());
+			Expr expression = parseExpr();
+			elements.add(expression);
+			//System.out.println(getCurrToken());
+			TokenType currTokenType =  getCurrToken().getType();
+			if(currTokenType !=TokenType.RIGHT_SQUARE_BRACKET) {
 			consume(TokenType.COMMA);
-
+			}
+			
+			
 		}
-
-		return arrayExpr;
+		return elements;
 
 	}
 	
@@ -306,35 +313,37 @@ public class Parser {
 
 	private Expr parsePrimitive() {
 		TokenType currType = getCurrToken().getType();
-		next();
+		
 		switch(currType) {
 		
 		case LEFT_SQUARE_BRACKET:
 			
+			
+			next();
 			return new ExprArray(parseArray());
 		case NULL:
-			
+			next();
 			return new ExprLiteral(null);
 		case TRUE:
-			
+			next();
 			return new ExprLiteral(true);
 		case FALSE:
-			
+			next();
 			return new ExprLiteral(false);
 		case STRING:
-			
+			next();
 			return new ExprLiteral(getPreviousToken().getLiteral());
 		case CHAR:
-			
+			next();
 			return new ExprLiteral(getPreviousToken().getLiteral());
 		case INTEGER:
-			
+			next();
 			return new ExprLiteral(getPreviousToken().getLiteral());
 		case FLOAT:
-			
+			next();
 			return new ExprLiteral(getPreviousToken().getLiteral());
 		case ID: 
-			
+			next();
 			return new ExprVariable(getPreviousToken());
 		case LEFT_PARENTHESIS:
 			
@@ -342,7 +351,7 @@ public class Parser {
 			consume(TokenType.RIGHT_PARENTHESIS);
 			return new ExprGroup(expression);
 		default:
-			throw new ParserError("Incorrect EZlang syntax, please check your code.");
+			throw new ParserError("Incorrect EZlang syntax involving " + getCurrToken() + " on line " + getCurrToken().getLine());
 		
 		}
 
@@ -397,6 +406,15 @@ public class Parser {
 	private void next() {
 		curr++;
 	}
+	
+	private  boolean checkTokenType(TokenType token) {
+		boolean match = false;
+		TokenType currType = getCurrToken().getType();
+		if (currType == token) {
+			match = true;
+		}
+		return match;
+	}
 
 	/**
 	 * 
@@ -404,13 +422,13 @@ public class Parser {
 	 * @return nexts position in list of tokens by 1 and returns previous token if
 	 *         not at end of file and current token matches expected token
 	 */
-	private Token consume(TokenType token) {
-
-		if (!checkEnd() && getCurrToken().getType() == token) {
+	private Token consume(TokenType tokenType) {
+		Token currToken = getCurrToken();
+		if (!checkEnd() && currToken.getType() == tokenType) {
 			next();
-			
+			return getPreviousToken();
 		}
-		return getPreviousToken();
+		throw new ParserError("Missing a " + tokenType.toString() + " on line " + currToken.getLine());
 
 	}
 
