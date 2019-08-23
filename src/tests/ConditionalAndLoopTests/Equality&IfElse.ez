@@ -1,0 +1,31 @@
+make a = 123 == 123;
+print a;        #Should print true
+
+make b =123 == "123";     #Should print false
+print b;
+
+if(a and b) {
+print "a and b is true"; #should not print the string
+} else {
+print "a and b are not both true"; #should print the string
+}
+
+if (a or b) {
+print "a or b is true"; #should print the string
+}
+
+if (!a) {
+"print a is false"; # should not print the string
+} else {
+print "a is not false so true"; #should print the string
+}
+
+/*
+result of program should be 
+true
+false
+a and b are not both true
+a or b is true
+a is not false so true
+*/
+	

@@ -1,0 +1,21 @@
+make a = 100;
+make b = 200;
+
+if (a>b) {
+print "a is greater than b";  # should not be printed
+}
+
+if (a<b) {
+print "a is less than b";
+}
+
+b = 100; # b is reassigned to 100
+
+if (a<=b) {
+print "a is less than or equal to b";  #should be printed
+} 
+
+if (a>=b) {
+print "a is greater than or equal to b"; #should also be printed
+}
+

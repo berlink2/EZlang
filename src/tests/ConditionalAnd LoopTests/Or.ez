@@ -1,4 +1,0 @@
-x = 15;
-y = 10;
-if(x<10 or y== 10) {print "true";} #should print true
-	

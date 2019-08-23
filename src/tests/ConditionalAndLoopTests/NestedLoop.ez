@@ -1,5 +1,5 @@
-array =[0,1,2,3];
-i=0;j=0;
+make array =[0,1,2,3];
+make i=0; make j=0;
 while(i<4) {print array[i];
 		while(j<4) {print array[j];j=j+1;}
 i=i+1;}

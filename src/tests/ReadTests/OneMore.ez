@@ -1,1 +1,5 @@
-x=read;  y=1; z=x+y; print z; #should print whatever number you enter plus 1
+make x=read;  
+make y=1; 
+make z=x+y; 
+print z; 
+#should print whatever number you enter plus 1

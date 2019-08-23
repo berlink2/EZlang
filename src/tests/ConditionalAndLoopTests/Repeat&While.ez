@@ -1,0 +1,7 @@
+make i = 0;repeat(10){print i;i=i+1;} 
+
+/* This should print 0 to 11. Runs code once and 
+repeats 10 times, so 11 total loops. */
+
+make j=0;
+while(j<11) {print j;j=j+1;} #should also print 0 to 10

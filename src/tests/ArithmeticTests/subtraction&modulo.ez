@@ -1,0 +1,18 @@
+make a = 5;
+make b = 10;
+make c = a-b;
+print c; #c = -5
+
+make one = 5;
+make two = -10;
+make three = one-two;
+print three; #c = 15
+
+make first = -5;
+make second = -10;
+print first - second; #should print 5;
+
+make d = 100;
+make e = 20;
+make f = d%e;
+print f; #c = 0 should print 0 since there 100/20 has no remainder 

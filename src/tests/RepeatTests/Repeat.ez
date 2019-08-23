@@ -1,1 +1,0 @@
-i = 0;repeat(10){i=i+1;print i;} #This should print 1 to 11. Runs code once and repeats 10 times, so 11 total loops.

@@ -1,0 +1,10 @@
+make a = 5;
+make b = 3;
+make c = 2;
+make d = a+b*c;
+print d; /*d =11 should print 11 since multiplicative operations have higher 
+		precedence	*/
+
+print a-b-c; #should print 0 since associativity is left to right 
+
+print 5*(4-2); #Should print 10 since 4-2 is in parentheses
