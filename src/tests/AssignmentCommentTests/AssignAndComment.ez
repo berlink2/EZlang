@@ -1,4 +1,4 @@
-a=5;
+make a=5;
 print a;   #Should print the above
 a="five";
 print a;#Should print the above
@@ -11,3 +11,10 @@ print a;#Should print the above
 a= [1,2,3];
 print a;#Should print the above
 
+/*
+
+a=[1,2];
+
+*/
+
+print a; #Should still print [1,2,3]

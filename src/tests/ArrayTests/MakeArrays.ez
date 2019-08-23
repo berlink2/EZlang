@@ -1,9 +1,9 @@
-a=[1,2,3.0]; #should print an array of ints and doubles
+make a=[1,2,3.0]; #should print an array of ints and doubles
 print a;
-b=["String1","String2"];
+make b=["String1","String2"];
 print b; #should print an array of strings
-c=[1,"String1"];
+make c=[1,"String1"];
 print c;#should print a heterogeneous array
-d=[];
+make d=[];
 print d; #should print an empty array;
 

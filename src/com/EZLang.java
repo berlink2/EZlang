@@ -20,7 +20,7 @@ public class EZLang {
 	public static void main(String[] args) throws IOException{
 		///Users/mac/Documents/eclipse-workspace/MScProject/src/tests/FrankensteinTests/BubbleSort.ez
 		///Users/mac/Documents/eclipse-workspace/MScProject/src/tests/UserTest.ez
-		
+		//Users/mac/Documents/eclipse-workspace/MScProject/src/tests/ArithmeticTests/Addition.ez
 		System.out.println("----------------------------");
 		System.out.println("---- Welcome to EZlang! ----");
 		System.out.println("----------------------------");

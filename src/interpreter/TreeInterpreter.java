@@ -76,7 +76,12 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 
 			if (left instanceof Integer && right instanceof Integer) {
 
-				return Integer.parseInt(leftString) + Integer.parseInt(rightString);
+				return (Integer) left + (Integer) right;
+			}
+			
+			if (left instanceof Double && right instanceof Double) {
+
+				return (Double)left + (Double)right;
 			}
 
 			if (left instanceof String && (right instanceof String||right instanceof Character)) {
