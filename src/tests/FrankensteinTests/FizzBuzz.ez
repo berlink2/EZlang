@@ -1,4 +1,4 @@
-i=0;while(i<100) { i=i+1;a = ""; 
+make i=0;while(i<100) { i=i+1;make a = ""; 
 			if(i%3==0) { a=a + "Fizz";}
 			if(i%5==0) { a=a + "Buzz";}
 			if(a == "") {a =i;}
