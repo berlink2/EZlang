@@ -1,4 +1,22 @@
-a = 10;
-b = 15.5;
-c = a+b;
-print c; #c=25.5
+make a = 10;
+make b = 15.5;
+make c = a+b;
+print c; #c=25.5 s should print 25.5
+
+make intA = 10;
+make intB = 20;
+print intA + intB; #Should print 30
+
+make floatA = 10.0;
+make floatB = 20.0;
+print floatA + floatB; # should print 30.0
+
+make charOne ='a';
+make charTwo='b';
+make concatenated =charOne+charTwo; 
+print concatenated;     #Should print ab
+
+make stringOne = "String";
+make stringTwo = "String";
+make stringThree = stringOne + stringTwo;
+print stringThree; #should print StringString

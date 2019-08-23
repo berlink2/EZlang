@@ -1,7 +1,0 @@
-a ='a';
-b='b';
-c=a+b; #Should print ab
-print c;
-
-d=c+"cdef";
-print d; #Should print abcdef
