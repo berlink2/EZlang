@@ -14,7 +14,7 @@ public enum TokenType {
 		  EQUAL, EXCLAMATION_EQUAL,                                
 		  EQUAL_EQUAL,                              
 		  GREATER, GREATER_EQUAL,                          
-		  LESS, LESS_EQUAL,  
+		  LESS, LESS_EQUAL, 
 		  
 	//Boolean 
 		  EXCLAMATION, AND, OR,

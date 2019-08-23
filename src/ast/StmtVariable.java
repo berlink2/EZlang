@@ -2,18 +2,18 @@ package ast;
 
 import lexer.Token;
 
-public class StmtVar extends Stmt {
+public class StmtVariable extends Stmt{
 	final Token name;
 	Expr initial;
 
-	public StmtVar(Token name, Expr initial) {
+	public StmtVariable(Token name, Expr initial) {
 		this.name = name;
 		this.initial = initial;
 	}
 
 	@Override
 	public <T> T accept(StmtVisitor<T> v) {
-		return v.visitVar(this);
+		return v.visitVariable(this);
 	}
 
 	public Token getName() {
@@ -23,5 +23,4 @@ public class StmtVar extends Stmt {
 	public Expr getInitial() {
 		return initial;
 	}
-
 }

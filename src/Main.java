@@ -9,29 +9,29 @@ import parser.*;
 public class Main {
 
 	public static void main(String[] args) {
-//	String test = "i=0;while(i<100) { i=i+1;a = \"\"; \n" + 
+//	String test = "make i=0;while(i<100) { i=i+1;make a = \"\"; \n" + 
 //			"			if(i%3==0) { a=a + \"Fizz\";}\n" + 
 //			"			if(i%5==0) { a=a + \"Buzz\";}\n" + 
 //			"			if(a == \"\") {a =i;}\n" + 
 //			"					print a; }";
 		
-	//String test = "a = 5;print a;";
+String test = "print \" \" + 5;";
 		
 		
-	//String test = " a=\"6\";b='6';a=a+b; print a; ";
-		String test = "/*x=4;\n */x=7;print x";
-	//String test ="make a=[1,2,3,4,5];print a[1];";
-//String test = " i=0;while(i<10){i=i+1;print i;}";
-		//String test = "print a=5;";
-		//String test = "array = [1,2,3,4,5];if(true){array=array append array[4];print array;}";
-//		String test = "array = [1,2,3,4,5];\n" + 
-//				"x=read;\n" + 
-//				"i=0;\n" + 
-//				"found = false;\n" + 
+	//String test = " make a=\"6\";make b='6';a=a+b; print a; ";
+	
+			
+  //String test = " make i=0;while(i<10){print i=i+1;}";
+		
+		//String test = "make array = [1,2,3,4,5];if(true){array=array append array[4];print array;}";
+//		String test = "make array = [1,2,3,4,5];\n" + 
+//				"make x=read;\n" + 
+//				"make i=0;\n" + 
+//				"make found = false;\n" + 
 //				"\n" + 
 //				"while(i<5) {\n" + 
-//				"if (array[i]==x) {\n" + 
-//				"found = true;array[i]=\"Was here\"\n" + 
+//				"if (array[i] == x) {\n" + 
+//				"found = true;array[i]=\"Was here.\";" + 
 //				"\n" + 
 //				"} \n" + 
 //				"i=i+1;\n" + 
@@ -49,14 +49,14 @@ public class Main {
 		
 		
 		
-//		String test = " a = \"global a\";\n" + 
-//				" b = \"global b\";\n" + 
-//				" c = \"global c\";\n" + 
+//		String test = "make a = \"global a\";\n" + 
+//				"make b = \"global b\";\n" + 
+//				"make c = \"global c\";\n" + 
 //				"{\n" + 
-//				"   a = \"outer a\";\n" + 
-//				"   b = \"outer b\";\n" + 
+//				"  make a = \"outer a\";\n" + 
+//				"  make b = \"outer b\";\n" + 
 //				"  {\n" + 
-//				"     a = \"inner a\";\n" + 
+//				"   make  a = \"inner a\";\n" + 
 //				
 //				"    print a;\n" + 
 //				"    print b;\n" + 
@@ -78,7 +78,7 @@ public class Main {
 		Parser parser = new Parser(tokenList);
 		parser.parse();
 		List<Stmt> stmtList = parser.getStatementList();
-		 final TreeInterpreter interpreter = new TreeInterpreter();
+		  TreeInterpreter interpreter = new TreeInterpreter();
 		interpreter.execute(stmtList);
 //	for (Stmt stmt:stmtList) {
 //		System.out.println(stmt);

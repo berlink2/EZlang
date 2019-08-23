@@ -23,60 +23,15 @@ public class Parser {
 
 	public void parse() {
 		while (!checkEnd()) {
-			statementList.add(parseDeclare());
+			statementList.add(parseStmt());
 		}
 
-	}
-
-	private Stmt parseDeclare() {
-
-		if (!checkVarAlreadyDeclared(getCurrToken().getLexeme())) {
-			
-			if (match(TokenType.ID)) {
-				
-//				if (getCurrToken().getType() == TokenType.LEFT_SQUARE_BRACKET) {
-//
-//					parseSubscript();
-//
-//				}
-
-				return parseVarDeclare();
-
-			}
-		}
-
-		return parseStmt();
-	}
-
-	private boolean checkVarAlreadyDeclared(String current) {
-		for (int i = 0; i < curr; i++) {
-			if (tokenList.get(i).getLexeme().equals(current) && getCurrToken().getType() == TokenType.ID) {
-				
-				
-				return true;
-			}
-		}
-		return false;
-	}
-
-	private Stmt parseVarDeclare() {
-		
-		Token variable = getPreviousToken();
-		
-		Expr initial = null;
-		if (match(TokenType.EQUAL)) {
-			
-			initial = parseExpr();
-			
-		}
-		
-		consume(TokenType.SEMICOLON);
-		
-		return new StmtVar(variable, initial);
 	}
 
 	private Stmt parseStmt() {
-		
+		if(match(TokenType.MAKE)) {
+			return parseDeclareVar();
+		}
 
 		if (match(TokenType.IF)) {
 			return parseIfStmt();
@@ -98,6 +53,20 @@ public class Parser {
 		}
 
 		return parseExprStmt();
+	}
+	
+	private Stmt parseDeclareVar() {
+		
+		Token variable = consume(TokenType.ID);
+		
+		Expr initial = null;
+		if (match(TokenType.EQUAL)) {
+			initial = parseExpr();
+		}
+		
+		consume(TokenType.SEMICOLON);
+		
+		return new StmtVariable(variable, initial);
 	}
 
 	private Stmt parsePrintStmt() {
@@ -147,7 +116,7 @@ public class Parser {
 		Stmt newStmt = null;
 		while (getCurrToken().getType()!=TokenType.RIGHT_CURLY_BRACKET && !checkEnd()) {
 
-			newStmt = parseDeclare();
+			newStmt = parseStmt();
 			newStmtList.add(newStmt);
 
 		}
@@ -228,7 +197,7 @@ public class Parser {
 		Expr expression = parseMultiplicative();
 		while (match(TokenType.PLUS, TokenType.MINUS,TokenType.SHRINK, TokenType.APPEND)) {
 			Token op = getPreviousToken();
-			Expr right = parseAdditive();
+			Expr right = parseMultiplicative();
 			expression = new ExprBinOp(op, expression, right);
 		}
 		return expression;
@@ -337,6 +306,7 @@ public class Parser {
 			next();
 			return new ExprLiteral(getPreviousToken().getLiteral());
 		case INTEGER:
+			
 			next();
 			return new ExprLiteral(getPreviousToken().getLiteral());
 		case FLOAT:
@@ -346,7 +316,7 @@ public class Parser {
 			next();
 			return new ExprVariable(getPreviousToken());
 		case LEFT_PARENTHESIS:
-			
+			next();
 			Expr expression = parseExpr();
 			consume(TokenType.RIGHT_PARENTHESIS);
 			return new ExprGroup(expression);

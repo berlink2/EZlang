@@ -4,14 +4,15 @@ import ast.*;
 import ast.Expr.*;
 import lexer.*;
 import ast.Stmt.*;
+import interpreter.TreeInterpreter;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 //test class for expression ASTs
 
-class ASTTests {
-
+//class ASTTests {
+//
 //	// The following tests check that expression ASTs are instantiated
 //	// correctly
 //
@@ -377,9 +378,9 @@ class ASTTests {
 //			
 //
 //		}
-		
+//		
 		
 	
 	
-
-}
+//
+//}

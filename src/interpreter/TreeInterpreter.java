@@ -5,14 +5,16 @@ import ast.*;
 import java.util.ArrayList;
 
 import java.util.List;
-
+import java.util.Map;
 import java.util.Scanner;
+import java.util.Stack;
 
 import lexer.Token;
 import lexer.TokenType;
 
 public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 	private Environment table = new Environment();
+	
 	
 
 	public void execute(List<Stmt> stmtList) {
@@ -358,35 +360,31 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 	public Void visitBlock(StmtBlock stmt) {
 		List<Stmt> statementList = stmt.getStatements();
 
-		Environment oldTable = this.table;
-		Environment newTable = new Environment(oldTable);
-
 		try {
-			this.table = newTable;
-
-			execute(statementList);
+			table.pushScope();
+			for (Stmt statement:statementList) {
+				execute(statement);
+			}
+			
 
 		} finally {
-
-			this.table = oldTable;
+			table.popScope();
 
 		}
 
 		return null;
 
 	}
-
-	// if variable is not initialized it is set to null
+	
 	@Override
-	public Void visitVar(StmtVar stmt) {
+	public Void visitVariable(StmtVariable stmt) {
 		Object value = null;
 		if (stmt.getInitial() != null) {
 			value = evaluate(stmt.getInitial());
 
 		}
 		
-		table.declare(stmt.getName().getLexeme(), value);
-
+		table.declare(stmt.getName(), value);
 		return null;
 	}
 
@@ -516,7 +514,7 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 		List<Object> array = (List) arrayObject;
 
 		ExprSubscript subscript = (ExprSubscript) expr.getsubscript();
-		;
+		
 		Object indexObject = evaluate(subscript.getArrayIndex());
 
 		int index = (int) indexObject;
@@ -543,5 +541,7 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 		}
 		return null;
 	}
+
+	
 
 }

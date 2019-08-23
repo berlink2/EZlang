@@ -1,59 +1,6 @@
-variable="hello";
-print variable;
-
-x=5;
-print x;
-
-print !(6==9);
-
-test_var=6;
-#test_var=read;
-
-if test_var==5 {
-	print "You entered 5!";
-} else {
-	print "You did not enter 5 :(";
-}
-
-arithmetic = 5*(5-1);
-print arithmetic;
-
-arithmetic = 1;
-
-while (arithmetic<11) {
-	print arithmetic;
-	arithmetic = arithmetic + 1;
-}
-
-print "BREAK";
-
-array=[1,2,3,4,5];
-print array[0];
-array = array append [2,3,4];
-print array[7];
-
-#Task 6
-my_array=[1,2,3];
-print my_array;
-my_array=my_array append my_array[0];
-print my_array;
-
-#Final task
-to_check = read;
-array = [1,2,3,4,5,6,7,8,9,10];
-
-i=0;
-while (i<10) {
-	if (array[i]==to_check) {
-		print "It Exists!!";
-		i=99;
-	}
-	i=i+1;
-}
-
-print i;
-if i!=100 {
-	print "It does not exist";
-	array = array append to_check;
-	print array;
-}
+x=read;
+Array= [1,2,3,4,5,6,7,8,8,10]
+if (i=0+1,Array[i]==x,i=i+1){
+print "It Exists"}
+else{
+Array append x;}

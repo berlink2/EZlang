@@ -1,65 +1,74 @@
 package interpreter;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.ListIterator;
 import java.util.Map;
+import java.util.Stack;
+
 import lexer.Token;
 
 public class Environment {
 
-
-	final Map<String, Object> table = new HashMap<>();
-	final Environment enclosingScope;
+	final LinkedList<HashMap<String, Object>> scopeList;
 
 	// constructor for the global scope environment
 	public Environment() {
-		enclosingScope = null;
+		scopeList = new LinkedList<>();
+		scopeList.push(new HashMap<String, Object>());
+
 	}
 
-	// this constructor creates a new environment and is passed the previous
-	// environment which encloses the new one
-	public Environment(Environment enclosingScope) {
-		this.enclosingScope = enclosingScope;
+	public void pushScope() {
+		scopeList.push(new HashMap<String, Object>());
 	}
 
-	public void declare(String key, Object value) {
-		table.put(key, value);
+	public void popScope() {
+		scopeList.pop();
+	}
+	
+	public void declare(Token name, Object value) {
+		String varName = name.getLexeme();
+		scopeList.peek().put(varName, value);
 	}
 
 	public void assign(Token name, Object value) {
-		if (table.containsKey(name.getLexeme())) {
-			table.put(name.getLexeme(), value);
-			return;
-		} 
-		if (enclosingScope != null) {
-			enclosingScope.assign(name, value);
-			return;
+		boolean alreadyExists = false;
+		String varName = name.getLexeme();
+		for (HashMap<String, Object> table : scopeList) {
+			for (String var : table.keySet()) {
+				if (var.equals(varName)) {
+					table.put(varName, value);
+					return;
+					
+					
+					
+				}
+			}
 		}
+		
+		
+		
+		
 
 	}
-	
 
 	public Object get(Token name) {
-		Object value = null;
-		String variable = name.getLexeme();
-		if (table.containsKey(name.getLexeme())) {
-			value = table.get(variable);
-			return value;
-		}
-	
 
-		if (enclosingScope != null) {
-			return enclosingScope.get(name);
+		String varName = name.getLexeme();
+		Object value = null;
+
+		for (HashMap<String, Object> table : scopeList) {
+			for (String var : table.keySet()) {
+				if (var.equals(varName)) {
+					value = table.get(var);
+					return value;
+				}
+			}
 		}
+
 		return value;
 
-	}
-	
-	public Map<String, Object> getTable() {
-		return table;
-	}
-
-	public Environment getEnclosingScope() {
-		return enclosingScope;
 	}
 
 }

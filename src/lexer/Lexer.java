@@ -31,6 +31,7 @@ public class Lexer {
 		resKeywords.put("shrink", TokenType.SHRINK);
 		resKeywords.put("repeat", TokenType.REPEAT);
 		resKeywords.put("make", TokenType.MAKE);
+		
 	}
 
 	/*

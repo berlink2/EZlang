@@ -1,14 +1,14 @@
-array = [10,9,8,7,6,5,4,3,2,1]; #Should sort the array and check if it is sorted 
-size = 10;
-i=1;
-sorted=false;
+make array = [10,9,8,7,6,5,4,3,2,1]; #Should sort the array and check if it is sorted 
+make size = 10;
+make i=1;
+make sorted=false;
 print "Old Array:";
 print array;
 while(i<size) {
 if(array[i]<array[i-1]) {
 array[i] = array[i] + array[i-1];
 
-array[i -1 ] = array[i] -array[i-1];
+array[i -1] = array[i] -array[i-1];
 
 array[i] = array[i] - array[i-1];
 
@@ -17,7 +17,7 @@ i=0;
 i=i+1;
 }
 
-k=0;
+make k=0;
 repeat(size-2) {
 
 if(array[k]>array[k+1]){
