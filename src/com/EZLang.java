@@ -46,6 +46,10 @@ public class EZLang {
 
 	}
 	
+	/**
+	 * @param file
+	 * @return
+	 */
 	public static boolean checkFile(String file) {
 		int fileLength = file.length();
 		String extension = file.substring(fileLength -3, fileLength);
@@ -55,6 +59,9 @@ public class EZLang {
 		return false;
 	}
 	
+	/**
+	 * @param path
+	 */
 	public static void runEZFile(String path)  {
 		System.out.println("Running .ez file...The result of running the program can be found below:");
 		try {
@@ -69,6 +76,9 @@ public class EZLang {
 		}
 	}
 	
+	/**
+	 * @param sourceCode
+	 */
 	public static void runSourceCode(String sourceCode) {
 		Lexer lexer = new Lexer(sourceCode);
 		lexer.LexicalAnalysis();

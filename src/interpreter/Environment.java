@@ -10,28 +10,48 @@ import lexer.Token;
 
 public class Environment {
 
+	/**
+	 * 
+	 */
 	final LinkedList<HashMap<String, Object>> scopeList;
 
 	// constructor for the global scope environment
+	/**
+	 * 
+	 */
 	public Environment() {
 		scopeList = new LinkedList<>();
 		scopeList.push(new HashMap<String, Object>());
 
 	}
 
+	/**
+	 * 
+	 */
 	public void pushScope() {
 		scopeList.push(new HashMap<String, Object>());
 	}
 
+	/**
+	 * 
+	 */
 	public void popScope() {
 		scopeList.pop();
 	}
 	
+	/**
+	 * @param name
+	 * @param value
+	 */
 	public void declare(Token name, Object value) {
 		String varName = name.getLexeme();
 		scopeList.peek().put(varName, value);
 	}
 
+	/**
+	 * @param name
+	 * @param value
+	 */
 	public void assign(Token name, Object value) {
 		boolean alreadyExists = false;
 		String varName = name.getLexeme();
@@ -55,6 +75,10 @@ public class Environment {
 
 	}
 
+	/**
+	 * @param name
+	 * @return
+	 */
 	public Object get(Token name) {
 
 		String varName = name.getLexeme();

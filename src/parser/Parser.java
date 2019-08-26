@@ -12,15 +12,24 @@ public class Parser {
 	private int curr = 0; // points to current token in list of tokens, tokenList
 	private final List<Stmt> statementList;
 
+	/**
+	 * @param tokenList
+	 */
 	public Parser(List<Token> tokenList) {
 		this.tokenList = tokenList;
 		this.statementList = new ArrayList<>();
 	}
 
+	/**
+	 * @return
+	 */
 	public List<Stmt> getStatementList() {
 		return statementList;
 	}
 
+	/**
+	 * 
+	 */
 	public void parse() {
 		while (!checkEnd()) {
 			statementList.add(parseStmt());
@@ -28,6 +37,9 @@ public class Parser {
 
 	}
 
+	/**
+	 * @return
+	 */
 	private Stmt parseStmt() {
 		if(match(TokenType.MAKE)) {
 			return parseDeclareVar();
@@ -55,6 +67,9 @@ public class Parser {
 		return parseExprStmt();
 	}
 	
+	/**
+	 * @return
+	 */
 	private Stmt parseDeclareVar() {
 		
 		Token variable = consume(TokenType.ID);
@@ -69,12 +84,18 @@ public class Parser {
 		return new StmtVariable(variable, initial);
 	}
 
+	/**
+	 * @return
+	 */
 	private Stmt parsePrintStmt() {
 		Expr printedString = parseExpr();
 		consume(TokenType.SEMICOLON);
 		return new StmtPrint(printedString);
 	}
 
+	/**
+	 * @return
+	 */
 	private Stmt parseIfStmt() {
 		consume(TokenType.LEFT_PARENTHESIS);
 		Expr cond = parseExpr();
@@ -92,6 +113,9 @@ public class Parser {
 
 	}
 
+	/**
+	 * @return
+	 */
 	private Stmt parseWhileStmt() {
 		consume(TokenType.LEFT_PARENTHESIS);
 		Expr cond = parseExpr();
@@ -102,6 +126,9 @@ public class Parser {
 		return new StmtWhile(cond, body);
 	}
 	
+	/**
+	 * @return
+	 */
 	private Stmt parseRepeatStmt() {
 		consume(TokenType.LEFT_PARENTHESIS);
 		Expr loops = parseExpr();
@@ -111,6 +138,9 @@ public class Parser {
 		return new StmtRepeat(loops,body);
 	}
 
+	/**
+	 * @return
+	 */
 	private List<Stmt> parseBlockStmt() {
 		List<Stmt> newStmtList = new ArrayList<>();
 		Stmt newStmt = null;
@@ -124,16 +154,25 @@ public class Parser {
 		return newStmtList;
 	}
 
+	/**
+	 * @return
+	 */
 	private Stmt parseExprStmt() {
 		Expr expression = parseExpr();
 		consume(TokenType.SEMICOLON);
 		return new StmtExpression(expression);
 	}
 
+	/**
+	 * @return
+	 */
 	private Expr parseExpr() {
 		return parseAssignment();
 	}
 
+	/**
+	 * @return
+	 */
 	private Expr parseAssignment() {
 		Expr expression = parseLogicOr();
 
@@ -153,6 +192,9 @@ public class Parser {
 		return expression;
 	}
 
+	/**
+	 * @return
+	 */
 	private Expr parseLogicOr() {
 		Expr expression = parseLogicAnd();
 		while (match(TokenType.OR)) {
@@ -163,6 +205,9 @@ public class Parser {
 		return expression;
 	}
 
+	/**
+	 * @return
+	 */
 	private Expr parseLogicAnd() {
 		Expr expression = parseEquality();
 		while (match(TokenType.AND)) {
@@ -173,6 +218,9 @@ public class Parser {
 		return expression;
 	}
 
+	/**
+	 * @return
+	 */
 	private Expr parseEquality() {
 		Expr expression = parseRelational();
 		while (match(TokenType.EQUAL_EQUAL, TokenType.EXCLAMATION_EQUAL)) {
@@ -183,6 +231,9 @@ public class Parser {
 		return expression;
 	}
 
+	/**
+	 * @return
+	 */
 	private Expr parseRelational() {
 		Expr expression = parseAdditive();
 		while (match(TokenType.GREATER_EQUAL, TokenType.GREATER, TokenType.LESS, TokenType.LESS_EQUAL)) {
@@ -193,6 +244,9 @@ public class Parser {
 		return expression;
 	}
 
+	/**
+	 * @return
+	 */
 	private Expr parseAdditive() {
 		Expr expression = parseMultiplicative();
 		while (match(TokenType.PLUS, TokenType.MINUS,TokenType.SHRINK, TokenType.APPEND)) {
@@ -203,6 +257,9 @@ public class Parser {
 		return expression;
 	}
 
+	/**
+	 * @return
+	 */
 	private Expr parseMultiplicative() {
 		Expr expression = parseRead();
 		while (match(TokenType.STAR, TokenType.SLASH, TokenType.PERCENT)) {
@@ -213,6 +270,9 @@ public class Parser {
 		return expression;
 	}
 
+	/**
+	 * @return
+	 */
 	private Expr parseRead() {
 
 		if (match(TokenType.READ)) {
@@ -223,6 +283,9 @@ public class Parser {
 		return parseUnary();
 	}
 
+	/**
+	 * @return
+	 */
 	private Expr parseUnary() {
 		if (match(TokenType.EXCLAMATION, TokenType.MINUS)) {
 			Token op = getPreviousToken();
@@ -233,6 +296,9 @@ public class Parser {
 
 	}
 
+	/**
+	 * @return
+	 */
 	private Expr parseSubscript() {
 		Expr expr = parsePrimitive();
 		Token exprName = getPreviousToken();
@@ -258,6 +324,9 @@ public class Parser {
 		return expr;
 	}
 	
+	/**
+	 * @return
+	 */
 	private List<Expr> parseArray() {
 		List<Expr> elements = new ArrayList<>();
 		
@@ -280,6 +349,9 @@ public class Parser {
 	
 	
 
+	/**
+	 * @return
+	 */
 	private Expr parsePrimitive() {
 		TokenType currType = getCurrToken().getType();
 		
@@ -334,6 +406,9 @@ public class Parser {
 	 * 
 	 * @return true if end of file is reached, false if not yet end of file
 	 */
+	/**
+	 * @return
+	 */
 	private boolean checkEnd() {
 		TokenType check = getCurrToken().getType();
 		if (check == TokenType.EOF) {
@@ -348,6 +423,9 @@ public class Parser {
 	 * 
 	 * @return Token
 	 */
+	/**
+	 * @return
+	 */
 	private Token getCurrToken() {
 		return tokenList.get(curr);
 	}
@@ -356,6 +434,9 @@ public class Parser {
 	 * returns current token
 	 * 
 	 * @return Token
+	 */
+	/**
+	 * @return
 	 */
 	private Token getNextToken() {
 		return tokenList.get(curr + 1);
@@ -366,6 +447,9 @@ public class Parser {
 	 * 
 	 * @return Token
 	 */
+	/**
+	 * @return
+	 */
 	private Token getPreviousToken() {
 		return tokenList.get(curr - 1);
 	}
@@ -373,10 +457,17 @@ public class Parser {
 	/**
 	 * nexts to next token in list
 	 */
+	/**
+	 * 
+	 */
 	private void next() {
 		curr++;
 	}
 	
+	/**
+	 * @param token
+	 * @return
+	 */
 	private  boolean checkTokenType(TokenType token) {
 		boolean match = false;
 		TokenType currType = getCurrToken().getType();
@@ -391,6 +482,10 @@ public class Parser {
 	 * @param token
 	 * @return nexts position in list of tokens by 1 and returns previous token if
 	 *         not at end of file and current token matches expected token
+	 */
+	/**
+	 * @param tokenType
+	 * @return
 	 */
 	private Token consume(TokenType tokenType) {
 		Token currToken = getCurrToken();
@@ -408,6 +503,10 @@ public class Parser {
 	 * 
 	 * @param TokenType
 	 * @return boolean
+	 */
+	/**
+	 * @param types
+	 * @return
 	 */
 	private boolean match(TokenType... types) {
 		for (TokenType type : types) {

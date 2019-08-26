@@ -15,6 +15,9 @@ public class Lexer {
 	private int line = 1;
 	private boolean isEnd;
 
+	/**
+	 * @param sourceCode
+	 */
 	public Lexer(String sourceCode) {
 		this.sourceCode = sourceCode;
 		resKeywords.put("and", TokenType.AND);
@@ -42,6 +45,9 @@ public class Lexer {
 	 */
 	
 
+	/**
+	 * @return
+	 */
 	public List<Token> getTokenList() {
 		return tokenList;
 	}
@@ -50,6 +56,9 @@ public class Lexer {
 	 * method that performs lexical analysis on the source code. It turns code that matches tokens into tokens
 	 * and puts them into a token list.
 	 * Once all the source code has been analyzed, an end of file token is made and inserted into the token list.
+	 */
+	/**
+	 * 
 	 */
 	public void LexicalAnalysis() {
 		while (!checkEnd()) {
@@ -161,6 +170,9 @@ public class Lexer {
 		tokenList.add(new Token(TokenType.EOF, "", null, line));
 	}
 
+	/**
+	 * 
+	 */
 	private void tokenizeChar() {
 		while (!checkEnd() && getCurrChar() != '\'') {
 			if (getCurrChar() == '\'') {
@@ -176,6 +188,9 @@ public class Lexer {
 
 	/*
 	 * method for tokenizing strings
+	 */
+	/**
+	 * 
 	 */
 	private void tokenizeString() {
 
@@ -194,6 +209,9 @@ public class Lexer {
 
 	}
 
+	/**
+	 * 
+	 */
 	private void tokenizeID() {
 		while (checkLetter(getCurrChar())) {
 			next();
@@ -213,6 +231,9 @@ public class Lexer {
 	 * 
 	 * @return char
 	 */
+	/**
+	 * @return
+	 */
 	private char next() {
 
 		curr++;
@@ -225,6 +246,10 @@ public class Lexer {
 	 * method that checks for second char in 2 character tokens. Specifically, is
 	 * looking for = in !=, <=, etc.
 	 * 
+	 */
+	/**
+	 * @param input
+	 * @return
 	 */
 	private boolean match(char input) {
 		if (checkEnd()) {
@@ -239,6 +264,9 @@ public class Lexer {
 	/*
 	 * method that returns current char
 	 */
+	/**
+	 * @return
+	 */
 	private char getCurrChar() {
 		if (checkEnd()) {
 			return '\0';
@@ -246,6 +274,9 @@ public class Lexer {
 		return sourceCode.charAt(curr);
 	}
 
+	/**
+	 * @return
+	 */
 	private char getNextChar() {
 		if (curr + 1 >= sourceCode.length()) {
 			return '\0';
@@ -253,6 +284,10 @@ public class Lexer {
 		return sourceCode.charAt(curr + 1);
 	}
 
+	/**
+	 * @param c
+	 * @return
+	 */
 	private boolean checkLetter(char c) {
 		return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_';
 	}
@@ -260,12 +295,19 @@ public class Lexer {
 	/*
 	 * checks if char is a digit
 	 */
+	/**
+	 * @param c
+	 * @return
+	 */
 	private boolean checkNumber(char c) {
 		return c >= '0' && c <= '9';
 	}
 
 	/*
 	 * method for tokenizing numbers
+	 */
+	/**
+	 * 
 	 */
 	private void tokenizeNumber() {
 		while (checkNumber(getCurrChar())) {
@@ -289,12 +331,19 @@ public class Lexer {
 	/*
 	 * method that makes tokens
 	 */
+	/**
+	 * @param tokenType
+	 */
 	private void tokenize(TokenType tokenType) {
 		tokenize(tokenType, null);
 	}
 
 	/*
 	 * method that makes tokens for literals with values
+	 */
+	/**
+	 * @param tokenType
+	 * @param literal
 	 */
 	private void tokenize(TokenType tokenType, Object literal) {
 		String text = sourceCode.substring(startOfToken, curr);
@@ -303,6 +352,9 @@ public class Lexer {
 
 	/*
 	 * method that checks if all chars have been iterated through.
+	 */
+	/**
+	 * @return
 	 */
 	private boolean checkEnd() {
 		isEnd = curr >= sourceCode.length();
