@@ -18,8 +18,8 @@ public class EZLang {
 	
 	
 	public static void main(String[] args) throws IOException{
-		///Users/mac/Documents/eclipse-workspace/MScProject/src/tests/FrankensteinTests/BubbleSort.ez
-		///Users/mac/Documents/eclipse-workspace/MScProject/src/tests/UserTest.ez
+		///Users/mac/Documents/eclipse-workspace/MScProject/src/tests/FrankensteinTests/sort.ez
+		//Users/mac/Documents/eclipse-workspace/MScProject/src/tests/RuntimeErrorTests/RepeatError.ez
 		//Users/mac/Documents/eclipse-workspace/MScProject/src/tests/ImplicitConversionTests/ImplicitConversion.ez
 		System.out.println("----------------------------");
 		System.out.println("---- Welcome to EZlang! ----");
@@ -82,9 +82,7 @@ public class EZLang {
 		
 	
 		interpreter.execute(statementList);
-//		for (Token token:tokenList) {
-//			System.out.println(token);
-//		}
+
 	}
 
 }

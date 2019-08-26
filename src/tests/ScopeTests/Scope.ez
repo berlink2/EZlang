@@ -1,1 +1,26 @@
-a=6;print a;{a=7;print a;}print a;  #should print 6 then 7 then 7
+make x = "global";
+{
+print x;
+make x = "enclosed";
+{
+make x = "local";
+print x;
+}
+print x;
+}
+print x;
+
+
+/*
+order of printed strings:
+global
+local
+enclosed
+global
+
+first print x looks for x in outside scope since no local x
+second print x uses local x which is the string local
+third print x uses its local x which is the string enclosed
+and last print uses its local x which is the string global
+
+*/

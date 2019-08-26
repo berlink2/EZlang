@@ -47,6 +47,8 @@ public class Environment {
 			}
 		}
 		
+		throw new RuntimeError(name, "Variable " +name.getLexeme()+ " on line " +name.getLine()+  " has not been declared yet. Please declare it first.");
+		
 		
 		
 		
@@ -66,8 +68,8 @@ public class Environment {
 				}
 			}
 		}
-
-		return value;
+		
+		throw new RuntimeError(name, "Variable " +name.getLexeme()+ " on line " +name.getLine()+  " has not been declared yet. Please declare it first.");
 
 	}
 

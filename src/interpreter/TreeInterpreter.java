@@ -21,7 +21,7 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 		for (Stmt stmt : stmtList) {
 			execute(stmt);
 		}
-		// System.out.println(table.getTable().toString());
+		
 	}
 
 	/**
@@ -471,6 +471,8 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 
 			if (length == 1 && first >= 'A' && first <= 'z') {
 				return first;
+			} else if (length > 1 && first >= 'A' && first <= 'z') {
+				return String.valueOf(input);
 			}
 
 			if (first >= '0' && first <= '9') {
