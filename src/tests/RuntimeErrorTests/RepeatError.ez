@@ -1,0 +1,10 @@
+make x =5.5;
+repeat (x) {
+
+print x;
+
+}
+
+/*
+This should result in a runtime error since the repeat statement requires an integer
+*/

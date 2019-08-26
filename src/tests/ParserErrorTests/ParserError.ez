@@ -1,0 +1,12 @@
+make i = 0;
+while (i<10 {
+print i
+i=i+1;
+}
+
+
+/*
+This should result in a parser error because the condition
+after while is missing a )
+There is also a missing semicolon on line 3. But EZlang only brings up the first error it encounters.
+*/

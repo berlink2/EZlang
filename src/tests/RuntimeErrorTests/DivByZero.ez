@@ -1,0 +1,5 @@
+print 10/0;
+
+/*
+This should result in a runtime error since it is not possible to divide by zero.
+*/

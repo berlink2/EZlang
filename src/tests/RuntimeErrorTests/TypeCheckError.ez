@@ -1,0 +1,9 @@
+make x = "string";
+make y = "alsoString";
+make z = x-y;
+
+
+/*
+This should result in a runtime error since in EZlang subtraction operation
+doesn't work with strings.
+*/

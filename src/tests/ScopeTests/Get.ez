@@ -1,0 +1,8 @@
+{make x =5;}
+print x;
+
+/*
+This will result in a runtime error
+as the print statement is trying to access a variable in a local scope that 
+it cant access
+*/

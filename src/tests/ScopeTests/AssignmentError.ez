@@ -1,0 +1,7 @@
+a =5;
+
+
+/*
+This program will result in a runtime error as there since a has not been declared 
+yet
+*/
