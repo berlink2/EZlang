@@ -1,0 +1,27 @@
+make array = [10,9,8,7,6,5,4,3,2,1]; 
+make size = 10;
+make i=1;
+
+print "Old unsorted array:";
+print array;
+
+while (i<size) {
+
+
+make key = array[i];
+make j = i-1;
+
+while(j>=0 and array[j]>key) {
+array[j+1] = array[j];
+j=j-1;
+
+
+}
+array[j+1] = key;
+i=i+1;
+
+
+}
+
+print "New sorted array:";
+print array;
