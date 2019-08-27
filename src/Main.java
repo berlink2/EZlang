@@ -9,11 +9,7 @@ import parser.*;
 public class Main {
 
 	public static void main(String[] args) {
-	String test = "make i=0;while(i<100) { i=i+1;make a = \"\"; \n" + 
-			"			if(i%3==0) { a=a + \"Fizz\";}\n" + 
-			"			if(i%5==0) { a=a + \"Buzz\";}\n" + 
-			"			if(a == \"\") {a =i;}\n" + 
-			"					print a; }";
+	String test = "make a=read;print a;a=a append 10;print a;";
 		
 //String test = "print \" \" + 5;";
 		
@@ -89,6 +85,9 @@ public class Main {
 		
 		
 		
+     
+    } 
+		
 	 
 		
 		
@@ -97,4 +96,4 @@ public class Main {
 
 	}
 
-}
+

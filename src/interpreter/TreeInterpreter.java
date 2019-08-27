@@ -14,8 +14,6 @@ import lexer.TokenType;
 
 public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 	private Environment table = new Environment();
-	
-	
 
 	/**
 	 * @param stmtList
@@ -24,7 +22,7 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 		for (Stmt stmt : stmtList) {
 			execute(stmt);
 		}
-		
+
 	}
 
 	/**
@@ -75,68 +73,80 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 	 * 
 	 * evaluates and returns the result of a binary expression
 	 */
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see ast.ExprVisitor#visitBinOp(ast.ExprBinOp)
 	 */
 	@Override
 	public Object visitBinOp(ExprBinOp expr) {
-		Object left = call(expr.getLeft());
-		Object right = call(expr.getRight());
 		Token opToken = expr.getOp();
+
+		if (opToken.getType() == TokenType.AND) {
+			Object leftCond = evaluate(expr.getLeft());
+
+			if (isTruthy(leftCond) != true) {
+				return leftCond;
+			} else {
+				Object rightCond = evaluate(expr.getRight());
+				return rightCond;
+			}
+
+		}
+
+		Object left = evaluate(expr.getLeft());
+		Object right = evaluate(expr.getRight());
+
 		TokenType opTokenType = opToken.getType();
 		String leftString = left.toString();
 		String rightString = right.toString();
 
 		switch (opTokenType) {
 		case PLUS:
-			
 
 			if (left instanceof Integer && right instanceof Integer) {
 
 				return (Integer) left + (Integer) right;
 			}
-			
+
 			if (left instanceof Double && right instanceof Double) {
 
-				return (Double)left + (Double)right;
+				return (Double) left + (Double) right;
 			}
 
-			if (left instanceof String && (right instanceof String||right instanceof Character)) {
+			if (left instanceof String && (right instanceof String || right instanceof Character)) {
 				return leftString + rightString;
 			}
-			
-			if (left instanceof String && (right instanceof Integer||right instanceof Double)) {
+
+			if (left instanceof String && (right instanceof Integer || right instanceof Double)) {
 				return leftString + String.valueOf(right);
 			}
-			
+
 			if (left instanceof Double && right instanceof String) {
 
 				return Double.parseDouble(leftString) + Double.parseDouble(rightString);
 
 			}
-			
-			if (left instanceof Integer &&  right instanceof String) {
+
+			if (left instanceof Integer && right instanceof String) {
 
 				return Integer.parseInt(leftString) + Integer.parseInt(rightString);
 
 			}
-			
-			if ((left instanceof Double && right instanceof Integer) || (left instanceof Integer && right instanceof Double)) {
+
+			if ((left instanceof Double && right instanceof Integer)
+					|| (left instanceof Integer && right instanceof Double)) {
 
 				return Double.parseDouble(leftString) + Double.parseDouble(rightString);
 
 			}
-			
-			
-			
-			
+
 			if (left instanceof Character && right instanceof Character) {
 				return String.valueOf(left) + right;
 			}
 
 			throw new RuntimeError(opToken, "Invalid operand types for a '+' operation.");
 
-			
 		case MINUS:
 
 			if (checkTypes(opToken, left, right)) {
@@ -232,16 +242,6 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 			} else {
 				return false;
 			}
-		case AND:
-			if (isTruthy(left) == true && isTruthy(right) == true) {
-				return left;
-			} else {
-				if (isTruthy(left) != true) {
-					return left;
-				} else if (isTruthy(right) != true) {
-					return right;
-				}
-			}
 		default:
 			break;
 
@@ -314,7 +314,9 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 	/**
 	 * returns the value of a literal
 	 */
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see ast.ExprVisitor#visitLiteral(ast.ExprLiteral)
 	 */
 	@Override
@@ -324,7 +326,9 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 	}
 
 	// returns the evaluation of a unary expression
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see ast.ExprVisitor#visitUnaryOp(ast.ExprUnaryOp)
 	 */
 	@Override
@@ -365,7 +369,9 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 	/**
 	 * evaluates expression in a grouping
 	 */
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see ast.ExprVisitor#visitGroup(ast.ExprGroup)
 	 */
 	@Override
@@ -401,7 +407,9 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 	}
 
 	// this method evaluates the expression in a statement expression
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see ast.StmtVisitor#visitExpr(ast.StmtExpression)
 	 */
 	@Override
@@ -415,7 +423,9 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 	 * environment table and when finished executing returns to older enclosing
 	 * environment table
 	 */
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see ast.StmtVisitor#visitBlock(ast.StmtBlock)
 	 */
 	@Override
@@ -424,10 +434,9 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 
 		try {
 			table.pushScope();
-			for (Stmt statement:statementList) {
+			for (Stmt statement : statementList) {
 				execute(statement);
 			}
-			
 
 		} finally {
 			table.popScope();
@@ -437,8 +446,10 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 		return null;
 
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see ast.StmtVisitor#visitVariable(ast.StmtVariable)
 	 */
 	@Override
@@ -448,7 +459,7 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 			value = evaluate(stmt.getInitial());
 
 		}
-		
+
 		table.declare(stmt.getName(), value);
 		return null;
 	}
@@ -457,7 +468,9 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 	 * this method assigns value to the variable in the environment and returns the
 	 * value
 	 */
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see ast.ExprVisitor#visitAssign(ast.ExprAssignment)
 	 */
 	@Override
@@ -472,7 +485,9 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 	 * This method looks at the current environment table and retrieves the value
 	 * that corresponds to the variable's name
 	 */
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see ast.ExprVisitor#visitVariable(ast.ExprVariable)
 	 */
 	@Override
@@ -481,7 +496,9 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 		return table.get(expr.getName());
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see ast.StmtVisitor#visitIf(ast.StmtIf)
 	 */
 	@Override
@@ -497,7 +514,9 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 		return null;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see ast.StmtVisitor#visitPrint(ast.StmtPrint)
 	 */
 	@Override
@@ -512,7 +531,9 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 		return null;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see ast.StmtVisitor#visitWhile(ast.StmtWhile)
 	 */
 	@Override
@@ -524,6 +545,7 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 		while (loopCheck) { // continuously execute statement until loop termination condition is met
 			execute(stmt.getBody());
 			loopCheck = isTruthy(evaluate(stmt.getCond()));
+
 		}
 
 		return null;
@@ -532,7 +554,9 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 	/**
 	 * 
 	 */
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see ast.ExprVisitor#visitRead(ast.ExprRead)
 	 */
 	@Override
@@ -570,7 +594,9 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 		return input;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see ast.ExprVisitor#visitArray(ast.ExprArray)
 	 */
 	@Override
@@ -583,7 +609,9 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 		return arrayValues;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see ast.ExprVisitor#visitSubscript(ast.ExprSubscript)
 	 */
 	@Override
@@ -595,7 +623,9 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 		return arrayValues.get(index);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see ast.ExprVisitor#visitAssignArray(ast.ExprArrayAccess)
 	 */
 	@Override
@@ -608,7 +638,7 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 		List<Object> array = (List) arrayObject;
 
 		ExprSubscript subscript = (ExprSubscript) expr.getsubscript();
-		
+
 		Object indexObject = evaluate(subscript.getArrayIndex());
 
 		int index = (int) indexObject;
@@ -618,7 +648,9 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 		return newValue;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see ast.StmtVisitor#visitRepeat(ast.StmtRepeat)
 	 */
 	@Override
@@ -638,7 +670,5 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 		}
 		return null;
 	}
-
-	
 
 }
