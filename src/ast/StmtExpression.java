@@ -10,7 +10,7 @@ public class StmtExpression extends Stmt {
 	@Override
 	public <T> T accept(StmtVisitor<T> v) {
 
-		return v.visitExpr(this);
+		return v.visitStmtExpr(this);
 	}
 
 	public Expr getExpr() {

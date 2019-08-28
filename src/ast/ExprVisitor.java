@@ -4,16 +4,16 @@ package ast;
 
 public interface ExprVisitor<T> {
 	
-		T visitBinOp(ExprBinOp expr);
-		T visitLiteral(ExprLiteral expr);
-		T visitUnaryOp(ExprUnaryOp expr);
-		T visitGroup(ExprGroup expr);
-		T visitAssign(ExprAssignment expr);
-		T visitVariable(ExprVariable expr);
-		T visitRead(ExprRead expr);
-		T visitArray(ExprArray expr);
-		T visitSubscript(ExprSubscript expr);
-		T visitAssignArray(ExprArrayAccess expr);
+		public T visitBinOp(ExprBinOp expr);
+		public T visitLiteral(ExprLiteral expr);
+		public T visitUnaryOp(ExprUnaryOp expr);
+		public T visitGroup(ExprGroup expr);
+		public T visitAssign(ExprAssignment expr);
+		public T visitVariable(ExprVariable expr);
+		public T visitRead(ExprRead expr);
+		public T visitArray(ExprArray expr);
+		public T visitSubscript(ExprSubscript expr);
+		public T visitArrayAccess(ExprArrayAccess expr);
 		
 	
 }

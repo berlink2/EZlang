@@ -3,11 +3,11 @@ package ast;
 
 
 public interface StmtVisitor<T> {
-	T visitExpr(StmtExpression stmt);
-	T visitBlock(StmtBlock stmt);
-	T visitIf(StmtIf stmt);
-	T visitPrint(StmtPrint stmt);
-	T visitWhile(StmtWhile stmt);
-	T visitRepeat(StmtRepeat stmt);
-	T visitVariable(StmtVariable stmt);
+	public T visitStmtExpr(StmtExpression stmt);
+	public T visitBlock(StmtBlock stmt);
+	public T visitIf(StmtIf stmt);
+	public T visitPrint(StmtPrint stmt);
+	public T visitWhile(StmtWhile stmt);
+	public T visitRepeat(StmtRepeat stmt);
+	public T visitVariable(StmtVariable stmt);
 }

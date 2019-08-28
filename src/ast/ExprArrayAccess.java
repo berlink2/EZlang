@@ -16,7 +16,7 @@ public class ExprArrayAccess extends Expr {
 	@Override
 	public <T> T accept(ExprVisitor<T> v) {
 		// TODO Auto-generated method stub
-		return v.visitAssignArray(this);
+		return v.visitArrayAccess(this);
 	}
 
 	public Expr getsubscript() {

@@ -9,7 +9,7 @@ import parser.*;
 public class Main {
 
 	public static void main(String[] args) {
-	String test = "make a=read;print a;a=a append 10;print a;";
+	String test = "make a=5<10 and 6<10;print a;";
 		
 //String test = "print \" \" + 5;";
 		

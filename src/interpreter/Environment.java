@@ -2,9 +2,7 @@ package interpreter;
 
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.ListIterator;
-import java.util.Map;
-import java.util.Stack;
+
 
 import lexer.Token;
 
@@ -53,7 +51,6 @@ public class Environment {
 	 * @param value
 	 */
 	public void assign(Token name, Object value) {
-		boolean alreadyExists = false;
 		String varName = name.getLexeme();
 		for (HashMap<String, Object> table : scopeList) {
 			for (String var : table.keySet()) {

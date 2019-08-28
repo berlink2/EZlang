@@ -6,7 +6,7 @@ public class RuntimeError extends RuntimeException{
 	/**
 	 * 
 	 */
-	final Token token;
+	private final Token token;
 	
 	/**
 	 * @param token

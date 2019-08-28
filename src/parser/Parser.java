@@ -431,18 +431,6 @@ public class Parser {
 	}
 
 	/**
-	 * returns current token
-	 * 
-	 * @return Token
-	 */
-	/**
-	 * @return
-	 */
-	private Token getNextToken() {
-		return tokenList.get(curr + 1);
-	}
-
-	/**
 	 * returns previous token
 	 * 
 	 * @return Token
@@ -462,19 +450,6 @@ public class Parser {
 	 */
 	private void next() {
 		curr++;
-	}
-	
-	/**
-	 * @param token
-	 * @return
-	 */
-	private  boolean checkTokenType(TokenType token) {
-		boolean match = false;
-		TokenType currType = getCurrToken().getType();
-		if (currType == token) {
-			match = true;
-		}
-		return match;
 	}
 
 	/**

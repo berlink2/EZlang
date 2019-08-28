@@ -5,9 +5,8 @@ import ast.*;
 import java.util.ArrayList;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
-import java.util.Stack;
+
 
 import lexer.Token;
 import lexer.TokenType;
@@ -413,7 +412,7 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 	 * @see ast.StmtVisitor#visitExpr(ast.StmtExpression)
 	 */
 	@Override
-	public Void visitExpr(StmtExpression stmt) {
+	public Void visitStmtExpr(StmtExpression stmt) {
 		evaluate(stmt.getExpr());
 		return null;
 	}
@@ -629,7 +628,7 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 	 * @see ast.ExprVisitor#visitAssignArray(ast.ExprArrayAccess)
 	 */
 	@Override
-	public Object visitAssignArray(ExprArrayAccess expr) {
+	public Object visitArrayAccess(ExprArrayAccess expr) {
 
 		Object newValue = evaluate(expr.getValue());
 
