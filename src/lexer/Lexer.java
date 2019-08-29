@@ -5,8 +5,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The lexer is the class that takes in sourcecode of a .ez
+ * file and converts matching text into tokens for the parser
+ * @author Berlian K
+ *
+ */
 public class Lexer {
-
+	/**
+	 * Attributes of the lexer
+	 */
 	private final String sourceCode;
 	private final List<Token> tokenList = new ArrayList<>();
 	private static final Map<String, TokenType> resKeywords = new HashMap<>();
@@ -16,6 +24,9 @@ public class Lexer {
 	private boolean isEnd;
 
 	/**
+	 * This constructor is fed sourcecode from the EZlang client for lexical analysis.
+	 * It also inserts keywords in resKeywords HashMap for tokenizing reserved keywords
+	 * 
 	 * @param sourceCode
 	 */
 	public Lexer(String sourceCode) {
@@ -37,28 +48,21 @@ public class Lexer {
 		
 	}
 
-	/*
-	 * Method that is fed source code until end of file is reached, calls methods
-	 * that make tokens, and returns list of tokens to be parsed.
-	 * 
-	 * @return
-	 */
+	
 	
 
 	/**
-	 * @return
+	 * @return Returns a list of tokens that the parser will use
 	 */
 	public List<Token> getTokenList() {
 		return tokenList;
 	}
 
-	/*
-	 * method that performs lexical analysis on the source code. It turns code that matches tokens into tokens
-	 * and puts them into a token list.
-	 * Once all the source code has been analyzed, an end of file token is made and inserted into the token list.
-	 */
+	
 	/**
-	 * 
+	 *  This method  performs lexical analysis on the source code. It turns code that matches tokens into tokens
+	 * and puts them into a token list. 
+	 * Once all the source code has been analyzed, an end of file token is made and inserted into the token list.
 	 */
 	public void LexicalAnalysis() {
 		while (!checkEnd()) {
@@ -171,7 +175,7 @@ public class Lexer {
 	}
 
 	/**
-	 * 
+	 * Helper method for turning chars into char tokens
 	 */
 	private void tokenizeChar() {
 		while (!checkEnd() && getCurrChar() != '\'') {
@@ -186,11 +190,9 @@ public class Lexer {
 		tokenize(TokenType.CHAR, read);
 	}
 
-	/*
-	 * method for tokenizing strings
-	 */
+	
 	/**
-	 * 
+	 * Helper method for turning strings into string tokens
 	 */
 	private void tokenizeString() {
 
@@ -210,7 +212,7 @@ public class Lexer {
 	}
 
 	/**
-	 * 
+	 * Helper method for turning identifiers into ID tokens
 	 */
 	private void tokenizeID() {
 		while (checkLetter(getCurrChar())) {
@@ -225,14 +227,11 @@ public class Lexer {
 		}
 	}
 
+	
 	/**
 	 * method that iterates to the next char in the source code and returns the
 	 * previous char
-	 * 
-	 * @return char
-	 */
-	/**
-	 * @return
+	 * @return the previous char after having moved to the subsequent char
 	 */
 	private char next() {
 
@@ -242,14 +241,13 @@ public class Lexer {
 
 	}
 
-	/*
+	
+	/**
 	 * method that checks for second char in 2 character tokens. Specifically, is
 	 * looking for = in !=, <=, etc.
 	 * 
-	 */
-	/**
-	 * @param input
-	 * @return
+	 * @param input checks if current char matches input char 
+	 * @return boolean if char matches expected char or not
 	 */
 	private boolean match(char input) {
 		if (checkEnd()) {
@@ -261,11 +259,10 @@ public class Lexer {
 		return true;
 	}
 
-	/*
-	 * method that returns current char
-	 */
+	
 	/**
-	 * @return
+	 * method that returns current char
+	 * @return the current char
 	 */
 	private char getCurrChar() {
 		if (checkEnd()) {
@@ -275,7 +272,8 @@ public class Lexer {
 	}
 
 	/**
-	 * @return
+	 * Returns next char or terminates string if end of file has been reached.
+	 * @return the next char
 	 */
 	private char getNextChar() {
 		if (curr + 1 >= sourceCode.length()) {
@@ -285,8 +283,8 @@ public class Lexer {
 	}
 
 	/**
-	 * @param c
-	 * @return
+	 * @param input char that is checked if it is a letter or _
+	 * @return boolean depending if input char is a letter or _
 	 */
 	private boolean checkLetter(char c) {
 		return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_';
@@ -296,18 +294,16 @@ public class Lexer {
 	 * checks if char is a digit
 	 */
 	/**
-	 * @param c
-	 * @return
+	 * @param input char that is checked if it is a number or not
+	 * @return boolean that depends if input char is a number or not
 	 */
 	private boolean checkNumber(char c) {
 		return c >= '0' && c <= '9';
 	}
 
-	/*
-	 * method for tokenizing numbers
-	 */
+	
 	/**
-	 * 
+	 * Helper method for tokenizing numbers
 	 */
 	private void tokenizeNumber() {
 		while (checkNumber(getCurrChar())) {
@@ -328,33 +324,31 @@ public class Lexer {
 
 	}
 
-	/*
-	 * method that makes tokens
-	 */
+	
 	/**
-	 * @param tokenType
+	 * Method that makes tokens for tokens with no values
+	 * @param The token type of a corresponding token
 	 */
 	private void tokenize(TokenType tokenType) {
 		tokenize(tokenType, null);
 	}
 
-	/*
-	 * method that makes tokens for literals with values
-	 */
+	
 	/**
-	 * @param tokenType
-	 * @param literal
+	 * Method that makes tokens for tokens with values
+	 * @param tokenType The type of the token
+	 * @param literal The value of the token
 	 */
 	private void tokenize(TokenType tokenType, Object literal) {
 		String text = sourceCode.substring(startOfToken, curr);
 		tokenList.add(new Token(tokenType, text, literal, line));
 	}
 
-	/*
-	 * method that checks if all chars have been iterated through.
-	 */
+	
 	/**
-	 * @return
+	 * method that checks if all chars have been iterated through i.e. end of file has been
+	 * reached
+	 * @return boolean that depends if the end of the file has been reached
 	 */
 	private boolean checkEnd() {
 		isEnd = curr >= sourceCode.length();

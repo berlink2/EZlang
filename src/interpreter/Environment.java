@@ -6,16 +6,21 @@ import java.util.LinkedList;
 
 import lexer.Token;
 
+/**
+ * This class is a custom data structure for handling variables and scope
+ * @author Berlian K
+ *
+ */
 public class Environment {
 
 	/**
-	 * 
+	 * List of scopes for a EZlang program. Each HashMap is a scope
 	 */
 	final LinkedList<HashMap<String, Object>> scopeList;
 
-	// constructor for the global scope environment
+	
 	/**
-	 * 
+	 *  Constructor that creates the global scope for a EZlang program
 	 */
 	public Environment() {
 		scopeList = new LinkedList<>();
@@ -24,22 +29,23 @@ public class Environment {
 	}
 
 	/**
-	 * 
+	 * When called adds a scope to a program
 	 */
 	public void pushScope() {
 		scopeList.push(new HashMap<String, Object>());
 	}
 
 	/**
-	 * 
+	 * When called removes a scope from a program
 	 */
 	public void popScope() {
 		scopeList.pop();
 	}
 	
 	/**
-	 * @param name
-	 * @param value
+	 * Method for declaring variables and initializing them
+	 * @param name The name of the variable
+	 * @param value The value of the variable
 	 */
 	public void declare(Token name, Object value) {
 		String varName = name.getLexeme();
@@ -47,8 +53,12 @@ public class Environment {
 	}
 
 	/**
-	 * @param name
-	 * @param value
+	 * Method for assigning value to a variable. Checks most local scope
+	 * first and moves to enclosing scope if variable not found in local scope, and
+	 * keeps looking. If no variable found throws error.
+	 * @param name The name of the variable
+	 * @param value The value assigned to the variable
+	 * @throws RuntimeError if variable has not been declared yet
 	 */
 	public void assign(Token name, Object value) {
 		String varName = name.getLexeme();
@@ -73,8 +83,12 @@ public class Environment {
 	}
 
 	/**
-	 * @param name
-	 * @return
+	 * Method for retrieving value of a variable. Checks most local scope
+	 * first and moves to enclosing scope if variable not found in local scope, and
+	 * keeps looking. If no variable found throws error.
+	 * @param name The name of the variable
+	 * @return The value that is assigned to a variable
+	 * @throws RuntimeError if variable has not been declared yet
 	 */
 	public Object get(Token name) {
 

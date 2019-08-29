@@ -6,14 +6,24 @@ import ast.*;
 import java.util.List;
 import java.util.ArrayList;
 
+/**
+ * Recursive Descent Parser class that takes a list of tokens from lexer and parses them, converting them
+ * into appropriate abstract syntax tree nodes.
+ * @author Berlian K
+ *
+ */
 public class Parser {
-
+	
+	/**
+	 * attributes of the parser
+	 */
 	private final List<Token> tokenList; // list of tokens to be parsed
-	private int curr = 0; // points to current token in list of tokens, tokenList
-	private final List<Stmt> statementList;
+	private int curr = 0;
+	private final List<Stmt> statementList; //List of statements of a program for interpretation by TreeInterpreter class
 
 	/**
-	 * @param tokenList
+	 * Constructor class that is fed a list of tokens from the lexer class
+	 * @param List of tokens to be parsed
 	 */
 	public Parser(List<Token> tokenList) {
 		this.tokenList = tokenList;
@@ -21,14 +31,14 @@ public class Parser {
 	}
 
 	/**
-	 * @return
+	 * @return List of statements for interpretation
 	 */
 	public List<Stmt> getStatementList() {
 		return statementList;
 	}
 
 	/**
-	 * 
+	 * Parses statements in statementList until end of the token list has been reached.
 	 */
 	public void parse() {
 		while (!checkEnd()) {
@@ -38,7 +48,9 @@ public class Parser {
 	}
 
 	/**
-	 * @return
+	 * Method that checks if a token is a statement token and and sends it to 
+	 * the corresponding parse method if it is. If not it moves to the next parsing method
+	 * @return A statement tree node
 	 */
 	private Stmt parseStmt() {
 		if(match(TokenType.MAKE)) {
@@ -68,7 +80,8 @@ public class Parser {
 	}
 	
 	/**
-	 * @return
+	 * Method that creates a variable declaration statement tree node
+	 * @return Variable Statement node
 	 */
 	private Stmt parseDeclareVar() {
 		
@@ -85,7 +98,8 @@ public class Parser {
 	}
 
 	/**
-	 * @return
+	 * Parse method that creates a print statement tree node
+	 * @return Print Statement node
 	 */
 	private Stmt parsePrintStmt() {
 		Expr printedString = parseExpr();
@@ -94,7 +108,8 @@ public class Parser {
 	}
 
 	/**
-	 * @return
+	 * Parse method that creates an if statement tree node
+	 * @return If statement node
 	 */
 	private Stmt parseIfStmt() {
 		consume(TokenType.LEFT_PARENTHESIS);
@@ -114,7 +129,8 @@ public class Parser {
 	}
 
 	/**
-	 * @return
+	 * Parse method that creates a while statement tree node
+	 * @return While statement node
 	 */
 	private Stmt parseWhileStmt() {
 		consume(TokenType.LEFT_PARENTHESIS);
@@ -127,7 +143,8 @@ public class Parser {
 	}
 	
 	/**
-	 * @return
+	 * Parse method that creates a repeat statement tree node
+	 * @return Repeat Statement node
 	 */
 	private Stmt parseRepeatStmt() {
 		consume(TokenType.LEFT_PARENTHESIS);
@@ -139,7 +156,8 @@ public class Parser {
 	}
 
 	/**
-	 * @return
+	 * Parse method that creates a block statement tree node
+	 * @return Block statement node
 	 */
 	private List<Stmt> parseBlockStmt() {
 		List<Stmt> newStmtList = new ArrayList<>();
@@ -155,7 +173,8 @@ public class Parser {
 	}
 
 	/**
-	 * @return
+	 * Method that creates a statement expression Tree node
+	 * @return Statement Expression node
 	 */
 	private Stmt parseExprStmt() {
 		Expr expression = parseExpr();
@@ -164,14 +183,16 @@ public class Parser {
 	}
 
 	/**
-	 * @return
+	 * Parse method for parsing expressions
+	 * @return Expression tree node
 	 */
 	private Expr parseExpr() {
 		return parseAssignment();
 	}
 
 	/**
-	 * @return
+	 * Parse method that creates assignment expression tree node
+	 * @return Assignment expression node
 	 */
 	private Expr parseAssignment() {
 		Expr expression = parseLogicOr();
@@ -193,7 +214,8 @@ public class Parser {
 	}
 
 	/**
-	 * @return
+	 * Parse method that creates binary operation expression tree nodes  involving or
+	 * @return Binary operation expression node
 	 */
 	private Expr parseLogicOr() {
 		Expr expression = parseLogicAnd();
@@ -206,7 +228,8 @@ public class Parser {
 	}
 
 	/**
-	 * @return
+	 * Parse method that creates binary operation expression tree nodes  involving and
+	 * @return Binary operation expression node
 	 */
 	private Expr parseLogicAnd() {
 		Expr expression = parseEquality();
@@ -219,7 +242,8 @@ public class Parser {
 	}
 
 	/**
-	 * @return
+	 * Parse method that creates binary operation expression tree nodes  involving checking for equality
+	 * @return Binary operation expression node
 	 */
 	private Expr parseEquality() {
 		Expr expression = parseRelational();
@@ -232,7 +256,8 @@ public class Parser {
 	}
 
 	/**
-	 * @return
+	 * Parse method that creates binary operation expression tree nodes  involving comparing values of operands
+	 * @return Binary operation expression node
 	 */
 	private Expr parseRelational() {
 		Expr expression = parseAdditive();
@@ -245,7 +270,9 @@ public class Parser {
 	}
 
 	/**
-	 * @return
+	 * Parse method that creates binary operation expression tree nodes  involving addition, subtraction,
+	 * array appending, or array shrinking.
+	 * @return Binary operation expression node
 	 */
 	private Expr parseAdditive() {
 		Expr expression = parseMultiplicative();
@@ -258,7 +285,8 @@ public class Parser {
 	}
 
 	/**
-	 * @return
+	 * Parse method that creates binary operation expression tree nodes involving multiplication, modulo, or division
+	 * @return Binary operation expression node
 	 */
 	private Expr parseMultiplicative() {
 		Expr expression = parseRead();
@@ -271,7 +299,8 @@ public class Parser {
 	}
 
 	/**
-	 * @return
+	 * Parse method that creates read expression tree nodes  
+	 * @return Read expression node
 	 */
 	private Expr parseRead() {
 
@@ -284,7 +313,8 @@ public class Parser {
 	}
 
 	/**
-	 * @return
+	 * Parse method that creates unary operation expression tree nodes  
+	 * @return Unary expression node
 	 */
 	private Expr parseUnary() {
 		if (match(TokenType.EXCLAMATION, TokenType.MINUS)) {
@@ -297,7 +327,8 @@ public class Parser {
 	}
 
 	/**
-	 * @return
+	 * Parse method that creates subscript  expression tree nodes  
+	 * @return Subscript expression node
 	 */
 	private Expr parseSubscript() {
 		Expr expr = parsePrimitive();
@@ -325,17 +356,18 @@ public class Parser {
 	}
 	
 	/**
-	 * @return
+	 * Parse method that creates array  expression tree nodes  
+	 * @return array expression node
 	 */
 	private List<Expr> parseArray() {
 		List<Expr> elements = new ArrayList<>();
 		
 		
 		while (!match(TokenType.RIGHT_SQUARE_BRACKET)) {
-			//System.out.println(getCurrToken());
+			
 			Expr expression = parseExpr();
 			elements.add(expression);
-			//System.out.println(getCurrToken());
+			
 			TokenType currTokenType =  getCurrToken().getType();
 			if(currTokenType !=TokenType.RIGHT_SQUARE_BRACKET) {
 			consume(TokenType.COMMA);
@@ -350,7 +382,9 @@ public class Parser {
 	
 
 	/**
-	 * @return
+	 * Parse method for parsing arrays and primitives 
+	 * @return  expression node
+	 * @throws ParserError is there is a detectable syntax error in the .ez program
 	 */
 	private Expr parsePrimitive() {
 		TokenType currType = getCurrToken().getType();
@@ -403,11 +437,8 @@ public class Parser {
 	
 
 	/**
-	 * 
+	 * Method for checking if end of token list has been reached
 	 * @return true if end of file is reached, false if not yet end of file
-	 */
-	/**
-	 * @return
 	 */
 	private boolean checkEnd() {
 		TokenType check = getCurrToken().getType();
@@ -419,48 +450,37 @@ public class Parser {
 	}
 
 	/**
-	 * returns current token
+	 * returns current token being parsed
 	 * 
-	 * @return Token
-	 */
-	/**
-	 * @return
+	 * @return current Token
 	 */
 	private Token getCurrToken() {
 		return tokenList.get(curr);
 	}
 
 	/**
-	 * returns previous token
+	 * returns previous parsed token
 	 * 
-	 * @return Token
-	 */
-	/**
-	 * @return
+	 * @return previous Token
 	 */
 	private Token getPreviousToken() {
 		return tokenList.get(curr - 1);
 	}
 
 	/**
-	 * nexts to next token in list
-	 */
-	/**
-	 * 
+	 * Moves to next token in token list
 	 */
 	private void next() {
 		curr++;
 	}
 
 	/**
-	 * 
-	 * @param token
-	 * @return nexts position in list of tokens by 1 and returns previous token if
-	 *         not at end of file and current token matches expected token
-	 */
-	/**
-	 * @param tokenType
-	 * @return
+	 * This method checks if a parsed token matches an expected token. If it does it is consumed, 
+	 * and the parser moves to the next token to be parsed. If not then the program is missing a token
+	 * and a parser error is thrown
+	 * @param Expected token type
+	 * @return consumed token 
+	 * @throws ParserError if current token is not expected token
 	 */
 	private Token consume(TokenType tokenType) {
 		Token currToken = getCurrToken();
@@ -474,14 +494,10 @@ public class Parser {
 
 	/**
 	 * method that checks if current token matches a particular token type. If it
-	 * does, that token will be parsed, and curr will next to the next token.
-	 * 
-	 * @param TokenType
-	 * @return boolean
-	 */
-	/**
-	 * @param types
-	 * @return
+	 * does, that token will be parsed, and parser will move to the next token.
+	 * Unlike Consume() does not throw an error if current token is not expected token. 
+	 * @param Expected token type
+	 * @return boolean depending on if current token matches expected token
 	 */
 	private boolean match(TokenType... types) {
 		for (TokenType type : types) {

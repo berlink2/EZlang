@@ -12,11 +12,26 @@ import interpreter.TreeInterpreter;
 import lexer.*;
 import parser.*;
 
-public class EZLang {
+/**
+ * Client class for assembling interpreter components,
+ * receiving filepath to a .ez file and taking text of the file 
+ * and passing it to be interpreted
+ * @author Berlian K
+ *
+ */
+public class EZLangClient {
+	/**
+	 * Attributes for the client class
+	 */
 	private static final TreeInterpreter interpreter = new TreeInterpreter();
 	private static Scanner s = new Scanner(System.in);
 	//Users/mac/Documents/eclipse-workspace/MScProject/src/tests/FrankensteinTests/FizzBuzz.ez
 	
+	/**
+	 * Main method for running interpreter program
+	 * @param args The sourcecode of a .ez file
+	 * @throws IOException
+	 */
 	public static void main(String[] args) throws IOException{
 		System.out.println("----------------------------");
 		System.out.println("---- Welcome to EZlang! ----");
@@ -47,8 +62,9 @@ public class EZLang {
 	}
 	
 	/**
-	 * @param file
-	 * @return
+	 * This method checks if filepath is a valid filepath to a .ez file
+	 * @param file The filepath of a .ez file
+	 * @return boolean depending if filepath is valid
 	 */
 	public static boolean checkFile(String file) {
 		int fileLength = file.length();
@@ -60,6 +76,9 @@ public class EZLang {
 	}
 	
 	/**
+	 * This method takes a filepath of a .ez file and 
+	 * calls checkFile() to check validity of file path
+	 * and if valid passes it to be run by the interpreter
 	 * @param path
 	 */
 	public static void runEZFile(String path)  {
@@ -77,7 +96,9 @@ public class EZLang {
 	}
 	
 	/**
-	 * @param sourceCode
+	 * This method feeds the sourcecode of a .ez file into the appropriate
+	 * interpreter components.
+	 * @param sourceCode The sourcecode of a .ez file
 	 */
 	public static void runSourceCode(String sourceCode) {
 		Lexer lexer = new Lexer(sourceCode);

@@ -1,7 +1,12 @@
 package ast;
 
 
-
+/**
+ * Visitor interface for accessing expression tree nodes
+ * @author Berlian K
+ *
+ * @param <T> Generic typing so visit methods can return any type
+ */
 public interface ExprVisitor<T> {
 	
 		public T visitBinOp(ExprBinOp expr);

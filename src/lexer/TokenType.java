@@ -1,5 +1,10 @@
 package lexer;
 
+/**
+ * Enum class for the various types of tokens
+ * @author Berlian K
+ *
+ */
 public enum TokenType {
 	// One character tokens.                      
 		  LEFT_PARENTHESIS, RIGHT_PARENTHESIS
