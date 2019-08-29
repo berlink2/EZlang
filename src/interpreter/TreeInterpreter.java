@@ -71,7 +71,7 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 	/**
 	 * 
 	 * evaluates and returns the result of a binary expression
-	 * @param A binary operation expression tree node
+	 * @param expr A binary operation expression tree node
 	 * @return Value of the binary operation
 	 */
 	@Override
@@ -313,7 +313,7 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 	/**
 	 * 
 	 * evaluates and returns the value of a literal expression
-	 * @param Literal expression tree node
+	 * @param expr Literal expression tree node
 	 * @return Value of the literal expression
 	 */
 	@Override
@@ -326,7 +326,7 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 	/**
 	 * 
 	 * evaluates and returns the value of a unary  expression
-	 * @param Unary operation expression tree node
+	 * @param expr Unary operation expression tree node
 	 * @return Value of the unary operation expression
 	 */
 	@Override
@@ -355,8 +355,8 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 
 	/**
 	 * Method that type checks for a unary operation
-	 * @param  Operator of the unary operation
-	 * @param  Value of the operand in a unary operation
+	 * @param  operator Operator of the unary operation
+	 * @param  operand Value of the operand in a unary operation
 	 */
 	private void checkType(Token operator, Object operand) {
 		if (operand instanceof Integer || operand instanceof Double) {
@@ -369,7 +369,7 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 	/**
 	 * 
 	 * evaluates and returns the value of a grouping expression
-	 * @param Grouping expression tree node
+	 * @param expr Grouping expression tree node
 	 * @return Value of the Grouping expression
 	 */
 	@Override
@@ -393,7 +393,7 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 	
 	/**
 	 * helper method to evaluate non-boolean values as a boolean
-	 * @param object that is checked if truthy or not
+	 * @param obj Object that is checked if truthy or not
 	 * @return boolean that depends if input object is truthy or not
 	 */
 	private boolean isTruthy(Object obj) {
@@ -409,7 +409,7 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 	
 	/**
 	 * this method executes  a statement expression
-	 * @param A statement expression tree node
+	 * @param stmt A statement expression tree node
 	 * @return null since statements don't return values
 	 */
 	@Override
@@ -422,7 +422,7 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 	/**
 	 * Executes statements in a block statement. Creates a new scope for executing statements
 	 * in a block and pops the scope once execution of statements in the scope is finished.
-	 * @param A block statement tree node
+	 * @param stmt A block statement tree node
 	 * @return null since statements don't return values
 	 */
 	@Override
@@ -446,7 +446,7 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 
 	/**
 	 * Declares new variables in the current scope
-	 * @param A variable statement tree node
+	 * @param stmt A variable statement tree node
 	 * @return null since statements don't return values
 	 */
 	@Override
@@ -465,7 +465,7 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 	/**
 	 * this method assigns value to the variable in the environment and returns the
 	 * value
-	 * @param An assignment expression tree node
+	 * @param expr An assignment expression tree node
 	 * @return The value of a variable
 	 */
 	@Override
@@ -479,7 +479,7 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 	/**
 	 * This method looks at the current environment table and retrieves the value
 	 * that corresponds to the variable's name
-	 * @param A variable expression tree node
+	 * @param expr A variable expression tree node
 	 * @return The value of a variable
 	 */
 	@Override
@@ -491,7 +491,7 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 	/**
 	 * Executes methods in a if statement. Method checks if condition is truthy or not.
 	 * If truthy then statement is executed, if falsey else statement is executed if there is one.
-	 * @param An If statement tree node
+	 * @param stmt An If statement tree node
 	 * @return null since statements don't return values
 	 */
 	@Override
@@ -509,7 +509,7 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 	/**
 	 * Executes print statement and outputs the content of the print statement if
 	 * there is one.
-	 * @param A Print statement tree node
+	 * @param stmt A Print statement tree node
 	 * @return null since statements don't return values
 	 */
 	@Override
@@ -527,7 +527,7 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 	/**
 	 * Executes while statement. Implemented using Java's while loop. Continuously
 	 * executes statement until condition is no longer truthy.
-	 * @param A While statement tree node
+	 * @param stmt A While statement tree node
 	 * @return null since statements don't return values
 	 */
 	@Override
@@ -548,7 +548,7 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 	/**
 	 * Method that takes in a user inputted value and assigns it a corresponding
 	 * variable.
-	 * @param Read expression tree node
+	 * @param expr Read expression tree node
 	 * @return user inputted value
 	 */
 	@Override
@@ -588,7 +588,7 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 
 	/**
 	 * Creates an array using Java's List.
-	 * @param Array expression tree node
+	 * @param expr Array expression tree node
 	 * @return An array
 	 */
 	@Override
@@ -603,7 +603,7 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 
 	/**
 	 * Method accesses the nth element in an array and returns it
-	 * @param Subscript expression tree node
+	 * @param expr Subscript expression tree node
 	 * @return value of the subscript i.e. an element in an array
 	 */
 	@Override
@@ -618,7 +618,7 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 	/**
 	 * Method accesses the nth element in an array and changes it, and 
 	 * then returns the new value.
-	 * @param Array Access expression tree node
+	 * @param expr Array Access expression tree node
 	 * @return New value in nth element of an array
 	 */
 	@Override
@@ -644,7 +644,7 @@ public class TreeInterpreter implements ExprVisitor<Object>, StmtVisitor<Void> {
 	/**
 	 * Executes repeat statement. Implemented using Java's do-while loop. Executes a statement
 	 * for a set number of times.
-	 * @param A Repeat statement tree node
+	 * @param stmt A Repeat statement tree node
 	 * @return null since statements don't return values
 	 * @throws RuntimeException if the repeat amount is not an integer
 	 */
