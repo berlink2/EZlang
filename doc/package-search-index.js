@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"interpreter"}]
+packageSearchIndex = [{"l":"parser"}]

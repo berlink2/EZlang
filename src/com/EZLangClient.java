@@ -30,7 +30,7 @@ public class EZLangClient {
 	/**
 	 * Main method for running interpreter program
 	 * @param args The sourcecode of a .ez file
-	 * @throws IOException
+	 * @throws IOException input output exception
 	 */
 	public static void main(String[] args) throws IOException{
 		System.out.println("----------------------------");
@@ -79,7 +79,7 @@ public class EZLangClient {
 	 * This method takes a filepath of a .ez file and 
 	 * calls checkFile() to check validity of file path
 	 * and if valid passes it to be run by the interpreter
-	 * @param path
+	 * @param path filepath to a .ez file
 	 */
 	public static void runEZFile(String path)  {
 		System.out.println("Running .ez file...The result of running the program can be found below:");
@@ -96,8 +96,7 @@ public class EZLangClient {
 	}
 	
 	/**
-	 * This method feeds the sourcecode of a .ez file into the appropriate
-	 * interpreter components.
+	 * This method runs the sourcecode of a .ez file with the interpreter.
 	 * @param sourceCode The sourcecode of a .ez file
 	 */
 	public static void runSourceCode(String sourceCode) {

@@ -27,7 +27,7 @@ public class Lexer {
 	 * This constructor is fed sourcecode from the EZlang client for lexical analysis.
 	 * It also inserts keywords in resKeywords HashMap for tokenizing reserved keywords
 	 * 
-	 * @param sourceCode
+	 * @param sourceCode sourcecode of a .ez file
 	 */
 	public Lexer(String sourceCode) {
 		this.sourceCode = sourceCode;
@@ -244,7 +244,7 @@ public class Lexer {
 	
 	/**
 	 * method that checks for second char in 2 character tokens. Specifically, is
-	 * looking for = in !=, <=, etc.
+	 * looking for equal sign in not equal, less than or equal, etc.
 	 * 
 	 * @param input checks if current char matches input char 
 	 * @return boolean if char matches expected char or not
@@ -283,7 +283,7 @@ public class Lexer {
 	}
 
 	/**
-	 * @param input char that is checked if it is a letter or _
+	 * @param c input char that is checked if it is a letter or _
 	 * @return boolean depending if input char is a letter or _
 	 */
 	private boolean checkLetter(char c) {
@@ -294,7 +294,7 @@ public class Lexer {
 	 * checks if char is a digit
 	 */
 	/**
-	 * @param input char that is checked if it is a number or not
+	 * @param c input char that is checked if it is a number or not
 	 * @return boolean that depends if input char is a number or not
 	 */
 	private boolean checkNumber(char c) {
@@ -327,7 +327,7 @@ public class Lexer {
 	
 	/**
 	 * Method that makes tokens for tokens with no values
-	 * @param The token type of a corresponding token
+	 * @param tokenType The token type of a corresponding token
 	 */
 	private void tokenize(TokenType tokenType) {
 		tokenize(tokenType, null);

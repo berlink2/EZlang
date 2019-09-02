@@ -1,7 +1,12 @@
 package ast;
 
+/**
+ * Class for statement expression nodes
+ * @author Berlian K
+ *
+ */
 public class StmtExpression extends Stmt {
-	private final Expr expr;
+	private final Expr expr; //expression(s) in the statement
 
 	public StmtExpression(Expr expr) {
 		this.expr = expr;

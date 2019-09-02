@@ -2,10 +2,15 @@ package ast;
 
 import lexer.Token;
 
+/**
+ * Class for subscript expression nodes
+ * @author Berlian K
+ *
+ */
 public class ExprSubscript extends Expr {
-	private final Token name;
-	private final Expr arrayIndex;
-	private final Expr array;
+	private final Token name; //name of the array
+	private final Expr arrayIndex; //element of the array
+	private final Expr array; //the array
 
 	public ExprSubscript(Token name, Expr arrayIndex, Expr array) {
 		this.name = name;

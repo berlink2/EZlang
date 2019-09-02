@@ -2,8 +2,13 @@ package ast;
 
 import lexer.Token;
 
+/**
+ * Class for variable expression nodes
+ * @author Berlian K
+ *
+ */
 public class ExprVariable extends Expr {
-	private final Token name;
+	private final Token name; //variable name
 
 	public ExprVariable(Token name) {
 		this.name = name;

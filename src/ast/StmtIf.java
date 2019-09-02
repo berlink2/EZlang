@@ -1,9 +1,14 @@
 package ast;
 
+/**
+ * Class for if else statement nodes 
+ * @author Berlian K
+ *
+ */
 public class StmtIf extends Stmt {
-	final Expr Cond;
-	final Stmt Then;
-	final Stmt Else;
+	final Expr Cond; //if statement condition
+	final Stmt Then; //statements executed if cond is true
+	final Stmt Else; //statements excuted if cond is not true
 
 	public StmtIf(Expr Cond, Stmt Then, Stmt Else) {
 		this.Cond = Cond;

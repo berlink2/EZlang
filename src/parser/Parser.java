@@ -23,7 +23,7 @@ public class Parser {
 
 	/**
 	 * Constructor class that is fed a list of tokens from the lexer class
-	 * @param List of tokens to be parsed
+	 * @param tokenList List of tokens to be parsed
 	 */
 	public Parser(List<Token> tokenList) {
 		this.tokenList = tokenList;
@@ -478,7 +478,7 @@ public class Parser {
 	 * This method checks if a parsed token matches an expected token. If it does it is consumed, 
 	 * and the parser moves to the next token to be parsed. If not then the program is missing a token
 	 * and a parser error is thrown
-	 * @param Expected token type
+	 * @param tokenType Expected token type
 	 * @return consumed token 
 	 * @throws ParserError if current token is not expected token
 	 */
@@ -496,7 +496,7 @@ public class Parser {
 	 * method that checks if current token matches a particular token type. If it
 	 * does, that token will be parsed, and parser will move to the next token.
 	 * Unlike Consume() does not throw an error if current token is not expected token. 
-	 * @param Expected token type
+	 * @param types Expected token type(s)
 	 * @return boolean depending on if current token matches expected token
 	 */
 	private boolean match(TokenType... types) {

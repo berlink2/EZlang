@@ -1,8 +1,13 @@
 package ast;
 
+/**
+ * class for while statement nodes
+ * @author Berlian K
+ *
+ */
 public class StmtWhile extends Stmt {
-	final Expr Cond;
-	final Stmt body;
+	final Expr Cond; //while loop condition
+	final Stmt body; //statements inside a while loop
 
 	public StmtWhile(Expr Cond, Stmt body) {
 		this.Cond = Cond;

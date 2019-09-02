@@ -2,7 +2,15 @@ package ast;
 
 import java.util.List;
 
+/**
+ * Class for array expression nodes
+ * @author Berlian k
+ *
+ */
 public class ExprArray extends Expr {
+	/**
+	 * values inside an array
+	 */
 	private final List<Expr> arrayValues;
 
 	public ExprArray(List<Expr> arrayValues) {

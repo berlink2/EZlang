@@ -2,9 +2,14 @@ package ast;
 
 import lexer.Token;
 
+/**
+ * Class for read expression nodes
+ * @author Berlian k
+ *
+ */
 public class ExprRead extends Expr {
-	private final Token name;
-	private final Expr value;
+	private final Token name;  //variable name
+	private final Expr value; //user inputted value assigned to variable
 
 	public ExprRead(Token name, Expr value) {
 		this.name = name;

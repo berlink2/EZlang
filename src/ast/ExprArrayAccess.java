@@ -2,10 +2,15 @@ package ast;
 
 import lexer.Token;
 
+/**
+ * Class for array access expression nodes
+ * @author Berlian K
+ *
+ */
 public class ExprArrayAccess extends Expr {
-	private final Expr subscript;
-	private final Expr value;
-	private final Token name;
+	private final Expr subscript; //subscript for accessing elements in an array
+	private final Expr value; //value of a particular element in an array
+	private final Token name; //name of the array
 
 	public ExprArrayAccess(Token name, Expr subscript, Expr value) {
 		this.subscript = subscript;

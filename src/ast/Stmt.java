@@ -11,8 +11,8 @@ public abstract class Stmt {
 	
 	/**
 	 * 
-	 * @param Statement visitor interface
-	 * 
+	 * @param <T> v Statement visitor interface
+	 * @return a generic object of a statement node
 	 */
 	public abstract <T> T accept(StmtVisitor<T> v);
 

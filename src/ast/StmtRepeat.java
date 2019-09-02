@@ -1,8 +1,13 @@
 package ast;
 
+/**
+ * Class for repeat statement nodes
+ * @author Berlian K
+ *
+ */
 public class StmtRepeat extends Stmt {
-	private final Expr repeatAmount;
-	private final Stmt body;
+	private final Expr repeatAmount; //amount of times loop is repeated
+	private final Stmt body; //statements inside the loop
 	
 	public StmtRepeat(Expr repeatAmount, Stmt body) {
 		this.repeatAmount = repeatAmount;

@@ -1,7 +1,12 @@
 package ast;
 
+/**
+ * Class for grouping expression nodes
+ * @author Berlian K
+ *
+ */
 public class ExprGroup extends Expr {
-	private final Expr groupExpr;
+	private final Expr groupExpr; //Expressions inside a grouping
 
 	public ExprGroup(Expr groupExpr) {
 		this.groupExpr = groupExpr;

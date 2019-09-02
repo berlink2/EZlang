@@ -1,1 +1,1 @@
-typeSearchIndex = [{"p":"interpreter","l":"TreeInterpreter"}]
+typeSearchIndex = [{"p":"parser","l":"ParserError"}]

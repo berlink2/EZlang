@@ -1,7 +1,12 @@
 package ast;
 
+/**
+ * class for print statement nodes
+ * @author Berlian K
+ *
+ */
 public class StmtPrint extends Stmt {
-	final Expr printedString;
+	final Expr printedString; //printed expression
 
 	public StmtPrint(Expr printedString) {
 		this.printedString = printedString;

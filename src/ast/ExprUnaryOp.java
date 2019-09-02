@@ -2,9 +2,14 @@ package ast;
 
 import lexer.Token;
 
+/**
+ * Class for unary operation expression nodes
+ * @author Berlian K
+ *
+ */
 public class ExprUnaryOp extends Expr {
-	private final Token op;
-	private final Expr right;
+	private final Token op; //operator token
+	private final Expr right; //right operand
 
 	public ExprUnaryOp(Token op, Expr right) {
 		this.right = right;

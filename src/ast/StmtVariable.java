@@ -2,9 +2,14 @@ package ast;
 
 import lexer.Token;
 
+/**
+ * Class for variable declaration statement nodes
+ * @author Berlian K
+ *
+ */
 public class StmtVariable extends Stmt{
-	final Token name;
-	Expr initial;
+	final Token name; //variable name
+	Expr initial; //initialized value of variable
 
 	public StmtVariable(Token name, Expr initial) {
 		this.name = name;
